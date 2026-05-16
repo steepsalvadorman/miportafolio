@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-term-text: #F5E6C4;
+  --color-term-primary: #FFB000;
+  --color-term-secondary: #FF7B00;
+  --color-term-muted: #A68A56;
+}
+
+:root {
+  --matrix-bg: #14110C; /* Negro cálido (tono marrón oscuro) */
+  --matrix-glow: rgba(255, 176, 0, 0.4);
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+  font-family: var(--font-mono);
+  background-color: var(--matrix-bg);
+  color: var(--color-term-text);
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* CRT Scanlines and overlay */
+.crt::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  z-index: 50;
+  background-size: 100% 3px, 3px 100%;
+  pointer-events: none;
+}
+
+/* Flicker animation */
+.crt::after {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(18, 16, 16, 0.1);
+  opacity: 0;
+  z-index: 50;
+  pointer-events: none;
+  animation: flicker 0.15s infinite;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.01; }
+  5% { opacity: 0.03; }
+  10% { opacity: 0.01; }
+  15% { opacity: 0.04; }
+  20% { opacity: 0.01; }
+  25% { opacity: 0.02; }
+  30% { opacity: 0.01; }
+  35% { opacity: 0.05; }
+  40% { opacity: 0.01; }
+  45% { opacity: 0.02; }
+  50% { opacity: 0.01; }
+  55% { opacity: 0.03; }
+  60% { opacity: 0.01; }
+  65% { opacity: 0.02; }
+  70% { opacity: 0.01; }
+  75% { opacity: 0.04; }
+  80% { opacity: 0.01; }
+  85% { opacity: 0.03; }
+  90% { opacity: 0.01; }
+  95% { opacity: 0.02; }
+  100% { opacity: 0.01; }
+}
+
+/* Matrix Text Glow */
+.glow-text {
+  text-shadow: 0 0 5px var(--matrix-glow);
+}
+.glow-box {
+  box-shadow: 0 0 10px var(--matrix-glow);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--matrix-dark);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--matrix-text);
+}

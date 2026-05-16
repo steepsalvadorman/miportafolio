@@ -1,0 +1,38 @@
+<main class="max-w-4xl mx-auto px-4 py-12 md:py-20 z-10 relative bg-[#14110C]/80 backdrop-blur-sm rounded-lg mt-8 mb-8 border border-term-primary/20 shadow-2xl min-h-[80vh]">
+
+  <!-- Header & Back Button -->
+  <header class="mb-10 border-b border-term-primary/40 pb-6 flex justify-between items-center">
+    <h2 class="text-xl md:text-3xl font-bold text-term-primary glow-text">~/certificados</h2>
+    
+    <a routerLink="/" class="border border-term-muted text-term-muted hover:text-term-primary hover:border-term-primary hover:bg-term-primary/10 px-4 py-2 flex items-center transition-all">
+      <span class="mr-2"><_</span> Volver
+    </a>
+  </header>
+
+  <!-- Gallery -->
+  <section>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      @for (cert of certificates; track cert.title) {
+        <article class="border border-term-primary/30 p-2 flex flex-col hover:border-term-primary transition-all duration-300 bg-black group">
+          
+          <div class="relative h-48 overflow-hidden filter grayscale hover:grayscale-0 transition-all duration-500 border border-term-primary/20">
+            <img [src]="cert.imageUrl" [alt]="cert.title" class="w-full h-full object-cover opacity-70 group-hover:opacity-100" loading="eager" />
+            <div class="absolute inset-0 bg-term-primary/20 mix-blend-color pointer-events-none group-hover:bg-transparent transition-all"></div>
+          </div>
+          
+          <div class="p-4 flex flex-col items-center text-center">
+            <h4 class="text-base md:text-lg font-bold glow-text mb-2 text-term-secondary">{{ cert.title }}</h4>
+            <p class="text-sm opacity-80 text-term-text mb-1">{{ cert.issuer }}</p>
+            <p class="text-xs text-term-muted border-t border-term-muted/30 pt-2 w-1/2 mx-auto">{{ cert.date }}</p>
+          </div>
+          
+        </article>
+      }
+    </div>
+  </section>
+
+</main>
+
+<footer class="border-t border-term-muted/50 py-6 text-center text-sm opacity-50 font-mono relative z-10 bg-black">
+  <p>root@steep:~/certificados# exit</p>
+</footer>

@@ -1,0 +1,191 @@
+<!-- Contenedor principal con efecto CRT aplicado al body, aquí damos márgenes -->
+<main class="max-w-4xl mx-auto px-4 py-12 md:py-20 z-10 relative bg-[#14110C]/80 backdrop-blur-sm rounded-lg mt-8 mb-8 border border-term-primary/20 shadow-2xl">
+
+  <!-- Header / Perfil -->
+  <header class="mb-10 border-b border-term-primary/40 pb-6">
+    <div class="glow-text text-lg md:text-2xl lg:text-3xl font-bold mb-3 break-words">
+      <span class="text-term-secondary">const</span> developer <span class="text-term-secondary">=</span> <br class="md:hidden" />"<span class="text-term-primary">{{ personalInfo.name }}</span>"<span class="animate-pulse">;</span>
+    </div>
+    <h2 class="text-lg md:text-xl text-term-muted mb-6 leading-relaxed">{{ personalInfo.title }}</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-term-text font-mono bg-term-primary/5 p-4 border border-term-primary/30 rounded">
+      <a href="https://{{ personalInfo.github }}" target="_blank" class="hover:text-white hover:underline transition-colors flex items-center gap-2">
+        <span class="text-term-secondary">[ GITHUB ]</span> {{ personalInfo.github }}
+      </a>
+      <a href="https://{{ personalInfo.linkedin }}" target="_blank" class="hover:text-white hover:underline transition-colors flex items-center gap-2">
+        <span class="text-term-secondary">[ LINKEDIN ]</span> {{ personalInfo.linkedin }}
+      </a>
+      <a href="mailto:{{ personalInfo.email }}" class="hover:text-white hover:underline transition-colors flex items-center gap-2">
+        <span class="text-term-secondary">[ EMAIL ]</span> {{ personalInfo.email }}
+      </a>
+      <div class="flex items-center gap-2">
+        <span class="text-term-secondary">[ PHONE ]</span> {{ personalInfo.phone }}
+      </div>
+    </div>
+  </header>
+
+  <!-- Boton de Certificados Arriba -->
+  <div class="mb-12 flex justify-end">
+    <a routerLink="/certificados" class="border border-term-primary text-term-primary hover:bg-term-primary/20 px-4 py-2 flex items-center transition-all glow-text">
+      >_ Ver_Certificados
+    </a>
+  </div>
+
+  <!-- Resumen -->
+  <section class="mb-12">
+    <h3 class="text-xl md:text-2xl font-bold mb-4 border-l-4 border-term-primary pl-3 text-term-secondary">Resumen</h3>
+    <p class="text-justify leading-relaxed opacity-90 text-sm md:text-base" [innerHTML]="summary"></p>
+  </section>
+
+  <!-- Experiencia Profesional -->
+  <section class="mb-12">
+    <h3 class="text-xl md:text-2xl font-bold mb-6 border-l-4 border-term-primary pl-3 text-term-secondary">Experiencia Profesional</h3>
+    
+    <div class="space-y-8">
+      @for (job of experience; track job.company) {
+        <article class="relative pl-6 before:content-[''] before:absolute before:left-0 before:top-2 before:bottom-0 before:w-[1px] before:bg-term-muted before:opacity-50">
+          <div class="absolute w-2 h-2 bg-term-primary rounded-none -left-[3.5px] top-2 glow-box"></div>
+          
+          <div class="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
+            <h4 class="text-lg md:text-xl font-bold glow-text text-term-primary">{{ job.company }}</h4>
+            <span class="text-term-muted text-sm mt-1 md:mt-0">{{ job.period }}</span>
+          </div>
+          <div class="text-term-text font-semibold mb-3 italic text-sm md:text-base opacity-90">
+            {{ job.role }}
+          </div>
+          <ul class="space-y-3 text-sm md:text-base leading-relaxed opacity-80">
+            @for (resp of job.responsibilities; track resp) {
+              <li class="flex items-start">
+                <span class="text-term-primary mr-2 mt-0.5">></span>
+                <span>{{ resp }}</span>
+              </li>
+            }
+          </ul>
+        </article>
+      }
+    </div>
+  </section>
+
+  <!-- Logros -->
+  <section class="mb-12">
+    <h3 class="text-xl md:text-2xl font-bold mb-6 border-l-4 border-term-primary pl-3 text-term-secondary">Logros Destacados</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      @for (ach of achievements; track ach.title) {
+        <article class="border border-term-primary/30 flex flex-col hover:border-term-primary transition-all duration-300 bg-term-primary/5 group">
+          <div class="relative h-40 overflow-hidden filter grayscale hover:grayscale-0 transition-all duration-500">
+            <img [src]="ach.imageUrl" [alt]="ach.title" class="w-full h-full object-cover opacity-70 group-hover:opacity-100" loading="lazy" />
+            <div class="absolute inset-0 bg-term-primary/20 mix-blend-color pointer-events-none group-hover:bg-transparent transition-all"></div>
+          </div>
+          
+          <div class="p-4 flex-1 flex flex-col border-t border-term-primary/30">
+            <h4 class="text-base md:text-lg font-bold glow-text mb-2 text-term-primary">{{ ach.title }}</h4>
+            <p class="text-sm md:text-base opacity-80 flex-1 leading-relaxed">
+              {{ ach.description }}
+            </p>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+  <!-- Educación -->
+  <section class="mb-12">
+    <h3 class="text-xl md:text-2xl font-bold mb-6 border-l-4 border-term-primary pl-3 text-term-secondary">Educación</h3>
+    
+    <div class="space-y-4">
+      @for (edu of education; track edu.institution) {
+        <div class="flex flex-col md:flex-row md:justify-between items-baseline pl-4 border-l border-term-muted border-dashed">
+          <div>
+            <h4 class="font-bold text-base md:text-lg glow-text text-term-primary">{{ edu.institution }}</h4>
+            <p class="opacity-90 text-sm md:text-base text-term-text">{{ edu.degree }}</p>
+          </div>
+          <span class="text-term-muted text-sm mt-1 md:mt-0">{{ edu.location }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Tecnologías (Skills) -->
+  <section class="mb-12">
+    <h3 class="text-xl md:text-2xl font-bold mb-6 border-l-4 border-term-primary pl-3 text-term-secondary">Tecnologías e Idiomas</h3>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      @for (skillGroup of skills; track skillGroup.category) {
+        <div class="border border-term-muted/40 p-4 hover:border-term-primary transition-colors bg-term-primary/5">
+          <h4 class="font-bold mb-4 text-term-secondary text-sm md:text-base">[{{ skillGroup.category }}]</h4>
+          <div class="flex flex-wrap gap-2">
+            @for (skill of skillGroup.skills; track skill) {
+              <span class="text-xs md:text-sm border border-term-muted/50 px-2 py-1 text-term-text bg-black/50 hover:border-term-primary transition-colors">{{ skill }}</span>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+
+  <!-- Proyectos Destacados (GitHub) -->
+  <section class="mb-12">
+    <h3 class="text-xl md:text-2xl font-bold mb-6 border-l-4 border-term-primary pl-3 text-term-secondary">Proyectos (GitHub)</h3>
+    <p class="text-term-muted mb-6 text-sm">
+      Ejecutando script fetch_projects.sh... <span class="animate-pulse block w-2 h-4 bg-term-primary inline-block align-middle"></span>
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      @for (project of projects; track project.id) {
+        <article class="border border-term-primary/30 p-1 flex flex-col hover:border-term-primary transition-all duration-300 bg-black group">
+          
+          <!-- Consola Header -->
+          <div class="bg-term-primary/10 px-2 py-1 flex items-center border-b border-term-primary/30 text-xs text-term-muted mb-2">
+             <span class="mr-2 text-term-secondary">~/proyectos/{{ project.title | lowercase | slice:0:10 }}</span>
+             <div class="ml-auto flex gap-1">
+                <div class="w-2 h-2 bg-term-muted"></div>
+                <div class="w-2 h-2 bg-term-primary"></div>
+             </div>
+          </div>
+
+          <!-- Imagen -->
+          <div class="relative h-40 overflow-hidden border border-term-primary/20 mx-2 mt-1 mb-3 filter grayscale hover:grayscale-0 transition-all duration-500">
+            <img [src]="project.imageUrl" [alt]="project.title" class="w-full h-full object-cover opacity-70 group-hover:opacity-100" loading="lazy" />
+            <!-- Overlay ámbar -->
+            <div class="absolute inset-0 bg-term-primary/20 mix-blend-color pointer-events-none group-hover:bg-transparent transition-all"></div>
+          </div>
+          
+          <div class="px-3 pb-3 flex-1 flex flex-col">
+            <h4 class="text-base md:text-lg font-bold glow-text mb-2 text-term-primary">{{ project.title }}</h4>
+            <p class="text-sm md:text-base opacity-80 mb-4 flex-1 leading-relaxed">
+              {{ project.description }}
+            </p>
+            
+            <div class="flex flex-wrap gap-2 mb-4">
+              @for (tech of project.technologies; track tech) {
+                <span class="text-xs border border-term-muted px-1 text-term-muted group-hover:text-term-text group-hover:border-term-primary transition-colors">
+                  {{ tech }}
+                </span>
+              }
+            </div>
+
+            <div class="flex items-center gap-4 border-t border-term-muted/30 pt-3">
+              <a [href]="project.githubUrl" target="_blank" class="text-sm hover:text-term-text hover:glow-text transition-all flex items-center gap-1 text-term-primary">
+                >_ Ver_Código
+              </a>
+              @if (project.demoUrl) {
+                <a [href]="project.demoUrl" target="_blank" class="text-sm text-term-muted hover:text-term-secondary hover:glow-text transition-all">
+                  [ Demo ]
+                </a>
+              }
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+  </section>
+
+</main>
+
+<!-- Footer Terminal -->
+<footer class="border-t border-term-muted/50 py-6 text-center text-sm opacity-50 font-mono relative z-10 bg-black">
+  <p>root@steep:~# exit</p>
+  <p>logout</p>
+  <p class="mt-2 text-xs text-term-muted">&copy; {{ currentYear }} Steep Salvador.</p>
+</footer>
