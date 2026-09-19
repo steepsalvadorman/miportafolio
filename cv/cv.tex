@@ -1,0 +1,146 @@
+\documentclass[10pt, a4paper]{article}
+
+% ---------- Paquetes ----------
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nolists,es-noquoting,es-nodecimaldot]{babel}
+\usepackage[top=1.1cm, bottom=1.1cm, left=1.6cm, right=1.6cm]{geometry}
+\usepackage[parfill]{parskip}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{tabularx}
+\usepackage{array}
+
+% ---------- Colores ----------
+\definecolor{accent}{HTML}{1A3A5C}
+\definecolor{subtle}{HTML}{555555}
+
+% ---------- Hipervínculos ----------
+\hypersetup{colorlinks=true, urlcolor=accent, linkcolor=accent}
+
+% ---------- Espaciado global ----------
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{0pt}
+
+% ---------- Secciones ----------
+\titleformat{\section}
+    {\normalsize\bfseries\color{accent}}
+    {}
+    {0em}
+    {}
+    [\vspace{-3pt}\rule{\linewidth}{0.5pt}\vspace{1pt}]
+\titlespacing{\section}{0pt}{4pt}{2pt}
+
+% ---------- Entrada de experiencia ----------
+\newcommand{\cventry}[4]{%
+    \begin{tabularx}{\linewidth}{@{}Xr@{}}
+        \textbf{\small #1} & {\footnotesize\textcolor{subtle}{#2}} \\[-1pt]
+        {\footnotesize\textit{\textcolor{subtle}{#3}}} & \\
+    \end{tabularx}
+    \vspace{0pt}
+    #4
+    \vspace{1pt}
+}
+
+% ---------- Fila de tecnología ----------
+\newcommand{\cvrow}[2]{%
+    {\small\textbf{#1:} #2}\par\vspace{1pt}%
+}
+
+% ---------- Documento ----------
+\begin{document}
+\pagestyle{empty}
+
+% ===== ENCABEZADO =====
+\begin{center}
+    {\large\bfseries\color{accent} Steep Bratzon Salvador Mancisidor}\\[2pt]
+    {\footnotesize
+        (+51)\,941\,435\,268
+        \,\textcolor{subtle}{$\cdot$}\,
+        \href{mailto:steepbsm@gmail.com}{steepbsm@gmail.com}
+        \,\textcolor{subtle}{$\cdot$}\,
+        \href{https://linkedin.com/in/steepsalvador}{linkedin.com/in/steepsalvador}
+        \,\textcolor{subtle}{$\cdot$}\,
+        \href{https://github.com/steepsalvadorman}{github.com/steepsalvadorman}
+    }\\[1pt]
+    {\footnotesize\textcolor{subtle}{Ingeniero de Sistemas · Desarrollador-Arquitecto (Spring Boot, TypeScript)}}
+\end{center}
+
+\vspace{1pt}
+
+% ===== PERFIL =====
+\section{Perfil Profesional}
+{\small
+Ingeniero de sistemas con perfil de desarrollador-arquitecto: diseño arquitecturas escalables y las llevo a producción con calidad y criterio técnico.
+Combino automatización de pruebas con Playwright, Java y TypeScript con desarrollo full-stack en Spring Boot para entornos críticos de minería, banca y consultoría.
+Experiencia liderando equipos, definiendo estándares arquitectónicos e integrando sistemas complejos.
+}
+
+% ===== EXPERIENCIA PROFESIONAL =====
+\section{Experiencia Profesional}
+
+\cventry{HR Ingenieros Asociados --- Lima}{jun. 2026 -- actualidad}{QA Automation Engineer / Programador Líder}{
+    \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=0pt, parsep=0pt]
+        \item[\textbullet] {\small Diseño e implementación de pruebas automatizadas con Playwright, Java y TypeScript para elevar cobertura y estabilidad del producto.}
+        \item[\textbullet] {\small Liderazgo del equipo de desarrollo: planificación, asignación de tareas y definición de arquitectura.}
+        \item[\textbullet] {\small Integración de QA en el ciclo de entrega mediante estándares de testing y automatización en CI/CD.}
+    \end{itemize}
+}
+
+\cventry{Marcobre S.A.C. --- Nasca, Ica}{sep. 2025 -- mar. 2026}{Practicante Profesional de Sistemas de Información (SIG)}{
+    \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=0pt, parsep=0pt]
+        \item[\textbullet] {\small Automatización del SIG con Power Apps, Power Automate, Power BI, Copilot Studio y SAP, reduciendo trabajo manual en varias áreas operativas.}
+        \item[\textbullet] {\small Gestión documental y flujos de firma en Oracle Aconex bajo estándares corporativos.}
+        \item[\textbullet] {\small Configuración de instrumentos de laboratorio integrados al LIMS TSS.}
+        \item[\textbullet] {\small Apoyo en auditorías ISO 9001 / BASC y seguimiento de no conformidades.}
+    \end{itemize}
+}
+
+\cventry{Compañía Minera Condestable S.A. --- Mala, Lima}{ene. 2025 -- jun. 2025}{Practicante Profesional de Sistemas de Información}{
+    \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=0pt, parsep=0pt]
+        \item[\textbullet] {\small Desarrollo de módulos del SIOMM en PowerBuilder para el sistema operativo minero.}
+        \item[\textbullet] {\small Automatización de reportes y flujos RPA con Power Apps y Power Automate.}
+        \item[\textbullet] {\small Integración con balanzas de mineral y laboratorio, reduciendo errores y tiempos de pesaje.}
+    \end{itemize}
+}
+
+\cventry{R\&B S.A.C. --- Lima}{mar. 2024 -- sep. 2024}{Practicante Preprofesional de Ingeniería de Software}{
+    \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=0pt, parsep=0pt]
+        \item[\textbullet] {\small App Android con Kotlin y Jetpack Compose (MVVM) y consumo de APIs REST.}
+        \item[\textbullet] {\small Autenticación y sincronización en tiempo real con Firebase.}
+    \end{itemize}
+}
+
+\cventry{NTT DATA Europe \& Latam --- Lima}{sep. 2019 -- feb. 2020}{Solutions Assistant (Student \& QA)}{
+    \begin{itemize}[leftmargin=1.1em, itemsep=0pt, topsep=0pt, parsep=0pt]
+        \item[\textbullet] {\small Pruebas funcionales y de rendimiento del sistema WISE -- BCP (Banca) en entornos productivos.}
+        \item[\textbullet] {\small Registro y seguimiento de incidencias con QA senior; evaluación de usabilidad de interfaces.}
+    \end{itemize}
+}
+
+% ===== EDUCACIÓN =====
+\section{Educación}
+\begin{tabularx}{\linewidth}{@{}Xr@{}}
+    {\small\textbf{Universidad de Lima}} & {\footnotesize\textcolor{subtle}{Lima, Perú}} \\[-1pt]
+    {\footnotesize\textit{\textcolor{subtle}{Ingeniería de Sistemas}}} & \\
+\end{tabularx}
+
+\vspace{1pt}
+
+% ===== TECNOLOGÍAS =====
+\section{Tecnologías}
+
+\cvrow{QA \& Testing}{Playwright, Cypress, Java, TypeScript}
+\cvrow{Backend}{Spring Boot, Spring WebFlux, Spring Cloud, Spring Data JPA/MongoDB, Keycloak}
+\cvrow{Frontend}{Angular, React, TypeScript}
+\cvrow{Arquitectura}{API REST, Clean Architecture, Microservicios, arquitectura por capas}
+\cvrow{Cloud \& DevOps}{Docker, Kubernetes, Azure, OCI, CI/CD}
+\cvrow{Bases de datos}{PostgreSQL, MySQL, Oracle, MongoDB}
+\cvrow{Otros}{Power Platform, LIMS, Android (Kotlin), Flutter, Rust}
+
+% ===== IDIOMAS =====
+\section{Idiomas}
+{\small Inglés (Avanzado) \quad\textcolor{subtle}{$\cdot$}\quad Francés (Básico) \quad\textcolor{subtle}{$\cdot$}\quad Italiano (Básico)}
+
+\end{document}

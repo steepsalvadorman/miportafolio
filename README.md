@@ -6,10 +6,19 @@ Bienvenido a mi espacio profesional. Soy un Ingeniero de Sistemas enfocado en la
 
 ## 🛠️ Stack Tecnológico
 
-- **Core:** Angular 19+ & TypeScript
+- **Core:** Astro & TypeScript
 - **Styling:** Tailwind CSS v4 (Matrix Amber CRT Design)
 - **Backend:** Spring Boot & Rust
 - **Cloud/DevOps:** Docker, Azure & AWS
+
+## 🚀 Comandos
+
+```bash
+npm install
+npm run dev      # Servidor de desarrollo
+npm run build    # Build de producción
+npm run preview  # Preview del build
+```
 
 ## 👤 Contacto y Enlaces
 

@@ -1,0 +1,162 @@
+<div class="terminal-canvas-wrap" aria-hidden="true">
+  <canvas id="calm-canvas" class="terminal-canvas"></canvas>
+</div>
+
+<script>
+  interface Particle {
+    x: number;
+    y: number;
+    speed: number;
+    char: string;
+    opacity: number;
+    size: number;
+    head: boolean;
+  }
+
+  const TERMINAL_CHARS = '01>$#_{}[];:./\\|~@ABCDEF0123456789';
+
+  let animationFrameId = 0;
+  let particles: Particle[] = [];
+  let ctx: CanvasRenderingContext2D | null = null;
+  let canvas: HTMLCanvasElement | null = null;
+  let gridOffset = 0;
+
+  function randomChar(): string {
+    return TERMINAL_CHARS[Math.floor(Math.random() * TERMINAL_CHARS.length)] ?? '0';
+  }
+
+  function initCanvas() {
+    canvas = document.getElementById('calm-canvas') as HTMLCanvasElement | null;
+    if (!canvas) return;
+
+    ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.floor(window.innerWidth * dpr);
+    canvas.height = Math.floor(window.innerHeight * dpr);
+    canvas.style.width = `${window.innerWidth}px`;
+    canvas.style.height = `${window.innerHeight}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    particles = [];
+    const numParticles = Math.floor((window.innerWidth * window.innerHeight) / 9000);
+
+    for (let i = 0; i < numParticles; i++) {
+      particles.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        speed: 0.15 + Math.random() * 0.55,
+        char: randomChar(),
+        opacity: 0.015 + Math.random() * 0.06,
+        size: 11 + Math.random() * 5,
+        head: Math.random() > 0.92,
+      });
+    }
+  }
+
+  function drawGrid() {
+    if (!canvas || !ctx) return;
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const cell = 28;
+
+    ctx.strokeStyle = 'rgba(255, 176, 0, 0.035)';
+    ctx.lineWidth = 1;
+
+    for (let x = 0; x <= width; x += cell) {
+      ctx.beginPath();
+      ctx.moveTo(x + 0.5, 0);
+      ctx.lineTo(x + 0.5, height);
+      ctx.stroke();
+    }
+
+    for (let y = gridOffset; y <= height; y += cell) {
+      ctx.beginPath();
+      ctx.moveTo(0, y + 0.5);
+      ctx.lineTo(width, y + 0.5);
+      ctx.stroke();
+    }
+
+    gridOffset = (gridOffset + 0.08) % cell;
+  }
+
+  function drawScanBeam() {
+    if (!canvas || !ctx) return;
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const time = Date.now() * 0.00015;
+    const beamY = ((time % 1) * (height + 120)) - 60;
+
+    const gradient = ctx.createLinearGradient(0, beamY - 40, 0, beamY + 40);
+    gradient.addColorStop(0, 'rgba(255, 176, 0, 0)');
+    gradient.addColorStop(0.5, 'rgba(255, 176, 0, 0.025)');
+    gradient.addColorStop(1, 'rgba(255, 176, 0, 0)');
+
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, beamY - 40, width, 80);
+  }
+
+  function animate() {
+    if (!canvas || !ctx) return;
+
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+
+    ctx.clearRect(0, 0, width, height);
+    drawGrid();
+    drawScanBeam();
+
+    for (const particle of particles) {
+      ctx.font = `${particle.size}px "JetBrains Mono", monospace`;
+
+      if (particle.head) {
+        ctx.fillStyle = `rgba(255, 200, 80, ${particle.opacity * 2.2})`;
+        ctx.shadowColor = 'rgba(255, 176, 0, 0.45)';
+        ctx.shadowBlur = 6;
+      } else {
+        ctx.fillStyle = `rgba(255, 176, 0, ${particle.opacity})`;
+        ctx.shadowBlur = 0;
+      }
+
+      ctx.fillText(particle.char, particle.x, particle.y);
+      ctx.shadowBlur = 0;
+
+      particle.y += particle.speed;
+
+      if (Math.random() > 0.992) {
+        particle.char = randomChar();
+      }
+
+      if (particle.y > height + 20) {
+        particle.y = -20 - Math.random() * 80;
+        particle.x = Math.random() * width;
+        particle.char = randomChar();
+        particle.head = Math.random() > 0.94;
+      }
+    }
+
+    animationFrameId = requestAnimationFrame(animate);
+  }
+
+  function start() {
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+    }
+
+    initCanvas();
+    animate();
+  }
+
+  start();
+  window.addEventListener('resize', start);
+
+  document.addEventListener('astro:before-swap', () => {
+    window.removeEventListener('resize', start);
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+    }
+  });
+</script>

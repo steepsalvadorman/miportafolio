@@ -1,0 +1,32 @@
+---
+import '../styles/global.css';
+import MatrixBackground from '../components/MatrixBackground.astro';
+import TerminalShell from '../components/TerminalShell.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Portafolio profesional de Steep Salvador - Ingeniero de Sistemas' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2314110C'/><text y='.9em' font-size='70' fill='%23FFB000' font-family='monospace' font-weight='bold' x='10'>&gt;_</text></svg>"
+    />
+  </head>
+  <body class="crt terminal-shell text-term-text antialiased selection:bg-term-primary selection:text-black">
+    <TerminalShell />
+    <MatrixBackground />
+    <slot />
+  </body>
+</html>
