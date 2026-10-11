@@ -21,37 +21,35 @@ export interface Project {
   title: string;
   description: string;
   technologies: string[];
-  imageUrl: string;
-  githubUrl: string;
+  githubUrl?: string;
   demoUrl?: string;
+  featured?: boolean;
 }
 
 export interface Achievement {
   title: string;
   description: string;
-  imageUrl: string;
 }
 
 export const personalInfo = {
   name: 'Steep Salvador',
-  title: 'Ingeniero de Sistemas | Desarrollador-Arquitecto · Spring Boot & TypeScript',
+  title: 'Ingeniero de Sistemas · Desarrollador y arquitecto · Spring Boot y TypeScript',
   phone: '(+51) 941 435 268',
   email: 'steepbsm@gmail.com',
   linkedin: 'linkedin.com/in/steepsalvador',
   github: 'github.com/steepsalvadorman',
 };
 
-export const summary = `
-  Ingeniero de sistemas con perfil de desarrollador-arquitecto: diseño arquitecturas escalables y las llevo a producción con calidad y criterio técnico.
-  Combino automatización de pruebas con <span class="text-[color:var(--term-primary)] font-bold">Playwright</span>, Java y TypeScript, con desarrollo full-stack en <span class="text-[color:var(--term-secondary)] font-bold">Spring Boot</span> para entornos críticos de minería, banca y consultoría.
-  Experiencia liderando equipos, definiendo estándares arquitectónicos e integrando sistemas complejos.
-`;
+export const summary =
+  'Ingeniero de sistemas con perfil de desarrollador y arquitecto: diseño arquitecturas escalables y las llevo a producción con calidad y criterio técnico. ' +
+  'Combino automatización de pruebas con Playwright, Java y TypeScript con desarrollo full stack en Spring Boot para entornos críticos de minería, banca y consultoría. ' +
+  'Experiencia liderando equipos, definiendo estándares arquitectónicos e integrando sistemas complejos.';
 
 export const experience: Experience[] = [
   {
     company: 'HR Ingenieros Asociados',
     role: 'QA Automation Engineer / Programador Líder',
-    period: '06/2026 - actualidad',
+    period: '06/2026 – actualidad',
     responsibilities: [
       'Diseño e implementación de pruebas automatizadas con Playwright, Java y TypeScript para elevar cobertura y estabilidad del producto.',
       'Liderazgo del equipo de desarrollo: planificación, asignación de tareas y definición de arquitectura.',
@@ -60,8 +58,8 @@ export const experience: Experience[] = [
   },
   {
     company: 'Marcobre S.A.C.',
-    role: 'Practicante Profesional - Sistemas (SIG)',
-    period: '09/2025 - 03/2026',
+    role: 'Practicante Profesional · Sistemas (SIG)',
+    period: '09/2025 – 03/2026',
     responsibilities: [
       'Programación del Sistema Integrado de Gestión, optimizando procesos operativos.',
       'Integración de Oracle Aconex con Power BI para reportes gerenciales.',
@@ -72,7 +70,7 @@ export const experience: Experience[] = [
   {
     company: 'Compañía Minera Condestable S.A.',
     role: 'Practicante Profesional de Sistemas',
-    period: '01/2025 - 06/2025',
+    period: '01/2025 – 06/2025',
     responsibilities: [
       'Programación de módulos en PowerBuilder para el sistema operativo minero.',
       'Integración de sistemas con balanzas e instrumentación, asegurando consistencia de datos.',
@@ -82,7 +80,7 @@ export const experience: Experience[] = [
   {
     company: 'R&B S.A.C.',
     role: 'Practicante Preprofesional de Ingeniería de Software',
-    period: '03/2024 - 09/2024',
+    period: '03/2024 – 09/2024',
     responsibilities: [
       'Desarrollo de aplicación Android con Kotlin y Jetpack Compose.',
       'Implementación de arquitectura MVVM y consumo de APIs REST.',
@@ -92,9 +90,9 @@ export const experience: Experience[] = [
   {
     company: 'NTT DATA Europe & Latam',
     role: 'Java Backend Junior / Solutions Assistant',
-    period: '09/2019 - 02/2020',
+    period: '09/2019 – 02/2020',
     responsibilities: [
-      'Desarrollo de módulos en Spring Boot y Spring Cloud para el sistema WISE - BCP (Banca).',
+      'Desarrollo de módulos en Spring Boot y Spring Cloud para el sistema WISE · BCP (Banca).',
       'Ejecución de pruebas funcionales y de rendimiento.',
       'Identificación y seguimiento de incidencias en entornos productivos.',
     ],
@@ -106,25 +104,21 @@ export const achievements: Achievement[] = [
     title: 'Liderazgo Técnico en Migración de Plataformas',
     description:
       'Liderazgo en la migración exitosa de 2 plataformas críticas de PHP (Laravel) a una arquitectura moderna en un tiempo récord de 2 semanas, utilizando Spring Boot para el backend y React.',
-    imageUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2000&auto=format&fit=crop',
   },
   {
-    title: 'Reconocimiento a la Innovación - Banca BCP',
+    title: 'Reconocimiento a la Innovación · Banca BCP',
     description:
       'Destacada participación en la creación de herramientas internas de optimización para Banca BCP, mejorando significativamente los tiempos de respuesta del equipo en un 30%.',
-    imageUrl: 'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?q=80&w=2000&auto=format&fit=crop',
   },
   {
     title: 'Innovación en Optimización de Pesaje Minero',
     description:
       'Mejora e innovación en el proceso de pesaje de volquetes integrando PowerBuilder y motores de optimización de alto rendimiento en Rust.',
-    imageUrl: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2000&auto=format&fit=crop',
   },
   {
     title: 'Automatización SIG: Flota de Buques Mineros',
     description:
       'Optimización de reportes y procesos en el Sistema Integrado de Gestión (SIG). Digitalización de checklists manuales para encuestas de buques de ácido sulfúrico utilizando Power Apps.',
-    imageUrl: 'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?q=80&w=2000&auto=format&fit=crop',
   },
 ];
 
@@ -169,10 +163,10 @@ export const projects: Project[] = [
   {
     id: 1,
     title: 'Industrial Scale Integration',
+    featured: true,
     description:
       'Sistema de alto rendimiento en Rust para la extracción de datos de balanzas industriales TI420. Implementa protocolos STX/CKS para garantizar la integridad de información crítica en el sector minero.',
     technologies: ['Rust', 'Industrial IoT', 'TCP/IP'],
-    imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2000&auto=format&fit=crop',
     githubUrl: 'https://github.com/steepsalvadorman/Rust_Scale_Weigth',
   },
   {
@@ -181,16 +175,14 @@ export const projects: Project[] = [
     description:
       'Plataforma móvil nativa orientada al mercado laboral informal. Desarrollada con Jetpack Compose y arquitectura MVVM, utiliza Firebase para la gestión de datos en tiempo real y geolocalización.',
     technologies: ['Kotlin', 'Jetpack Compose', 'Firebase'],
-    imageUrl: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?q=80&w=2000&auto=format&fit=crop',
-    githubUrl: 'https://github.com/steepsalvadorman/Cachuelitoo',
   },
   {
     id: 3,
     title: 'CodeCraft Peru',
+    featured: true,
     description:
       'Plataforma web para una comunidad de desarrollo de software. Optimizada para rendimiento y SEO mediante Astro, con un diseño moderno enfocado en la entrega de contenido técnico eficiente.',
     technologies: ['Astro', 'TypeScript', 'Tailwind CSS'],
-    imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?q=80&w=2000&auto=format&fit=crop',
     githubUrl: 'https://github.com/steepsalvadorman/CodeCraftPeru',
   },
   {
@@ -199,16 +191,15 @@ export const projects: Project[] = [
     description:
       'Integración de modelos de lenguaje de gran tamaño (LLM) en entornos empresariales utilizando Spring AI. Permite procesamiento de lenguaje natural y generación de contenido dinámico.',
     technologies: ['Java', 'Spring Boot', 'Spring AI'],
-    imageUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=2000&auto=format&fit=crop',
     githubUrl: 'https://github.com/steepsalvadorman/ChatAI',
   },
   {
     id: 5,
     title: 'Enterprise API Framework',
+    featured: true,
     description:
       'Arquitectura de referencia para el desarrollo de APIs robustas. Incluye manejo global de excepciones, validación DTO y contenedorización avanzada con Docker para entornos productivos.',
     technologies: ['Java', 'Spring Boot', 'Docker'],
-    imageUrl: 'https://images.unsplash.com/photo-1605379399642-870262d3d051?q=80&w=2000&auto=format&fit=crop',
     githubUrl: 'https://github.com/steepsalvadorman/APIRestWithExceptions',
   },
   {
@@ -217,7 +208,6 @@ export const projects: Project[] = [
     description:
       'Aplicación multiplataforma de catálogo cinematográfico con Clean Architecture. Implementa gestión de estado avanzada con Riverpod y consumo de APIs externas optimizado.',
     technologies: ['Flutter', 'Dart', 'Riverpod'],
-    imageUrl: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2000&auto=format&fit=crop',
     githubUrl: 'https://github.com/steepsalvadorman/Cinemapedia',
   },
 ];

@@ -1,0 +1,110 @@
+---
+import MangaPanel, { type Motif } from './MangaPanel.astro';
+
+interface Frame {
+  bg: string;
+  fade?: string;
+  lines?: 'radial' | 'diagonal' | 'none';
+  halftone?: string;
+  kana: string;
+  kanaColor: string;
+  caption: string;
+  motif: Motif;
+  motifFill: string;
+  motifAccent: string;
+  shadow: string;
+  motifTransform?: string;
+  focus?: [number, number];
+}
+
+const frames: Frame[] = [
+  { bg: '#40A0E4', fade: '#CFF1F5', kana: 'エンジニア', kanaColor: '#CC0D2C', caption: 'エンジニア · ingeniero', motif: 'hand', motifFill: '#F57650', motifAccent: '#F6D86A', shadow: '#CC0D2C' },
+  { bg: '#1C32F8', fade: '#C598E7', kana: 'コード', kanaColor: '#F6D86A', caption: 'コード · código', motif: 'brackets', motifFill: '#F3DCF0', motifAccent: '#CC0D2C', shadow: '#1D298D' },
+  { bg: '#F6D86A', lines: 'diagonal', halftone: '#F57650', kana: 'バックエンド', kanaColor: '#CC0D2C', caption: 'バックエンド · backend', motif: 'window', motifFill: '#F3DCF0', motifAccent: '#1C32F8', shadow: '#CC0D2C' },
+  { bg: '#CC0D2C', kana: 'テスト', kanaColor: '#F6D86A', caption: 'テスト · pruebas', motif: 'check', motifFill: '#CFF1F5', motifAccent: '#1C32F8', shadow: '#10111E', focus: [0.6, 0.55] },
+  { bg: '#1D298D', fade: '#1C32F8', halftone: '#40A0E4', kana: '統合', kanaColor: '#F3DCF0', caption: '統合 · integración', motif: 'nodes', motifFill: '#F6D86A', motifAccent: '#40A0E4', shadow: '#CC0D2C' },
+  { bg: '#1C32F8', fade: '#F3DCF0', kana: '品質', kanaColor: '#CC0D2C', caption: '品質 · calidad', motif: 'hand', motifFill: '#F6D86A', motifAccent: '#CC0D2C', shadow: '#1D298D', motifTransform: 'translate(318 200) scale(-1.45 1.45)', focus: [0.45, 0.5] },
+];
+---
+
+<figure class="burst relative mx-auto w-full max-w-64 sm:max-w-xs" data-burst>
+  <div class="relative">
+  <div aria-hidden="true" class="absolute inset-0 translate-x-3 translate-y-3 rotate-2 rounded-2xl bg-red"></div>
+  <div class="relative aspect-[9/16] rotate-2 overflow-hidden rounded-2xl border-4 border-canvas bg-canvas">
+    {
+      frames.map((frame, index) => (
+        <div class="burst-frame" data-burst-frame {...(index === 0 ? { 'data-active': '' } : {})}>
+          <MangaPanel id={`burst-${index}`} shape="portrait" {...frame} />
+        </div>
+      ))
+    }
+  </div>
+  </div>
+  <figcaption class="relative mt-6 flex items-center justify-between gap-4 rounded-xl bg-canvas py-1 pl-4 pr-1">
+    <span class="whitespace-nowrap font-mono text-xs text-blush">
+      <span class="sr-only">Animación decorativa, fotograma </span><span data-burst-count>01</span> / {String(frames.length).padStart(2, '0')}
+    </span>
+    <button
+      type="button"
+      data-burst-toggle
+      class="js-only inline-flex min-h-11 items-center whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold text-yellow transition-colors duration-700 ease-fluid hover:bg-surface-hover active:scale-[0.98]"
+    >
+      <span data-burst-label>Pausar</span><span class="sr-only"> animación</span>
+    </button>
+  </figcaption>
+</figure>
+
+<script>
+  const INTERVAL_MS = 420;
+
+  document.querySelectorAll<HTMLElement>('[data-burst]').forEach((root) => {
+    const frames = Array.from(root.querySelectorAll<HTMLElement>('[data-burst-frame]'));
+    const toggle = root.querySelector<HTMLButtonElement>('[data-burst-toggle]');
+    const label = root.querySelector<HTMLElement>('[data-burst-label]');
+    const counter = root.querySelector<HTMLElement>('[data-burst-count]');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    let index = 0;
+    let timer = 0;
+    let userPaused = reduced.matches;
+    let inView = false;
+
+    const show = (next: number) => {
+      frames[index]?.removeAttribute('data-active');
+      index = next % frames.length;
+      frames[index]?.setAttribute('data-active', '');
+      if (counter) counter.textContent = String(index + 1).padStart(2, '0');
+    };
+
+    const stop = () => {
+      window.clearInterval(timer);
+      timer = 0;
+    };
+
+    const sync = () => {
+      const shouldRun = !userPaused && inView && !document.hidden;
+      if (shouldRun && !timer) timer = window.setInterval(() => show(index + 1), INTERVAL_MS);
+      if (!shouldRun) stop();
+      if (label) label.textContent = userPaused ? 'Reproducir' : 'Pausar';
+    };
+
+    toggle?.addEventListener('click', () => {
+      userPaused = !userPaused;
+      sync();
+    });
+
+    reduced.addEventListener('change', (event) => {
+      userPaused = event.matches;
+      sync();
+    });
+
+    document.addEventListener('visibilitychange', sync);
+
+    new IntersectionObserver((entries) => {
+      inView = entries.some((entry) => entry.isIntersecting);
+      sync();
+    }).observe(root);
+
+    sync();
+  });
+</script>

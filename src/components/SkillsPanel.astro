@@ -1,5 +1,6 @@
 ---
 import type { SkillCategory } from '../data/portfolio';
+import SectionHeading from './SectionHeading.astro';
 
 interface Props {
   skills: SkillCategory[];
@@ -7,118 +8,60 @@ interface Props {
 
 const { skills } = Astro.props;
 
-const techSkills = skills.filter((group: SkillCategory) => group.category !== 'Idiomas');
-const languageGroup = skills.find((group: SkillCategory) => group.category === 'Idiomas');
+const techSkills = skills.filter((group) => group.category !== 'Idiomas');
+const languageGroup = skills.find((group) => group.category === 'Idiomas');
 
 const languages =
-  languageGroup?.skills.map((entry: string) => {
+  languageGroup?.skills.map((entry) => {
     const match = entry.match(/^(.+?)\s*\((.+)\)$/);
     return {
       name: match?.[1]?.trim() ?? entry,
       level: match?.[2]?.trim() ?? '',
     };
   }) ?? [];
-
-const levelBars: Record<string, { width: string; label: string }> = {
-  Avanzado: { width: 'w-[88%]', label: 'ADV' },
-  Intermedio: { width: 'w-[55%]', label: 'MID' },
-  Básico: { width: 'w-[32%]', label: 'BAS' },
-};
 ---
 
-<section class="mb-12">
-  <h3 class="text-xl md:text-2xl font-bold mb-6 border-l-4 border-term-primary pl-3 text-term-secondary">
-    Tecnologías e Idiomas
-  </h3>
+<section id="tecnologias" aria-labelledby="tecnologias-titulo" class="relative overflow-x-clip">
+<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 md:py-16">
+  <SectionHeading
+    id="tecnologias-titulo"
+    kana="技術"
+    meaning="tecnología"
+    title="Tecnologías e idiomas"
+    intro="Herramientas con las que he trabajado, agrupadas por área. El stack principal aparece primero."
+  />
 
-  <div class="skill-terminal border border-term-primary/30 bg-black/60 overflow-hidden">
-    <!-- Terminal header -->
-    <div class="skill-terminal-header flex items-center justify-between gap-3 px-3 py-2 border-b border-term-primary/30 bg-term-primary/10 text-xs text-term-muted">
-      <span class="text-term-secondary truncate">~/etc/skills.conf</span>
-      <div class="flex items-center gap-2 shrink-0">
-        <span class="hidden sm:inline">matrix v2.1</span>
-        <div class="flex gap-1">
-          <span class="w-2 h-2 bg-term-muted/60" />
-          <span class="w-2 h-2 bg-term-primary/80" />
-          <span class="w-2 h-2 bg-term-secondary/80" />
-        </div>
-      </div>
-    </div>
-
-    <div class="p-3 md:p-4 space-y-4">
-      <p class="text-xs text-term-muted">
-        <span class="text-term-primary">&gt;</span> cat capabilities.toml
-        <span class="animate-pulse text-term-primary ml-1">_</span>
-      </p>
-
-      <!-- Tech stack table -->
-      <div class="border border-term-muted/30">
-        <div class="skill-table-head grid grid-cols-[2.5rem_1fr] md:grid-cols-[2.5rem_9rem_1fr] gap-x-3 px-3 py-2 border-b border-term-muted/30 bg-term-primary/5 text-[10px] md:text-xs uppercase tracking-wider text-term-muted">
-          <span>#</span>
-          <span>Módulo</span>
-          <span class="hidden md:block">Stack</span>
-        </div>
-
-        {
-          techSkills.map((group: SkillCategory, index: number) => (
-            <div class="skill-table-row grid grid-cols-[2.5rem_1fr] md:grid-cols-[2.5rem_9rem_1fr] gap-x-3 gap-y-2 px-3 py-3 border-b border-term-muted/20 last:border-b-0 hover:bg-term-primary/5 transition-colors">
-              <span class="text-term-muted text-xs md:text-sm tabular-nums">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              <span class="text-term-secondary text-xs md:text-sm font-bold glow-text uppercase tracking-wide">
-                {group.category}
-              </span>
-              <div class="col-span-2 md:col-span-1 md:col-start-3 flex flex-wrap gap-x-1 gap-y-1 text-xs md:text-sm text-term-text/90 leading-relaxed">
-                {group.skills.map((skill: string, skillIndex: number) => (
-                  <>
-                    {skillIndex > 0 && <span class="text-term-muted/50 select-none">·</span>}
-                    <span class="hover:text-term-primary transition-colors">{skill}</span>
-                  </>
+  <div class="mt-12 grid gap-6 lg:grid-cols-3">
+    <dl data-reveal class="flex flex-col divide-y divide-line overflow-hidden rounded-2xl border-2 border-line bg-surface lg:col-span-2">
+      {
+        techSkills.map((group) => (
+          <div class="grid gap-2 p-6 sm:grid-cols-3 sm:gap-6">
+            <dt class="text-sm font-semibold text-yellow">{group.category}</dt>
+            <dd class="sm:col-span-2">
+              <ul class="flex flex-wrap gap-2">
+                {group.skills.map((skill) => (
+                  <li class="rounded-md border border-line px-2 py-1 font-mono text-xs text-ink-muted">{skill}</li>
                 ))}
-              </div>
+              </ul>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <div data-reveal class="h-max rounded-2xl border-2 border-canvas bg-lavender p-6 text-canvas pop-shadow">
+      <h3 class="text-lg font-semibold">Idiomas</h3>
+      <dl class="mt-4 flex flex-col divide-y divide-canvas/30">
+        {
+          languages.map((lang) => (
+            <div class="flex items-baseline justify-between gap-4 py-3">
+              <dt class="text-base font-medium">{lang.name}</dt>
+              <dd class="text-sm">{lang.level}</dd>
             </div>
           ))
         }
-      </div>
-
-      <!-- Languages panel -->
-      <div class="border border-term-muted/30">
-        <div class="flex items-center justify-between px-3 py-2 border-b border-term-muted/30 bg-term-primary/5">
-          <span class="text-xs uppercase tracking-wider text-term-secondary">locale.conf</span>
-          <span class="text-[10px] text-term-muted">i18n · charset=utf-8</span>
-        </div>
-
-        <div class="divide-y divide-term-muted/20">
-          {
-            languages.map((lang: { name: string; level: string }) => {
-              const bar = levelBars[lang.level] ?? { width: 'w-[40%]', label: 'N/A' };
-              return (
-                <div class="grid grid-cols-1 sm:grid-cols-[6rem_1fr_4rem] gap-2 sm:gap-4 items-center px-3 py-3 hover:bg-term-primary/5 transition-colors">
-                  <span class="text-sm text-term-primary font-bold">{lang.name}</span>
-
-                  <div class="flex items-center gap-2 min-w-0">
-                    <span class="text-term-muted text-[10px] hidden sm:inline shrink-0">[</span>
-                    <div class="skill-bar-track flex-1 h-2 border border-term-muted/40 bg-black/80 relative overflow-hidden">
-                      <div class={`skill-bar-fill h-full ${bar.width} bg-term-primary/70`} />
-                      <div class="absolute inset-0 skill-bar-scan pointer-events-none" />
-                    </div>
-                    <span class="text-term-muted text-[10px] hidden sm:inline shrink-0">]</span>
-                  </div>
-
-                  <div class="flex items-center justify-between sm:justify-end gap-2 text-xs">
-                    <span class="text-term-muted sm:hidden">{lang.level}</span>
-                    <span class="text-term-secondary font-bold tabular-nums">{bar.label}</span>
-                  </div>
-                </div>
-              );
-            })
-          }
-        </div>
-      </div>
-
-      <p class="text-[10px] text-term-muted/70 text-right">
-        EOF · {techSkills.length} modules · {languages.length} locales loaded
-      </p>
+      </dl>
     </div>
   </div>
+</div>
 </section>

@@ -1,0 +1,307 @@
+---
+export type Motif =
+  | 'hand'
+  | 'cursor'
+  | 'brackets'
+  | 'grid'
+  | 'window'
+  | 'check'
+  | 'nodes'
+  | 'scale'
+  | 'pin'
+  | 'spark'
+  | 'play';
+
+interface Props {
+  id: string;
+  shape?: 'portrait' | 'landscape' | 'square';
+  bg: string;
+  fade?: string;
+  lines?: 'radial' | 'diagonal' | 'none';
+  focus?: [number, number];
+  halftone?: string;
+  kana: string;
+  kanaColor?: string;
+  caption?: string;
+  motif: Motif;
+  motifFill: string;
+  motifAccent: string;
+  shadow: string;
+  motifTransform?: string;
+  class?: string;
+}
+
+const {
+  id,
+  shape = 'landscape',
+  bg,
+  fade,
+  lines = 'radial',
+  focus = [0.62, 0.5],
+  halftone,
+  kana,
+  kanaColor = '#F6D86A',
+  caption,
+  motif,
+  motifFill,
+  motifAccent,
+  shadow,
+  motifTransform,
+  class: className,
+} = Astro.props;
+
+const INK = '#10111E';
+const sizes = { portrait: [360, 640], landscape: [480, 270], square: [400, 400] } as const;
+const [W, H] = sizes[shape];
+const fx = W * focus[0];
+const fy = H * focus[1];
+
+// Deterministic pseudo-random so every build renders identical artwork.
+let seed = Array.from(id).reduce((acc, ch) => (acc * 31 + ch.charCodeAt(0)) >>> 0, 7);
+const rand = () => {
+  seed = (seed * 1664525 + 1013904223) >>> 0;
+  return seed / 4294967296;
+};
+
+const reach = Math.hypot(W, H) * 1.2;
+const radialLines =
+  lines === 'radial'
+    ? Array.from({ length: 64 }, (_, i) => {
+        const a = (i / 64) * Math.PI * 2 + rand() * 0.05;
+        const w = 0.006 + rand() * 0.02;
+        const r0 = Math.min(W, H) * (0.3 + rand() * 0.25);
+        const p = (ang: number, r: number) => `${(fx + Math.cos(ang) * r).toFixed(1)},${(fy + Math.sin(ang) * r).toFixed(1)}`;
+        return `${p(a, r0)} ${p(a - w, reach)} ${p(a + w, reach)}`;
+      })
+    : [];
+
+const diagonalLines =
+  lines === 'diagonal'
+    ? Array.from({ length: 22 }, () => {
+        const y = rand() * (H + W * 0.6) - W * 0.3;
+        const x = rand() * W * 0.5 - W * 0.2;
+        const len = W * (0.4 + rand() * 0.6);
+        const t = 1 + rand() * 4;
+        return { x1: x, y1: y, x2: x + len, y2: y - len * 0.45, t };
+      })
+    : [];
+
+const chars = Array.from(kana);
+const kanaSize = Math.min(shape === 'landscape' ? 64 : 88, Math.floor((H - (shape === 'landscape' ? 44 : 110)) / chars.length));
+const kanaX = 18 + kanaSize / 2;
+
+const captionWidth = caption
+  ? Array.from(caption).reduce((sum, ch) => sum + (ch.charCodeAt(0) > 0x2fff ? 13 : 7.4), 0) + 20
+  : 0;
+
+const defaultTransforms: Record<'portrait' | 'landscape' | 'square', string> = {
+  square: 'translate(150 120) scale(1.15)',
+  portrait: 'translate(84 236) scale(1.32)',
+  landscape: 'translate(210 18) scale(1.18)',
+};
+const placement = motifTransform ?? defaultTransforms[shape];
+
+const handFingers = [
+  { x: 68, y: 108, a: -30, len: 74, tip: 15 },
+  { x: 90, y: 98, a: -10, len: 90, tip: 17 },
+  { x: 113, y: 98, a: 10, len: 86, tip: 17 },
+  { x: 134, y: 108, a: 29, len: 70, tip: 15 },
+  { x: 58, y: 152, a: -74, len: 58, tip: 15 },
+];
+const fingerPath = (len: number, tip: number) =>
+  `M -9 0 L ${-tip} ${-len + tip} Q ${-tip} ${-len} 0 ${-len} Q ${tip} ${-len} ${tip} ${-len + tip} L 9 0 Z`;
+
+const passes = [
+  { shadow: true, dx: 9, dy: 9 },
+  { shadow: false, dx: 0, dy: 0 },
+];
+---
+
+<svg
+  viewBox={`0 0 ${W} ${H}`}
+  preserveAspectRatio="xMidYMid slice"
+  aria-hidden="true"
+  focusable="false"
+  class:list={['block h-full w-full', className]}
+>
+  <defs>
+    {
+      fade && (
+        <linearGradient id={`${id}-fade`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0.35" stop-color={bg} />
+          <stop offset="1" stop-color={fade} />
+        </linearGradient>
+      )
+    }
+    {
+      halftone && (
+        <pattern id={`${id}-dots`} width="10" height="10" patternUnits="userSpaceOnUse">
+          <circle cx="5" cy="5" r="2" fill={halftone} />
+        </pattern>
+      )
+    }
+  </defs>
+
+  <rect width={W} height={H} fill={fade ? `url(#${id}-fade)` : bg} />
+  {halftone && <circle cx={fx} cy={fy} r={Math.min(W, H) * 0.48} fill={`url(#${id}-dots)`} opacity="0.45" />}
+  {radialLines.map((points) => <polygon points={points} fill={INK} opacity="0.22" />)}
+  {
+    diagonalLines.map((l) => (
+      <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} stroke={INK} stroke-width={l.t} stroke-linecap="round" opacity="0.25" />
+    ))
+  }
+
+  <text
+    x={kanaX}
+    y={shape === 'landscape' ? 22 : 36}
+    writing-mode="vertical-rl"
+    font-size={kanaSize}
+    fill={kanaColor}
+    stroke={INK}
+    stroke-width={Math.max(4, kanaSize / 12)}
+    stroke-linejoin="round"
+    paint-order="stroke"
+    style="font-family: var(--font-kana);"
+  >
+    {kana}
+  </text>
+
+  {
+    passes.map((pass) => {
+      const f = pass.shadow ? shadow : motifFill;
+      const acc = pass.shadow ? shadow : motifAccent;
+      const ink = pass.shadow ? shadow : INK;
+      const st = (over: Record<string, string | number> = {}) => ({ stroke: ink, 'stroke-width': 5, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', ...over });
+      const stroke = st();
+      return (
+        <g transform={`translate(${pass.dx} ${pass.dy}) ${placement}`}>
+          {motif === 'hand' && (
+            <g>
+              <path d="M48 152 Q42 98 100 92 Q158 98 152 152 Q148 198 100 200 Q54 198 48 152 Z" fill={f} {...stroke} />
+              {handFingers.map((finger) => (
+                <g transform={`translate(${finger.x} ${finger.y}) rotate(${finger.a})`}>
+                  <path d={fingerPath(finger.len, finger.tip)} fill={f} {...stroke} />
+                  <ellipse cx="0" cy={-finger.len + finger.tip * 0.75} rx={finger.tip * 0.55} ry={finger.tip * 0.62} fill={ink} />
+                </g>
+              ))}
+            </g>
+          )}
+          {motif === 'cursor' && (
+            <g transform="skewX(-12) translate(30 0)">
+              <path d="M40 8 L40 176 L82 136 L112 196 L141 183 L111 124 L168 124 Z" fill={f} {...stroke} />
+              <path d="M18 20 L2 6 M14 46 L-8 44 M30 0 L26 -20" fill="none" {...st({ stroke: acc, 'stroke-width': 6 })} />
+            </g>
+          )}
+          {motif === 'brackets' && (
+            <g transform="skewY(-10) translate(0 30)">
+              <text x="0" y="150" font-size="170" font-weight="600" fill={f} {...stroke} paint-order="stroke" style="font-family: var(--font-mono);">
+                {'{'}
+              </text>
+              <text x="104" y="150" font-size="170" font-weight="600" fill={f} {...stroke} paint-order="stroke" style="font-family: var(--font-mono);">
+                {'}'}
+              </text>
+              <rect x="78" y="88" width="34" height="34" rx="6" fill={acc} {...stroke} />
+            </g>
+          )}
+          {motif === 'grid' && (
+            <g>
+              <path d="M0 200 L200 200 L150 70 L50 70 Z" fill={f} {...stroke} />
+              {Array.from({ length: 9 }, (_, i) => (
+                <line x1={i * 25} y1="200" x2={50 + i * 12.5} y2="70" {...st({ 'stroke-width': 2.5 })} />
+              ))}
+              {[78, 90, 106, 128, 158].map((y) => {
+                const t = (y - 70) / 130;
+                return <line x1={50 - 50 * t} y1={y} x2={150 + 50 * t} y2={y} {...st({ 'stroke-width': 2.5 })} />;
+              })}
+              <path d="M84 60 L116 60 L124 30 L92 30 Z M84 60 L84 96 L116 96 L116 60 M116 96 L124 66 L124 30" fill={acc} {...stroke} />
+            </g>
+          )}
+          {motif === 'window' && (
+            <g transform="skewY(-9) translate(0 26)">
+              <rect x="6" y="20" width="188" height="150" rx="12" fill={f} {...stroke} />
+              <path d="M6 32 Q6 20 18 20 L182 20 Q194 20 194 32 L194 46 L6 46 Z" fill={acc} {...stroke} />
+              {[20, 36, 52].map((cx) => (
+                <circle cx={cx} cy="33" r="5" fill={ink} />
+              ))}
+              {[
+                [22, 64, 96],
+                [38, 84, 120],
+                [38, 104, 74],
+                [22, 124, 136],
+                [22, 144, 58],
+              ].map(([x, y, w]) => (
+                <rect x={x} y={y} width={w} height="9" rx="4.5" fill={ink} />
+              ))}
+            </g>
+          )}
+          {motif === 'check' && (
+            <g transform="skewX(-10) translate(16 0)">
+              <circle cx="100" cy="104" r="92" fill={acc} {...stroke} />
+              <path d="M38 104 L82 150 L168 52 L184 70 L82 182 L22 122 Z" fill={f} {...stroke} />
+            </g>
+          )}
+          {motif === 'nodes' && (
+            <g>
+              <path d="M40 150 L100 60 L168 138 L94 172 Z M100 60 L94 172" fill="none" {...st({ 'stroke-width': 7 })} />
+              <circle cx="40" cy="150" r="18" fill={f} {...stroke} />
+              <circle cx="100" cy="60" r="26" fill={f} {...stroke} />
+              <circle cx="94" cy="172" r="14" fill={acc} {...stroke} />
+              <circle cx="168" cy="138" r="36" fill={acc} {...stroke} />
+            </g>
+          )}
+          {motif === 'scale' && (
+            <g>
+              <path d="M8 150 L148 150 L192 118 L52 118 Z" fill={f} {...stroke} />
+              <path d="M8 150 L148 150 L148 170 L8 170 Z M148 150 L192 118 L192 138 L148 170 Z" fill={acc} {...stroke} />
+              <path d="M172 120 L172 72" fill="none" {...st({ 'stroke-width': 7 })} />
+              <rect x="112" y="18" width="88" height="56" rx="8" fill={ink} {...stroke} />
+              {!pass.shadow && (
+                <text x="156" y="54" text-anchor="middle" font-size="20" font-weight="600" fill={motifAccent} style="font-family: var(--font-mono);">
+                  TI420
+                </text>
+              )}
+            </g>
+          )}
+          {motif === 'pin' && (
+            <g>
+              <ellipse cx="100" cy="194" rx="46" ry="10" fill={ink} opacity={pass.shadow ? 1 : 0.35} />
+              <path d="M100 194 C62 140 36 114 36 80 A64 64 0 1 1 164 80 C164 114 138 140 100 194 Z" fill={f} {...stroke} />
+              <circle cx="100" cy="80" r="26" fill={acc} {...stroke} />
+            </g>
+          )}
+          {motif === 'spark' && (
+            <g>
+              <path d="M96 8 Q110 86 192 100 Q110 114 96 194 Q82 114 6 100 Q82 86 96 8 Z" fill={f} {...stroke} />
+              <path d="M166 18 Q170 40 192 44 Q170 48 166 70 Q162 48 140 44 Q162 40 166 18 Z" fill={acc} {...stroke} />
+            </g>
+          )}
+          {motif === 'play' && (
+            <g transform="skewY(8)">
+              <rect x="10" y="34" width="180" height="130" rx="16" fill={f} {...stroke} />
+              {[30, 62, 94, 126, 158].map((x) => (
+                <rect x={x} y="44" width="14" height="12" rx="3" fill={ink} />
+              ))}
+              {[30, 62, 94, 126, 158].map((x) => (
+                <rect x={x} y="142" width="14" height="12" rx="3" fill={ink} />
+              ))}
+              <path d="M82 74 L82 126 L128 100 Z" fill={acc} {...stroke} />
+            </g>
+          )}
+        </g>
+      );
+    })
+  }
+
+  {
+    caption && (
+      <g transform={`translate(${W - captionWidth - 14} ${H - 40})`}>
+        <rect width={captionWidth} height="26" rx="4" fill={INK} />
+        <text x="10" y="18" font-size="13" fill="#F6D86A" style="font-family: var(--font-mono), var(--font-kana);">
+          {caption}
+        </text>
+      </g>
+    )
+  }
+
+  <rect x="3" y="3" width={W - 6} height={H - 6} fill="none" stroke={INK} stroke-width="6" />
+</svg>

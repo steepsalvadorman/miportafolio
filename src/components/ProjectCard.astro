@@ -1,0 +1,74 @@
+---
+import MangaPanel, { type Motif } from './MangaPanel.astro';
+import type { Project } from '../data/portfolio';
+
+export interface ProjectArt {
+  bg: string;
+  fade?: string;
+  lines?: 'radial' | 'diagonal' | 'none';
+  halftone?: string;
+  kana: string;
+  kanaColor: string;
+  meaning: string;
+  motif: Motif;
+  motifFill: string;
+  motifAccent: string;
+  shadow: string;
+}
+
+interface Props {
+  project: Project;
+  art: ProjectArt;
+  anchor: string;
+  featured?: boolean;
+}
+
+const { project, art, anchor, featured = false } = Astro.props;
+const { meaning, ...panel } = art;
+const repoName = project.githubUrl?.split('/').pop();
+const link =
+  'inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-yellow transition-colors duration-700 ease-fluid hover:text-yellow-soft';
+---
+
+<article
+  id={anchor}
+  class:list={[
+    'group flex h-full flex-col overflow-hidden rounded-2xl border-2 border-canvas bg-surface transition-transform duration-700 ease-fluid hover:-translate-y-1',
+    featured && 'pop-shadow',
+  ]}
+>
+  <div class="aspect-video overflow-hidden border-b-2 border-canvas">
+    <div class="h-full w-full transition-transform duration-700 ease-fluid group-hover:scale-105">
+      <MangaPanel id={`project-${project.id}`} caption={`${art.kana} · ${meaning}`} {...panel} />
+    </div>
+  </div>
+  <div class="flex flex-1 flex-col gap-4 p-6">
+    {repoName && <p class="font-mono text-xs text-ink-muted">~/{repoName}</p>}
+    <h3 class="text-xl font-semibold text-ink">{project.title}</h3>
+    <p class="flex-1 text-base text-ink-muted">{project.description}</p>
+    <ul class="flex flex-wrap gap-2" aria-label={`Tecnologías de ${project.title}`}>
+      {project.technologies.map((tech) => <li class="rounded-md border border-line px-2 py-1 font-mono text-xs text-ink">{tech}</li>)}
+    </ul>
+    <div class="flex flex-wrap items-center justify-between gap-2 border-t border-line pt-4">
+      {
+        project.githubUrl ? (
+          <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class={link}>
+            Ver código en GitHub <span aria-hidden="true">↗</span>
+            <span class="sr-only"> de {project.title} (se abre en una pestaña nueva)</span>
+          </a>
+        ) : (
+          <span class="inline-flex min-h-11 items-center text-xs text-ink-muted">Repositorio no publicado</span>
+        )
+      }
+      {
+        project.demoUrl ? (
+          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" class={link}>
+            Ver demo <span aria-hidden="true">↗</span>
+          </a>
+        ) : (
+          <span class="text-xs text-ink-muted">Sin demo pública</span>
+        )
+      }
+    </div>
+  </div>
+</article>

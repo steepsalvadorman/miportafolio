@@ -1,0 +1,178 @@
+---
+interface Props {
+  current: 'inicio' | 'certificados' | 'none';
+}
+
+const { current } = Astro.props;
+
+const links = [
+  { href: '/#proyectos', label: 'Proyectos', active: false },
+  { href: '/#experiencia', label: 'Experiencia', active: false },
+  { href: '/certificados', label: 'Certificados', active: current === 'certificados' },
+  { href: '/#contacto', label: 'Contacto', active: false },
+];
+
+const linkClass =
+  'inline-flex min-h-11 items-center rounded-full px-3 text-sm font-medium transition-colors duration-700 ease-fluid hover:bg-surface-hover hover:text-ink active:translate-y-px';
+---
+
+<header data-site-header class="sticky top-0 z-40 px-4 pt-4 md:pt-6">
+  <nav
+    aria-label="Principal"
+    class="relative z-10 mx-auto flex max-w-5xl items-center justify-between gap-6 rounded-full border border-line bg-black/80 py-1 pl-4 pr-1 backdrop-blur-xl md:w-max md:pr-2"
+  >
+    <a
+      href="/"
+      aria-current={current === 'inicio' ? 'page' : undefined}
+      class="inline-flex min-h-11 items-center gap-2 rounded-full text-sm font-semibold text-ink"
+    >
+      <span aria-hidden="true" class="font-mono text-yellow">&gt;_</span>
+      Steep Salvador
+    </a>
+
+    <ul class="hidden items-center gap-1 md:flex">
+      {
+        links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={link.active ? 'page' : undefined}
+              class:list={[linkClass, link.active ? 'bg-surface text-ink' : 'text-ink-muted']}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <button
+      type="button"
+      data-menu-button
+      aria-expanded="false"
+      aria-controls="menu-movil"
+      aria-label="Abrir menú"
+      class="js-only group relative size-11 rounded-full transition-colors duration-700 ease-fluid hover:bg-surface-hover active:scale-[0.98] md:hidden"
+    >
+      <span
+        aria-hidden="true"
+        class="absolute left-1/2 top-1/2 h-0.5 w-5 -translate-x-1/2 -translate-y-1 rounded-full bg-ink transition-all duration-700 ease-fluid group-aria-expanded:translate-y-0 group-aria-expanded:rotate-45"
+      ></span>
+      <span
+        aria-hidden="true"
+        class="absolute left-1/2 top-1/2 h-0.5 w-5 -translate-x-1/2 translate-y-1 rounded-full bg-ink transition-all duration-700 ease-fluid group-aria-expanded:translate-y-0 group-aria-expanded:-rotate-45"
+      ></span>
+    </button>
+  </nav>
+
+  <ul class="no-js-only mx-auto mt-2 flex max-w-5xl flex-wrap justify-center gap-1 md:hidden">
+    {
+      links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            aria-current={link.active ? 'page' : undefined}
+            class:list={[linkClass, link.active ? 'bg-surface text-ink' : 'text-ink-muted']}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+
+  <div
+    id="menu-movil"
+    data-menu
+    role="dialog"
+    aria-modal="true"
+    aria-label="Menú principal"
+    hidden
+    class="menu-overlay fixed inset-0 z-0 bg-black/80 backdrop-blur-3xl md:hidden"
+  >
+    <ul class="flex flex-col gap-2 px-6 pt-24">
+      {
+        links.map((link, index) => (
+          <li class="menu-item" style={`transition-delay: ${100 + index * 50}ms`}>
+            <a
+              href={link.href}
+              data-menu-link
+              aria-current={link.active ? 'page' : undefined}
+              class:list={[
+                'inline-flex min-h-11 items-center text-3xl font-semibold transition-colors duration-700 ease-fluid hover:text-yellow',
+                link.active ? 'text-yellow' : 'text-ink',
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</header>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+
+  if (button && menu) {
+    const menuLinks = Array.from(menu.querySelectorAll<HTMLAnchorElement>('[data-menu-link]'));
+    const outside = () =>
+      Array.from(document.querySelectorAll<HTMLElement>('main, footer, [data-skip-link]'));
+
+    const isOpen = () => button.getAttribute('aria-expanded') === 'true';
+
+    const open = () => {
+      menu.hidden = false;
+      button.setAttribute('aria-expanded', 'true');
+      button.setAttribute('aria-label', 'Cerrar menú');
+      document.body.style.overflow = 'hidden';
+      outside().forEach((el) => (el.inert = true));
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => menu.classList.add('is-open'));
+      });
+      menuLinks[0]?.focus();
+    };
+
+    const close = (returnFocus = true) => {
+      menu.classList.remove('is-open');
+      menu.hidden = true;
+      button.setAttribute('aria-expanded', 'false');
+      button.setAttribute('aria-label', 'Abrir menú');
+      document.body.style.overflow = '';
+      outside().forEach((el) => (el.inert = false));
+      if (returnFocus) button.focus();
+    };
+
+    button.addEventListener('click', () => (isOpen() ? close() : open()));
+    menuLinks.forEach((link) => link.addEventListener('click', () => close(false)));
+
+    document.addEventListener('keydown', (event) => {
+      if (!isOpen()) return;
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+        return;
+      }
+
+      if (event.key === 'Tab') {
+        const focusables = [button, ...menuLinks];
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
+      }
+    });
+
+    window.matchMedia('(min-width: 48rem)').addEventListener('change', (event) => {
+      if (event.matches && isOpen()) close(false);
+    });
+  }
+</script>
