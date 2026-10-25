@@ -1,0 +1,28 @@
+# Cabeceras de Cloudflare Workers Static Assets. Las peticiones a assets estáticos no consumen cuota de Workers.
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+
+# Archivos con hash en el nombre: el navegador no los vuelve a pedir.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# CV: cacheado un día en el navegador y en el borde, y fuera de los buscadores (lleva teléfono y correo).
+/cv/*
+  Cache-Control: public, max-age=86400, s-maxage=86400
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Content-Disposition: inline; filename="Steep-Salvador-CV.pdf"
+
+/favicon.ico
+  Cache-Control: public, max-age=604800
+
+/field.svg
+  Cache-Control: public, max-age=604800
