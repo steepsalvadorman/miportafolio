@@ -1,37 +1,7 @@
 ---
-import { personalInfo, currentYear } from '../data/portfolio';
-
-const footerLinks = [
-  { href: `https://${personalInfo.github}`, label: 'GitHub', external: true },
-  { href: `https://${personalInfo.linkedin}`, label: 'LinkedIn', external: true },
-  { href: `mailto:${personalInfo.email}`, label: 'Correo', external: false },
-  { href: '/certificados', label: 'Certificados', external: false },
-];
+import { currentYear } from '../data/portfolio';
 ---
 
-<footer class="border-t border-line">
-  <div class="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:px-6 md:flex-row md:items-center md:justify-between">
-    <div class="flex flex-col gap-1">
-      <p class="text-sm font-semibold text-ink">
-        <span aria-hidden="true" class="font-mono text-yellow">&gt;_</span> Steep Salvador
-      </p>
-      <p class="text-sm text-ink-muted">&copy; {currentYear} Steep Salvador. Ingeniero de Sistemas.</p>
-    </div>
-    <ul class="flex flex-wrap gap-x-2 gap-y-1">
-      {
-        footerLinks.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-              class="inline-flex min-h-11 items-center rounded-lg px-3 text-sm text-ink-muted transition-colors duration-700 ease-fluid hover:bg-surface-hover hover:text-ink"
-            >
-              {link.label}
-              {link.external && <span class="sr-only"> (se abre en una pestaña nueva)</span>}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
+<footer class="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6">
+  <p class="border-t border-line pt-4 text-sm text-ink-muted">&copy; {currentYear} Steep Salvador. Ingeniero de Sistemas.</p>
 </footer>

@@ -1,10 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import AeroWindow from '../components/AeroWindow.astro';
+import VistaClock from '../components/VistaClock.astro';
 import SkillsPanel from '../components/SkillsPanel.astro';
-import BurstPanel from '../components/BurstPanel.astro';
-import MangaPanel from '../components/MangaPanel.astro';
-import SectionHeading from '../components/SectionHeading.astro';
-import ProjectCard, { type ProjectArt } from '../components/ProjectCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
 import { personalInfo, summary, experience, achievements, education, skills, projects } from '../data/portfolio';
 import { certificates } from '../data/certificates';
 
@@ -20,87 +19,18 @@ const featured = projects
 const moreProjects = projects.filter((project) => !project.featured);
 
 const projectAnchor = (id: number) => `proyecto-${id}`;
-const byTitle = (title: string) => projects.find((project) => project.title === title);
-
-// Original artwork per project: decorative kana with its Spanish meaning and a motif tied to the project.
-const projectArt: Record<string, ProjectArt> = {
-  'Industrial Scale Integration': { bg: '#F6D86A', lines: 'diagonal', halftone: '#F57650', kana: '計量', kanaColor: '#CC0D2C', meaning: 'medición', motif: 'scale', motifFill: '#F3DCF0', motifAccent: '#40A0E4', shadow: '#CC0D2C' },
-  'Enterprise API Framework': { bg: '#CC0D2C', kana: '設計', kanaColor: '#F6D86A', meaning: 'diseño', motif: 'window', motifFill: '#CFF1F5', motifAccent: '#1C32F8', shadow: '#10111E' },
-  'CodeCraft Peru': { bg: '#1C32F8', fade: '#C598E7', kana: 'コード', kanaColor: '#F6D86A', meaning: 'código', motif: 'brackets', motifFill: '#F3DCF0', motifAccent: '#CC0D2C', shadow: '#1D298D' },
-  'Cerca App': { bg: '#40A0E4', fade: '#CFF1F5', kana: '仕事', kanaColor: '#CC0D2C', meaning: 'trabajo', motif: 'pin', motifFill: '#F57650', motifAccent: '#F6D86A', shadow: '#1D298D' },
-  'AI-Powered Assistant': { bg: '#C598E7', halftone: '#1C32F8', kana: '人工知能', kanaColor: '#F6D86A', meaning: 'inteligencia artificial', motif: 'spark', motifFill: '#F6D86A', motifAccent: '#CC0D2C', shadow: '#1D298D' },
-  Cinemapedia: { bg: '#1D298D', fade: '#1C32F8', kana: '映画', kanaColor: '#F3DCF0', meaning: 'cine', motif: 'play', motifFill: '#F6D86A', motifAccent: '#CC0D2C', shadow: '#CC0D2C' },
-};
 
 const currentJob = experience[0];
 const university = education[0];
 
-const profileFacts = [
-  { label: 'rol_actual', value: currentJob?.role },
-  { label: 'empresa', value: `${currentJob?.company} · ${currentJob?.period}` },
-  { label: 'sectores', value: 'minería · banca · consultoría' },
-  { label: 'stack_principal', value: 'Spring Boot · TypeScript · Playwright · Rust', accent: true },
-  { label: 'formación', value: `${university?.degree} · ${university?.institution}` },
-];
-
-const contributions = [
-  {
-    title: 'Backend mantenible',
-    kana: 'バックエンド',
-    chip: 'bg-yellow',
-    detail:
-      'APIs y arquitecturas con Spring Boot. Módulos en Spring Boot y Spring Cloud para el sistema WISE de BCP y una arquitectura de referencia con manejo global de excepciones.',
-    evidence: byTitle('Enterprise API Framework'),
-  },
-  {
-    title: 'Calidad integrada a la entrega',
-    kana: '品質',
-    chip: 'bg-cyan',
-    detail:
-      'Pruebas automatizadas con Playwright, Java y TypeScript, y estándares de testing integrados al ciclo de CI/CD en HR Ingenieros Asociados.',
-    evidence: undefined,
-  },
-  {
-    title: 'Integración con operaciones reales',
-    kana: '統合',
-    chip: 'bg-coral',
-    detail:
-      'Integración de sistemas con balanzas e instrumentación en minería, y extracción de datos de balanzas industriales TI420 con Rust.',
-    evidence: byTitle('Industrial Scale Integration'),
-  },
-  {
-    title: 'Criterio técnico y colaboración',
-    kana: '設計',
-    chip: 'bg-lavender',
-    detail: 'Liderazgo del equipo de desarrollo: planificación, asignación de tareas, definición de arquitectura y estándares de calidad.',
-    evidence: undefined,
-  },
-];
-
 const credentialTitles = ['Spring Boot 3 y Spring Framework 6', 'Curso completo del lenguaje Rust', 'Docker · Guía práctica para desarrolladores'];
 const selectedCredentials = certificates.filter((cert) => credentialTitles.includes(cert.title));
 
-const taglineLines = ['Software conectado con la operación.', 'Calidad integrada a cada entrega.'];
-
-const steps = [
-  { label: 'Revisa los proyectos', detail: 'Código público y tecnologías de cada caso.', href: '#proyectos' },
-  { label: 'Consulta la experiencia', detail: 'Cargos, empresas, fechas y responsabilidades.', href: '#experiencia' },
-  { label: 'Escribe por correo', detail: 'El canal más directo para conversar.', href: '#contacto' },
-];
-
-const faqs = [
-  {
-    q: '¿En qué áreas se concentra tu experiencia?',
-    a: 'En desarrollo backend con Spring Boot, automatización de pruebas y QA con Playwright, e integración de sistemas en minería, banca y consultoría.',
-  },
-  {
-    q: '¿Dónde puedo revisar tu código?',
-    a: `En GitHub (${personalInfo.github}). Los proyectos de esta página enlazan a sus repositorios públicos cuando están disponibles.`,
-  },
-  {
-    q: '¿Cómo puedo contactarte?',
-    a: `Por correo a ${personalInfo.email} o mediante LinkedIn (${personalInfo.linkedin}).`,
-  },
+const profileFacts = [
+  { label: 'Rol actual', value: 'QA Automation y Programador' },
+  { label: 'Empresa', value: currentJob?.company },
+  { label: 'Sectores', value: 'Minería, banca y consultoría' },
+  { label: 'Stack', value: 'Spring Boot, TypeScript, Playwright, Rust' },
 ];
 
 const personSchema = {
@@ -113,374 +43,154 @@ const personSchema = {
   alumniOf: { '@type': 'CollegeOrUniversity', name: university?.institution },
   knowsAbout: ['Spring Boot', 'TypeScript', 'Playwright', 'Automatización de pruebas', 'Integración de sistemas'],
 };
-
-// Decorative speed lines behind the hero, generated once at build time.
-const heroLines = Array.from({ length: 72 }, (_, i) => {
-  const a = (i / 72) * Math.PI * 2;
-  const w = 0.008 + ((i * 37) % 11) / 700;
-  const r0 = 260 + ((i * 53) % 7) * 30;
-  const p = (ang: number, r: number) => `${(1150 + Math.cos(ang) * r).toFixed(0)},${(380 + Math.sin(ang) * r).toFixed(0)}`;
-  return `${p(a, r0)} ${p(a - w, 2200)} ${p(a + w, 2200)}`;
-});
-
-const primaryCta =
-  'inline-flex min-h-11 items-center justify-center rounded-lg bg-yellow px-3 py-2 text-base font-semibold text-canvas transition-all duration-700 ease-fluid hover:-translate-y-0.5 hover:bg-yellow-soft active:scale-[0.98]';
-const textLink =
-  'inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-yellow transition-colors duration-700 ease-fluid hover:text-yellow-soft';
-const section = 'relative overflow-x-clip';
-const container = 'mx-auto max-w-6xl px-4 py-12 sm:px-6 md:py-16';
 ---
 
 <Layout title="Steep Salvador | Ingeniería de software, backend y QA" current="inicio">
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(personSchema)} />
 
-  <!-- Hero -->
-  <section aria-labelledby="hero-titulo" class="sky relative -mt-24 overflow-hidden pt-24">
-    <svg aria-hidden="true" class="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice">
-      {heroLines.map((points) => <polygon points={points} fill="#ffffff" opacity="0.07" />)}
-    </svg>
-    <span
-      aria-hidden="true"
-      lang="ja"
-      class="kana kana-outline-light pointer-events-none absolute -right-8 top-24 hidden select-none text-9xl lg:block"
-      style="writing-mode: vertical-rl;"
-    >
-      エンジニア
-    </span>
-
-    <div class="relative mx-auto grid max-w-6xl items-center gap-12 px-4 pb-24 pt-16 sm:px-6 md:pt-24 lg:grid-cols-12">
+  <AeroWindow caption="Steep Salvador" labelledBy="hero-titulo" open>
+    <div class="grid items-start gap-6 lg:grid-cols-12">
       <div class="flex flex-col gap-6 lg:col-span-7">
-        <p class="flex flex-wrap items-center gap-3 text-sm font-medium text-blush">
-          <span aria-hidden="true" lang="ja" class="kana rounded-md bg-yellow px-2 py-1 text-sm text-canvas">エンジニア</span>
-          <span><span class="text-ink">Steep Salvador</span> · Ingeniero de Sistemas</span>
-        </p>
-        <h1 id="hero-titulo" class="hero-title max-w-[680px] text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl">
-          Desarrollo software e&nbsp;integro sistemas <br class="hidden sm:inline" />para <span class="text-yellow">entornos críticos.</span>
+        <p class="text-sm font-semibold text-atrium">Ingeniero de Sistemas</p>
+        <h1 id="hero-titulo" class="max-w-[680px] text-4xl text-ink sm:text-5xl">
+          Desarrollo software e integro sistemas<br class="hidden sm:inline" />
+          para entornos críticos.
         </h1>
-        <p class="max-w-[680px] text-lg text-blush">
-          Combino Spring Boot, TypeScript y automatización de pruebas para construir soluciones en minería, banca y consultoría.
-        </p>
+        <p class="max-w-[680px] text-lg text-ink-muted">{summary}</p>
         <div class="flex flex-wrap items-center gap-4">
-          <a href={email} class={primaryCta}>Contactar por correo</a>
-          <a
-            href="#proyectos"
-            class="inline-flex min-h-11 items-center gap-2 rounded-lg border-2 border-ink/70 px-3 py-2 text-base font-semibold text-ink transition-colors duration-700 ease-fluid hover:bg-canvas/30 active:scale-[0.98]"
-          >
-            Explorar proyectos <span aria-hidden="true">↓</span>
-          </a>
-        </div>
-        <p class="flex items-start gap-3 text-sm text-blush">
-          <span aria-hidden="true" class="mt-1 size-3 shrink-0 rotate-45 bg-red ring-2 ring-canvas"></span>
-          Experiencia en minería y banca. Actualmente en QA Automation y liderazgo de desarrollo.
-        </p>
-      </div>
-
-      <div class="lg:col-span-5">
-        <BurstPanel />
-      </div>
-    </div>
-  </section>
-
-  <!-- Ficha técnica -->
-  <section aria-label="Ficha técnica" class="border-b-2 border-canvas bg-surface">
-    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-      <p class="font-mono text-xs text-yellow">perfil.yml</p>
-      <dl class="mt-4 grid gap-6 font-mono text-sm sm:grid-cols-2 lg:grid-cols-5">
-        {
-          profileFacts.map((fact) => (
-            <div class="flex flex-col gap-1">
-              <dt class="text-xs text-ink-muted">{fact.label}</dt>
-              <dd class={fact.accent ? 'text-yellow' : 'text-ink'}>{fact.value}</dd>
-            </div>
-          ))
-        }
-      </dl>
-    </div>
-  </section>
-
-  <!-- Proyectos destacados -->
-  <section id="proyectos" aria-labelledby="proyectos-titulo" class={section}>
-    <div class={container}>
-      <SectionHeading
-        id="proyectos-titulo"
-        kana="作品"
-        meaning="obras · proyectos"
-        title="Proyectos destacados"
-        intro="Tres casos elegidos por su relación con backend, integración industrial y entrega web. Cada uno enlaza a su repositorio público."
-      />
-
-      <ul class="mt-12 grid gap-8 lg:grid-cols-3">
-        {
-          featured.map((project) => (
-            <li data-reveal>
-              <ProjectCard project={project} art={projectArt[project.title]!} anchor={projectAnchor(project.id)} featured />
-            </li>
-          ))
-        }
-      </ul>
-
-      <h3 data-reveal class="mt-16 text-xl font-semibold text-ink">Otros proyectos</h3>
-      <ul class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {
-          moreProjects.map((project) => (
-            <li data-reveal>
-              <ProjectCard project={project} art={projectArt[project.title]!} anchor={projectAnchor(project.id)} />
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </section>
-
-  <!-- Declaración de valor -->
-  <section aria-label="Declaración de valor" class="sky-band relative overflow-hidden border-y-2 border-canvas">
-    <svg aria-hidden="true" class="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1440 480" preserveAspectRatio="xMidYMid slice">
-      {heroLines.map((points) => <polygon points={points} fill="#10111E" opacity="0.18" transform="translate(-200 -150)" />)}
-    </svg>
-    <span
-      aria-hidden="true"
-      lang="ja"
-      class="kana kana-outline-light pointer-events-none absolute -bottom-6 right-0 select-none text-9xl md:text-[12rem]"
-    >
-      品質
-    </span>
-    <div class="relative mx-auto max-w-6xl px-4 py-24 sm:px-6">
-      <p data-tagline class="hero-title max-w-[680px] text-4xl font-semibold tracking-tight md:text-5xl lg:text-6xl">
-        {
-          taglineLines.map((line, lineIndex) => (
-            <span class="block text-balance">
-              {line.split(' ').map((word, wordIndex) => (
-                <>
-                  {wordIndex > 0 && ' '}
-                  <span class="tagline-word">{word}</span>
-                </>
-              ))}
-              {lineIndex < taglineLines.length - 1 && ' '}
-            </span>
-          ))
-        }
-      </p>
-    </div>
-  </section>
-
-  <!-- Áreas de aportación -->
-  <section id="aportes" aria-labelledby="aportes-titulo" class={section}>
-    <div class={container}>
-      <SectionHeading id="aportes-titulo" kana="強み" meaning="fortalezas" title="Dónde aporto" intro={summary} />
-
-      <ul class="mt-12 grid gap-6 md:grid-cols-2">
-        {
-          contributions.map((item) => (
-            <li data-reveal class="flex flex-col gap-4 rounded-2xl border-2 border-line bg-surface p-6 transition-colors duration-700 ease-fluid hover:border-yellow">
-              <span aria-hidden="true" lang="ja" class:list={['kana w-max rounded-md px-2 py-1 text-base text-canvas', item.chip]}>
-                {item.kana}
-              </span>
-              <h3 class="text-lg font-semibold text-ink">{item.title}</h3>
-              <p class="text-base text-ink-muted">{item.detail}</p>
-              {item.evidence && (
-                <a href={`#${projectAnchor(item.evidence.id)}`} class={`${textLink} w-max`}>
-                  Ver proyecto: {item.evidence.title}
-                </a>
-              )}
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </section>
-
-  <!-- Experiencia -->
-  <section id="experiencia" aria-labelledby="experiencia-titulo" class={section}>
-    <div class={container}>
-      <SectionHeading
-        id="experiencia-titulo"
-        kana="経験"
-        meaning="experiencia"
-        title="Experiencia"
-        intro="Trayectoria en consultoría, minería, desarrollo móvil y banca, de la más reciente a la más antigua."
-      />
-
-      <ol class="mt-12 flex flex-col divide-y-2 divide-line overflow-hidden rounded-2xl border-2 border-line bg-surface">
-        {
-          experience.map((job, index) => (
-            <li data-reveal class="grid gap-4 p-6 md:grid-cols-12 md:gap-6">
-              <div class="flex flex-col gap-1 md:col-span-4">
-                <p class="flex items-center gap-2 font-mono text-xs text-yellow">
-                  <span aria-hidden="true" class="rounded bg-red px-1 text-ink">{String(index + 1).padStart(2, '0')}</span>
-                  {job.period}
-                </p>
-                <h3 class="text-lg font-semibold text-ink">{job.role.replace(/ ([·/])/g, '\u00a0$1')}</h3>
-                <p class="text-sm text-ink-muted">{job.company}</p>
-              </div>
-              <ul class="flex flex-col gap-2 md:col-span-8">
-                {job.responsibilities.map((item) => (
-                  <li class="flex gap-3 text-base text-ink-muted">
-                    <span aria-hidden="true" class="mt-2 size-2 shrink-0 rotate-45 bg-cyan" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          ))
-        }
-      </ol>
-
-      <h3 data-reveal class="mt-16 text-xl font-semibold text-ink">Logros registrados</h3>
-      <ul class="mt-6 grid gap-6 md:grid-cols-2">
-        {
-          achievements.map((achievement) => (
-            <li data-reveal class="flex flex-col gap-2 rounded-2xl border-2 border-line p-6">
-              <h4 class="text-base font-semibold text-ink">{achievement.title}</h4>
-              <p class="text-base text-ink-muted">{achievement.description}</p>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-  </section>
-
-  <SkillsPanel skills={skills} />
-
-  <!-- Formación y credenciales -->
-  <section id="formacion" aria-labelledby="formacion-titulo" class={section}>
-    <div class={container}>
-      <SectionHeading
-        id="formacion-titulo"
-        kana="教育"
-        meaning="formación"
-        title="Formación y credenciales"
-        intro="Formación universitaria y una selección de cursos relacionados con el stack principal."
-      />
-
-      <div class="mt-12 grid gap-6 lg:grid-cols-3">
-        {
-          education.map((edu) => (
-            <article data-reveal class="flex flex-col gap-2 self-start rounded-2xl border-2 border-canvas bg-yellow p-6 text-canvas pop-shadow">
-              <p class="font-mono text-xs">Universidad</p>
-              <h3 class="text-lg font-semibold">{edu.institution}</h3>
-              <p class="text-base">{edu.degree}</p>
-              <p class="text-sm">{edu.location}</p>
-            </article>
-          ))
-        }
-        <div data-reveal class="flex flex-col rounded-2xl border-2 border-line bg-surface p-6 lg:col-span-2">
-          <h3 class="text-lg font-semibold text-ink">Cursos seleccionados</h3>
-          <ul class="mt-4 flex flex-col divide-y divide-line">
-            {
-              selectedCredentials.map((cert) => (
-                <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-                  <span class="text-base text-ink">{cert.title}</span>
-                  <span class="shrink-0 text-sm text-ink-muted">
-                    {cert.issuer} · {cert.date}
-                  </span>
-                </li>
-              ))
-            }
-          </ul>
-          <a href="/certificados" class={`${textLink} mt-4 w-max`}>
-            Ver los {certificates.length} cursos y certificados <span aria-hidden="true">→</span>
-          </a>
+          <a href={email} class="btn btn-dune">Contactar por correo</a>
+          <a href="#proyectos" class="btn btn-glass">Ver proyectos</a>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- Preguntas -->
-  <section id="preguntas" aria-labelledby="preguntas-titulo" class={section}>
-    <div class={container}>
-      <div class="grid gap-12 lg:grid-cols-12">
-        <div class="flex flex-col gap-6 lg:col-span-5">
-          <SectionHeading id="preguntas-titulo" kana="質問" meaning="preguntas" title="Preguntas frecuentes" />
-          <p id="pasos-titulo" data-reveal class="text-sm font-medium text-ink-muted">Cómo revisar este perfil</p>
-          <ol data-reveal class="-mt-3 flex flex-col gap-3" aria-labelledby="pasos-titulo">
-            {
-              steps.map((step, index) => (
-                <li>
-                  <a
-                    href={step.href}
-                    class="flex items-start gap-4 rounded-xl border-2 border-line p-4 transition-colors duration-700 ease-fluid hover:border-yellow hover:bg-surface"
-                  >
-                    <span class="font-mono text-sm text-yellow">{String(index + 1).padStart(2, '0')}</span>
-                    <span class="flex flex-col gap-1">
-                      <span class="text-base font-semibold text-ink">{step.label}</span>
-                      <span class="text-sm text-ink-muted">{step.detail}</span>
-                    </span>
-                  </a>
-                </li>
-              ))
-            }
-          </ol>
-        </div>
-        <dl class="flex flex-col divide-y divide-line lg:col-span-7 lg:pt-16">
+      <aside class="optic lg:col-span-5" aria-label="Ficha">
+        <VistaClock />
+        <dl class="optic-facts">
           {
-            faqs.map((faq) => (
-              <div data-reveal class="flex flex-col gap-2 py-6 first:pt-0">
-                <dt class="text-lg font-semibold text-ink">{faq.q}</dt>
-                <dd class="text-base text-ink-muted">{faq.a}</dd>
+            profileFacts.map((fact) => (
+              <div class="optic-fact">
+                <span class="optic-lamp" aria-hidden="true"></span>
+                <dt>{fact.label}</dt>
+                <dd>{fact.value}</dd>
               </div>
             ))
           }
         </dl>
-      </div>
+      </aside>
     </div>
-  </section>
+  </AeroWindow>
 
-  <!-- Contacto -->
-  <section id="contacto" aria-labelledby="contacto-titulo" class={section}>
-    <div class="mx-auto max-w-6xl px-4 pb-24 pt-12 sm:px-6">
-      <div data-reveal class="pop-shadow grid overflow-hidden rounded-2xl border-2 border-canvas bg-yellow text-canvas lg:grid-cols-12">
-        <div class="flex flex-col gap-8 p-6 md:p-12 lg:col-span-7">
-          <div class="flex max-w-[680px] flex-col gap-3">
-            <p aria-hidden="true" class="flex items-center gap-3">
-              <span lang="ja" class="kana text-xl text-red">連絡</span>
-              <span class="font-mono text-xs">contacto</span>
-            </p>
-            <h2 id="contacto-titulo" class="text-3xl font-semibold tracking-tight md:text-4xl">Conversemos sobre tu equipo</h2>
-            <p class="text-lg">
-              Si buscas a alguien para desarrollo backend, automatización de pruebas o integración de sistemas, escríbeme por correo.
-            </p>
-          </div>
-          <div class="flex flex-wrap items-center gap-4">
-            <a
-              href={email}
-              class="inline-flex min-h-11 items-center justify-center rounded-lg bg-canvas px-3 py-2 text-base font-semibold text-yellow transition-all duration-700 ease-fluid hover:-translate-y-0.5 hover:bg-deep active:scale-[0.98]"
-            >
-              Contactar por correo
-            </a>
-            <span class="font-mono text-sm">{personalInfo.email}</span>
-          </div>
-          <ul class="flex flex-wrap gap-x-6 gap-y-2 border-t-2 border-canvas/20 pt-6 text-sm">
-            <li>
-              <a href={linkedin} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center gap-2 font-semibold text-deep underline-offset-4 hover:underline">
-                LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> (se abre en una pestaña nueva)</span>
-              </a>
-            </li>
-            <li>
-              <a href={github} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center gap-2 font-semibold text-deep underline-offset-4 hover:underline">
-                GitHub <span aria-hidden="true">↗</span><span class="sr-only"> (se abre en una pestaña nueva)</span>
-              </a>
-            </li>
-            <li>
-              <a href={phoneHref} class="inline-flex min-h-11 items-center gap-2 font-semibold text-deep underline-offset-4 hover:underline">{personalInfo.phone}</a>
-            </li>
-          </ul>
-        </div>
-        <div class="aspect-square border-t-2 border-canvas lg:col-span-5 lg:aspect-auto lg:border-l-2 lg:border-t-0">
-          <MangaPanel
-            id="contact-panel"
-            shape="square"
-            bg="#CC0D2C"
-            halftone="#F57650"
-            kana="連絡"
-            kanaColor="#F6D86A"
-            caption="連絡 · contacto"
-            motif="hand"
-            motifFill="#F3DCF0"
-            motifAccent="#F6D86A"
-            shadow="#10111E"
-          />
-        </div>
+  <AeroWindow id="proyectos" caption="Proyectos" as="h2" headingId="proyectos-titulo">
+    <ul class="grid gap-6 lg:grid-cols-3">
+      {
+        featured.map((project) => (
+          <li class="min-w-0">
+            <ProjectCard project={project} anchor={projectAnchor(project.id)} />
+          </li>
+        ))
+      }
+    </ul>
+    <h3 class="text-xl font-semibold text-ink">Otros proyectos</h3>
+    <ul class="-mt-3 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        moreProjects.map((project) => (
+          <li class="min-w-0">
+            <ProjectCard project={project} anchor={projectAnchor(project.id)} />
+          </li>
+        ))
+      }
+    </ul>
+  </AeroWindow>
+
+  <AeroWindow id="experiencia" caption="Experiencia" as="h2" headingId="experiencia-titulo">
+    <h3 class="text-xl font-semibold text-ink">Logros</h3>
+    <ul class="-mt-3 flex flex-col divide-y divide-line">
+      {
+        achievements.map((achievement) => (
+          <li class="flex flex-col gap-1 py-4 first:pt-0 last:pb-0">
+            <h4 class="text-base font-semibold text-ink">{achievement.title}</h4>
+            <p class="text-base text-ink-muted">{achievement.description}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <ol class="flex flex-col divide-y divide-line">
+      {
+        experience.map((job) => (
+          <li class="grid gap-4 py-4 first:pt-0 last:pb-0 md:grid-cols-12 md:gap-6">
+            <div class="flex flex-col gap-1 md:col-span-4">
+              <p class="text-sm font-semibold text-atrium">{job.period}</p>
+              <h3 class="text-lg font-semibold text-ink">{job.role.replace(/ ([·/])/g, '\u00a0$1')}</h3>
+              <p class="text-sm text-ink-muted">{job.company}</p>
+            </div>
+            <ul class="flex flex-col gap-2 md:col-span-8">
+              {job.responsibilities.map((item) => (
+                <li class="flex gap-3 text-base text-ink-muted">
+                  <span aria-hidden="true" class="mt-2 size-2 shrink-0 bg-magenta"></span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ol>
+  </AeroWindow>
+
+  <SkillsPanel skills={skills} />
+
+  <AeroWindow id="formacion" caption="Formación" as="h2" headingId="formacion-titulo">
+    <div class="grid gap-6 lg:grid-cols-3">
+      {
+        education.map((edu) => (
+          <article class="flex flex-col gap-2 border border-yellow p-4">
+            <p class="text-sm font-semibold text-yellow">Universidad</p>
+            <h3 class="text-lg font-semibold text-ink">{edu.institution}</h3>
+            <p class="text-base text-ink">{edu.degree}</p>
+            <p class="text-sm text-ink-muted">{edu.location}</p>
+          </article>
+        ))
+      }
+      <div class="lg:col-span-2">
+        <h3 class="text-lg font-semibold text-ink">Cursos seleccionados</h3>
+        <ul class="mt-2 flex flex-col divide-y divide-line">
+          {
+            selectedCredentials.map((cert) => (
+              <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+                <span class="text-base text-ink">{cert.title}</span>
+                <span class="shrink-0 text-sm text-ink-muted">
+                  {cert.issuer}, {cert.date}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <a href="/certificados" class="mt-4 inline-flex min-h-11 items-center text-sm">
+          Ver los {certificates.length} cursos y certificados
+        </a>
       </div>
     </div>
-  </section>
+  </AeroWindow>
+
+  <AeroWindow id="contacto" caption="Contacto" as="h2" headingId="contacto-titulo">
+    <div class="flex flex-wrap items-center gap-4">
+      <a href={email} class="btn btn-dune">Contactar por correo</a>
+      <span class="text-sm text-ink">{personalInfo.email}</span>
+    </div>
+    <ul class="flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-4 text-sm">
+      <li>
+        <a href={linkedin} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center">
+          LinkedIn<span class="sr-only"> (se abre en una pestaña nueva)</span>
+        </a>
+      </li>
+      <li>
+        <a href={github} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center">
+          GitHub<span class="sr-only"> (se abre en una pestaña nueva)</span>
+        </a>
+      </li>
+      <li>
+        <a href={phoneHref} class="inline-flex min-h-11 items-center">{personalInfo.phone}</a>
+      </li>
+    </ul>
+  </AeroWindow>
 </Layout>

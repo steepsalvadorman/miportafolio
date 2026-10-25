@@ -1,4 +1,6 @@
 ---
+import { personalInfo } from '../data/portfolio';
+
 interface Props {
   current: 'inicio' | 'certificados' | 'none';
 }
@@ -12,98 +14,92 @@ const links = [
   { href: '/#contacto', label: 'Contacto', active: false },
 ];
 
-const linkClass =
-  'inline-flex min-h-11 items-center rounded-full px-3 text-sm font-medium transition-colors duration-700 ease-fluid hover:bg-surface-hover hover:text-ink active:translate-y-px';
+const tray = [
+  { href: `https://${personalInfo.github}`, label: 'GitHub' },
+  { href: `https://${personalInfo.linkedin}`, label: 'LinkedIn' },
+  { href: `mailto:${personalInfo.email}`, label: 'Correo' },
+];
 ---
 
-<header data-site-header class="sticky top-0 z-40 px-4 pt-4 md:pt-6">
-  <nav
-    aria-label="Principal"
-    class="relative z-10 mx-auto flex max-w-5xl items-center justify-between gap-6 rounded-full border border-line bg-black/80 py-1 pl-4 pr-1 backdrop-blur-xl md:w-max md:pr-2"
+<header class="taskbar">
+  <a href="/" aria-current={current === 'inicio' ? 'page' : undefined} class="task-start hidden md:inline-flex">Steep</a>
+  <button
+    type="button"
+    data-menu-button
+    aria-expanded="false"
+    aria-controls="menu-inicio"
+    aria-label="Abrir menú"
+    class="task-start js-only md:hidden"
   >
-    <a
-      href="/"
-      aria-current={current === 'inicio' ? 'page' : undefined}
-      class="inline-flex min-h-11 items-center gap-2 rounded-full text-sm font-semibold text-ink"
-    >
-      <span aria-hidden="true" class="font-mono text-yellow">&gt;_</span>
-      Steep Salvador
-    </a>
+    Menú
+  </button>
 
-    <ul class="hidden items-center gap-1 md:flex">
+  <nav aria-label="Principal" class="hidden min-w-0 md:block">
+    <ul class="flex items-center gap-1">
       {
         links.map((link) => (
           <li>
-            <a
-              href={link.href}
-              aria-current={link.active ? 'page' : undefined}
-              class:list={[linkClass, link.active ? 'bg-surface text-ink' : 'text-ink-muted']}
-            >
+            <a href={link.href} aria-current={link.active ? 'page' : undefined} class="task-link">
               {link.label}
             </a>
           </li>
         ))
       }
     </ul>
-
-    <button
-      type="button"
-      data-menu-button
-      aria-expanded="false"
-      aria-controls="menu-movil"
-      aria-label="Abrir menú"
-      class="js-only group relative size-11 rounded-full transition-colors duration-700 ease-fluid hover:bg-surface-hover active:scale-[0.98] md:hidden"
-    >
-      <span
-        aria-hidden="true"
-        class="absolute left-1/2 top-1/2 h-0.5 w-5 -translate-x-1/2 -translate-y-1 rounded-full bg-ink transition-all duration-700 ease-fluid group-aria-expanded:translate-y-0 group-aria-expanded:rotate-45"
-      ></span>
-      <span
-        aria-hidden="true"
-        class="absolute left-1/2 top-1/2 h-0.5 w-5 -translate-x-1/2 translate-y-1 rounded-full bg-ink transition-all duration-700 ease-fluid group-aria-expanded:translate-y-0 group-aria-expanded:-rotate-45"
-      ></span>
-    </button>
   </nav>
 
-  <ul class="no-js-only mx-auto mt-2 flex max-w-5xl flex-wrap justify-center gap-1 md:hidden">
-    {
-      links.map((link) => (
-        <li>
-          <a
-            href={link.href}
-            aria-current={link.active ? 'page' : undefined}
-            class:list={[linkClass, link.active ? 'bg-surface text-ink' : 'text-ink-muted']}
-          >
-            {link.label}
-          </a>
-        </li>
-      ))
-    }
-  </ul>
+  <div class="task-tray">
+    <ul class="hidden items-center sm:flex">
+      {
+        tray.map((link) => (
+          <li>
+            <a href={link.href} class="task-link" {...(link.href.startsWith('mailto:') ? {} : { target: '_blank', rel: 'noopener noreferrer' })}>
+              {link.label}
+              {!link.href.startsWith('mailto:') && <span class="sr-only"> (se abre en una pestaña nueva)</span>}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p data-clock-text class="px-2 text-sm font-semibold tabular-nums text-cyan">--:--</p>
+  </div>
 
   <div
-    id="menu-movil"
+    id="menu-inicio"
     data-menu
     role="dialog"
     aria-modal="true"
-    aria-label="Menú principal"
+    aria-label="Menú inicio"
     hidden
-    class="menu-overlay fixed inset-0 z-0 bg-black/80 backdrop-blur-3xl md:hidden"
+    class="start-menu js-only"
   >
-    <ul class="flex flex-col gap-2 px-6 pt-24">
+    <div class="border-b border-line px-3 py-4">
+      <p class="font-display text-2xl font-bold text-yellow">Steep Salvador</p>
+      <p class="text-sm text-ink-muted">Ingeniero de Sistemas</p>
+    </div>
+    <ul class="flex flex-col gap-1 p-2">
+      <li class="menu-item">
+        <a href="/" data-menu-link aria-current={current === 'inicio' ? 'page' : undefined}>Inicio</a>
+      </li>
       {
         links.map((link, index) => (
           <li class="menu-item" style={`transition-delay: ${100 + index * 50}ms`}>
+            <a href={link.href} data-menu-link aria-current={link.active ? 'page' : undefined}>
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+      {
+        tray.map((link, index) => (
+          <li class="menu-item sm:hidden" style={`transition-delay: ${300 + index * 50}ms`}>
             <a
               href={link.href}
               data-menu-link
-              aria-current={link.active ? 'page' : undefined}
-              class:list={[
-                'inline-flex min-h-11 items-center text-3xl font-semibold transition-colors duration-700 ease-fluid hover:text-yellow',
-                link.active ? 'text-yellow' : 'text-ink',
-              ]}
+              {...(link.href.startsWith('mailto:') ? {} : { target: '_blank', rel: 'noopener noreferrer' })}
             >
               {link.label}
+              {!link.href.startsWith('mailto:') && <span class="sr-only"> (se abre en una pestaña nueva)</span>}
             </a>
           </li>
         ))
@@ -112,15 +108,25 @@ const linkClass =
   </div>
 </header>
 
+<ul class="no-js-only fixed top-12 left-0 right-0 z-30 flex flex-wrap gap-1 border-b border-line bg-void px-2 md:hidden">
+  {
+    links.map((link) => (
+      <li>
+        <a href={link.href} class="task-link" aria-current={link.active ? 'page' : undefined}>
+          {link.label}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
 <script>
   const button = document.querySelector<HTMLButtonElement>('[data-menu-button]');
   const menu = document.querySelector<HTMLElement>('[data-menu]');
 
   if (button && menu) {
     const menuLinks = Array.from(menu.querySelectorAll<HTMLAnchorElement>('[data-menu-link]'));
-    const outside = () =>
-      Array.from(document.querySelectorAll<HTMLElement>('main, footer, [data-skip-link]'));
-
+    const outside = () => Array.from(document.querySelectorAll<HTMLElement>('main, footer, [data-skip-link]'));
     const isOpen = () => button.getAttribute('aria-expanded') === 'true';
 
     const open = () => {
@@ -128,7 +134,9 @@ const linkClass =
       button.setAttribute('aria-expanded', 'true');
       button.setAttribute('aria-label', 'Cerrar menú');
       document.body.style.overflow = 'hidden';
-      outside().forEach((el) => (el.inert = true));
+      outside().forEach((el) => {
+        el.inert = true;
+      });
       requestAnimationFrame(() => {
         requestAnimationFrame(() => menu.classList.add('is-open'));
       });
@@ -141,7 +149,9 @@ const linkClass =
       button.setAttribute('aria-expanded', 'false');
       button.setAttribute('aria-label', 'Abrir menú');
       document.body.style.overflow = '';
-      outside().forEach((el) => (el.inert = false));
+      outside().forEach((el) => {
+        el.inert = false;
+      });
       if (returnFocus) button.focus();
     };
 

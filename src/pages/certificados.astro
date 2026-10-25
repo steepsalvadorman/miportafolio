@@ -1,82 +1,45 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import MangaPanel from '../components/MangaPanel.astro';
+import AeroWindow from '../components/AeroWindow.astro';
 import { certificates } from '../data/certificates';
-
-const accents = ['bg-yellow', 'bg-cyan', 'bg-coral', 'bg-lavender'];
 ---
 
 <Layout
   title="Cursos y certificados | Steep Salvador"
-  description="Cursos y certificados de Steep Salvador en desarrollo backend, cloud, arquitectura y herramientas de ingeniería de software."
+  description="Cursos de Steep Salvador, con emisor y fecha."
   current="certificados"
 >
-  <section aria-labelledby="certificados-titulo" class="sky-band relative -mt-24 overflow-hidden border-b-2 border-canvas pt-24">
-    <div class="relative mx-auto grid max-w-6xl items-center gap-10 px-4 pb-16 pt-12 sm:px-6 md:pt-16 lg:grid-cols-12">
-      <div class="flex flex-col gap-4 lg:col-span-7">
-        <a
-          href="/"
-          class="inline-flex min-h-11 w-max items-center gap-2 rounded-lg text-sm font-semibold text-blush transition-colors duration-700 ease-fluid hover:text-ink"
-        >
-          <span aria-hidden="true">←</span> Volver al inicio
-        </a>
-        <p class="flex items-center gap-3 text-sm text-blush">
-          <span aria-hidden="true" lang="ja" class="kana rounded-md bg-yellow px-2 py-1 text-sm text-canvas">修了証</span>
-          <span class="font-mono text-xs">{certificates.length} registros</span>
-        </p>
-        <h1 id="certificados-titulo" class="hero-title text-4xl font-semibold tracking-tight md:text-5xl">Cursos y certificados</h1>
-        <p class="max-w-[680px] text-lg text-blush">
-          Formación complementaria con su emisor y fecha. Un curso sobre una tecnología no equivale a una certificación oficial de su fabricante.
-        </p>
-      </div>
-      <div class="hidden lg:col-span-5 lg:block">
-        <div class="pop-shadow aspect-video -rotate-2 overflow-hidden rounded-2xl border-4 border-canvas">
-          <MangaPanel
-            id="cert-panel"
-            bg="#F6D86A"
-            halftone="#F57650"
-            kana="修了証"
-            kanaColor="#CC0D2C"
-            caption="修了証 · certificado"
-            motif="check"
-            motifFill="#CFF1F5"
-            motifAccent="#1C32F8"
-            shadow="#CC0D2C"
-          />
-        </div>
-      </div>
+  <AeroWindow caption="Certificados" labelledBy="certificados-titulo">
+    <a href="/" class="inline-flex min-h-11 w-max items-center text-sm">Volver al inicio</a>
+    <div class="flex max-w-[680px] flex-col gap-3">
+      <p class="text-sm font-semibold text-atrium">{certificates.length} registros</p>
+      <h1 id="certificados-titulo" class="max-w-[680px] text-4xl text-ink md:text-5xl">Cursos y certificados</h1>
+      <p class="text-lg text-ink-muted">Un curso no es una certificación del fabricante.</p>
     </div>
-  </section>
-
-  <section aria-label="Catálogo" class="mx-auto max-w-6xl px-4 pb-24 pt-12 sm:px-6">
-    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <ul class="flex flex-col divide-y divide-line">
       {
-        certificates.map((cert, index) => (
-          <li data-reveal>
-            <article class="flex h-full flex-col gap-3 rounded-2xl border-2 border-line bg-surface p-6 transition-colors duration-700 ease-fluid hover:border-yellow">
-              <p class="flex items-center gap-2 text-sm text-ink-muted">
-                <span aria-hidden="true" class:list={['size-3 shrink-0 rotate-45', accents[index % accents.length]]} />
-                {cert.issuer}
-              </p>
-              <h2 class="flex-1 text-lg font-semibold text-ink">{cert.title}</h2>
-              <div class="flex items-center justify-between gap-4 border-t border-line pt-3">
-                <p class="font-mono text-xs text-yellow">{cert.date}</p>
-                {cert.verifyUrl && (
-                  <a
-                    href={cert.verifyUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="inline-flex min-h-11 items-center text-sm font-semibold text-yellow hover:text-yellow-soft"
-                  >
-                    Verificar <span aria-hidden="true">↗</span>
-                    <span class="sr-only"> {cert.title} (se abre en una pestaña nueva)</span>
-                  </a>
-                )}
-              </div>
-            </article>
+        certificates.map((cert) => (
+          <li class="flex flex-col gap-2 py-4 first:pt-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+            <div class="flex min-w-0 flex-col gap-1">
+              <h2 class="text-lg font-semibold text-ink">{cert.title}</h2>
+              <p class="text-sm text-ink-muted">{cert.issuer}</p>
+            </div>
+            <div class="flex shrink-0 items-center gap-4">
+              <p class="text-sm text-ink">{cert.date}</p>
+              {cert.verifyUrl && (
+                <a
+                  href={cert.verifyUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex min-h-11 items-center text-sm"
+                >
+                  Verificar<span class="sr-only"> {cert.title} (se abre en una pestaña nueva)</span>
+                </a>
+              )}
+            </div>
           </li>
         ))
       }
     </ul>
-  </section>
+  </AeroWindow>
 </Layout>

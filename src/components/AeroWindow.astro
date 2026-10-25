@@ -1,0 +1,28 @@
+---
+interface Props {
+  caption: string;
+  as?: 'p' | 'h1' | 'h2' | 'h3';
+  headingId?: string;
+  id?: string;
+  labelledBy?: string;
+  nested?: boolean;
+  open?: boolean;
+}
+
+const { caption, as = 'p', headingId, id, labelledBy, nested = false, open = false } = Astro.props;
+const Heading = as;
+const label = labelledBy ?? headingId;
+---
+
+<section
+  id={id}
+  aria-labelledby={label}
+  class:list={['aero-window', nested && 'aero-window-nested', open && 'aero-window-open']}
+>
+  <div class="aero-caption">
+    <Heading id={headingId} class="aero-caption-text">{caption}</Heading>
+  </div>
+  <div class="aero-body">
+    <slot />
+  </div>
+</section>

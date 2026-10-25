@@ -1,41 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import MangaPanel from '../components/MangaPanel.astro';
+import AeroWindow from '../components/AeroWindow.astro';
 ---
 
 <Layout title="Página no encontrada | Steep Salvador" description="La página solicitada no existe." noindex>
-  <section aria-labelledby="error-titulo" class="sky relative -mt-24 overflow-hidden pt-24">
-    <div class="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-24 pt-12 sm:px-6 md:pt-16 lg:grid-cols-12">
-      <div class="flex flex-col gap-6 lg:col-span-7">
-        <p class="flex items-center gap-3 text-sm text-blush">
-          <span aria-hidden="true" lang="ja" class="kana rounded-md bg-yellow px-2 py-1 text-sm text-canvas">迷子</span>
-          <span class="font-mono text-xs">error 404 · ruta no encontrada</span>
-        </p>
-        <h1 id="error-titulo" class="hero-title max-w-[680px] text-4xl font-semibold tracking-tight md:text-5xl">Esta página no existe.</h1>
-        <p class="max-w-[680px] text-lg text-blush">Puede que el enlace haya cambiado. Desde el inicio puedes revisar proyectos, experiencia y contacto.</p>
-        <a
-          href="/"
-          class="inline-flex min-h-11 w-max items-center rounded-lg bg-yellow px-3 py-2 text-base font-semibold text-canvas transition-all duration-700 ease-fluid hover:-translate-y-0.5 hover:bg-yellow-soft active:scale-[0.98]"
-        >
-          Volver al inicio
-        </a>
-      </div>
-      <div class="lg:col-span-5">
-        <div class="pop-shadow mx-auto aspect-[9/16] w-full max-w-64 rotate-2 overflow-hidden rounded-2xl border-4 border-canvas">
-          <MangaPanel
-            id="lost-panel"
-            shape="portrait"
-            bg="#CC0D2C"
-            kana="迷子"
-            kanaColor="#F6D86A"
-            caption="迷子 · perdido"
-            motif="cursor"
-            motifFill="#F3DCF0"
-            motifAccent="#F6D86A"
-            shadow="#10111E"
-          />
-        </div>
-      </div>
+  <AeroWindow caption="404" labelledBy="error-titulo">
+    <div class="flex max-w-[680px] flex-col gap-6">
+      <p class="text-sm font-semibold text-atrium">Error 404</p>
+      <h1 id="error-titulo" class="max-w-[680px] text-4xl text-ink md:text-5xl">Esta página no existe.</h1>
+      <p class="text-lg text-ink-muted">
+        Puede que el enlace haya cambiado. Desde el inicio puedes revisar proyectos, experiencia y contacto.
+      </p>
+      <a href="/" class="btn btn-dune w-max">Volver al inicio</a>
     </div>
-  </section>
+  </AeroWindow>
 </Layout>
