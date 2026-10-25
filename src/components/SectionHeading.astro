@@ -1,27 +1,21 @@
 ---
 interface Props {
   id: string;
-  kana: string;
-  meaning: string;
+  index: string;
+  label: string;
   title: string;
   intro?: string;
 }
 
-const { id, kana, meaning, title, intro } = Astro.props;
+const { id, index, label, title, intro } = Astro.props;
 ---
 
-<div data-reveal class="relative isolate flex max-w-2xl flex-col gap-3">
-  <span
-    aria-hidden="true"
-    lang="ja"
-    class="kana kana-outline pointer-events-none absolute left-full top-0 ml-16 hidden select-none whitespace-nowrap text-9xl lg:block"
-  >
-    {kana}
-  </span>
-  <p aria-hidden="true" class="flex items-center gap-3">
-    <span lang="ja" class="kana text-xl text-yellow">{kana}</span>
-    <span class="font-mono text-xs text-ink-muted">{meaning}</span>
+<header data-reveal class="flex max-w-[680px] flex-col gap-4">
+  <p class="hud-label">
+    <span class="text-magenta">{index}</span>
+    <span class="hud-rule" aria-hidden="true"></span>
+    {label}
   </p>
-  <h2 id={id} class="text-3xl font-semibold tracking-tight text-ink md:text-4xl">{title}</h2>
-  {intro && <p class="text-base text-ink-muted">{intro}</p>}
-</div>
+  <h2 id={id} class="text-4xl text-ink md:text-5xl">{title}</h2>
+  {intro && <p class="text-lg text-ink-muted">{intro}</p>}
+</header>

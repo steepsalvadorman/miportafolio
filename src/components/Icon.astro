@@ -1,0 +1,37 @@
+---
+const paths = {
+  'arrow-right': '<line x1="40" y1="128" x2="216" y2="128"/><polyline points="144 56 216 128 144 200"/>',
+  'arrow-up-right': '<line x1="64" y1="192" x2="192" y2="64"/><polyline points="88 64 192 64 192 168"/>',
+  plus: '<line x1="40" y1="128" x2="216" y2="128"/><line x1="128" y1="40" x2="128" y2="216"/>',
+  copy: '<rect x="40" y="88" width="128" height="128"/><polyline points="88 88 88 40 216 40 216 168 168 168"/>',
+  check: '<polyline points="40 144 96 200 224 72"/>',
+  mail: '<rect x="32" y="56" width="192" height="144"/><polyline points="32 56 128 136 224 56"/>',
+  code: '<polyline points="64 88 16 128 64 168"/><polyline points="192 88 240 128 192 168"/><line x1="160" y1="40" x2="96" y2="216"/>',
+  shield: '<circle cx="128" cy="128" r="96"/><polyline points="88 136 112 160 168 104"/>',
+  cpu: '<rect x="64" y="64" width="128" height="128"/><rect x="104" y="104" width="48" height="48"/><line x1="104" y1="24" x2="104" y2="64"/><line x1="152" y1="24" x2="152" y2="64"/><line x1="104" y1="192" x2="104" y2="232"/><line x1="152" y1="192" x2="152" y2="232"/><line x1="24" y1="104" x2="64" y2="104"/><line x1="24" y1="152" x2="64" y2="152"/><line x1="192" y1="104" x2="232" y2="104"/><line x1="192" y1="152" x2="232" y2="152"/>',
+  users: '<circle cx="128" cy="96" r="48"/><path d="M40 216c18-40 50-64 88-64s70 24 88 64"/>',
+  terminal: '<rect x="32" y="48" width="192" height="160"/><polyline points="80 104 112 128 80 152"/><line x1="128" y1="152" x2="176" y2="152"/>',
+  network: '<circle cx="64" cy="64" r="24"/><circle cx="64" cy="192" r="24"/><circle cx="192" cy="128" r="24"/><line x1="86" y1="74" x2="170" y2="118"/><line x1="86" y1="182" x2="170" y2="138"/><line x1="64" y1="88" x2="64" y2="168"/>',
+  dna: '<path d="M72 24c0 72 112 136 112 208"/><path d="M184 24c0 72-112 136-112 208"/><line x1="88" y1="64" x2="168" y2="64"/><line x1="88" y1="192" x2="168" y2="192"/>',
+};
+
+export type IconName = keyof typeof paths;
+
+interface Props {
+  name: IconName;
+  class?: string;
+}
+
+const { name, class: className } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 256 256"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="16"
+  stroke-linecap="square"
+  aria-hidden="true"
+  class={className}
+  set:html={paths[name]}
+/>

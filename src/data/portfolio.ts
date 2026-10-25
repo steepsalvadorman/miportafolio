@@ -31,6 +31,11 @@ export interface Achievement {
   description: string;
 }
 
+export interface Interest {
+  title: string;
+  description: string;
+}
+
 export const personalInfo = {
   name: 'Steep Salvador',
   title: 'Ingeniero de Sistemas',
@@ -114,6 +119,35 @@ export const achievements: Achievement[] = [
     title: 'Flota de buques',
     description: 'Checklists de buques de ácido sulfúrico pasados a Power Apps.',
   },
+];
+
+export const interestsSummary =
+  'Me interesan los problemas en los que el software tiene que interactuar con procesos reales, dispositivos o datos científicos.';
+
+export const interests: Interest[] = [
+  {
+    title: 'Programación de sistemas en Rust',
+    description: 'Herramientas industriales y de bajo nivel escritas en Rust.',
+  },
+  {
+    title: 'Kernel de Linux',
+    description: 'Funcionamiento interno del kernel y compilaciones propias.',
+  },
+  {
+    title: 'Deep learning y matemática aplicada',
+    description: 'Redes neuronales, aprendizaje profundo, probabilidad y matemática aplicada.',
+  },
+  {
+    title: 'Investigación a largo plazo',
+    description: 'Un posgrado en física aplicada y biología computacional, con interés en el diseño de proteínas asistido por deep learning.',
+  },
+];
+
+export const conversationTopics = [
+  'Arquitectura backend',
+  'Sistemas industriales y de laboratorio',
+  'Programación de sistemas',
+  'Machine learning aplicado',
 ];
 
 export const education: Education[] = [

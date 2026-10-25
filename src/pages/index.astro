@@ -1,10 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import AeroWindow from '../components/AeroWindow.astro';
-import VistaClock from '../components/VistaClock.astro';
+import Icon from '../components/Icon.astro';
+import type { IconName } from '../components/Icon.astro';
+import SectionHeading from '../components/SectionHeading.astro';
 import SkillsPanel from '../components/SkillsPanel.astro';
 import ProjectCard from '../components/ProjectCard.astro';
-import { personalInfo, summary, experience, achievements, education, skills, projects } from '../data/portfolio';
+import {
+  personalInfo,
+  summary,
+  experience,
+  achievements,
+  education,
+  skills,
+  projects,
+  interests,
+  interestsSummary,
+  conversationTopics,
+} from '../data/portfolio';
 import { certificates } from '../data/certificates';
 
 const email = `mailto:${personalInfo.email}`;
@@ -19,18 +31,101 @@ const featured = projects
 const moreProjects = projects.filter((project) => !project.featured);
 
 const projectAnchor = (id: number) => `proyecto-${id}`;
+const anchorFor = (title: string) => {
+  const project = projects.find((item) => item.title === title);
+  return project ? `#${projectAnchor(project.id)}` : '#proyectos';
+};
 
 const currentJob = experience[0];
+const firstJob = experience[experience.length - 1];
 const university = education[0];
+const currentSince = currentJob?.period.split('–')[0]?.trim();
+const firstYear = firstJob?.period.match(/\d{4}/)?.[0];
+
+const stack = [
+  ...new Set(skills.filter((group) => group.category !== 'Idiomas').flatMap((group) => group.skills)),
+].filter((skill) => skill.length < 20);
 
 const credentialTitles = ['Spring Boot 3 y Spring Framework 6', 'Curso completo del lenguaje Rust', 'Docker · Guía práctica para desarrolladores'];
 const selectedCredentials = certificates.filter((cert) => credentialTitles.includes(cert.title));
 
 const profileFacts = [
-  { label: 'Rol actual', value: 'QA Automation y Programador' },
   { label: 'Empresa', value: currentJob?.company },
   { label: 'Sectores', value: 'Minería, banca y consultoría' },
-  { label: 'Stack', value: 'Spring Boot, TypeScript, Playwright, Rust' },
+  { label: 'Formación', value: university?.institution },
+  { label: 'Inglés', value: 'Avanzado' },
+];
+
+const profileStack = ['Spring Boot', 'TypeScript', 'Playwright', 'Rust'];
+
+const stats = [
+  { value: String(experience.length), label: 'empresas, de la banca a la minería', tone: 'text-cyan' },
+  { value: String(projects.length), label: 'proyectos en este portafolio', tone: 'text-yellow' },
+  { value: String(certificates.length), label: 'cursos y certificados', tone: 'text-magenta' },
+  { value: firstYear ?? '', label: 'primer rol backend, en NTT DATA', tone: 'text-ink' },
+];
+
+const contributions: { icon: IconName; title: string; description: string; href: string; evidence: string }[] = [
+  {
+    icon: 'code',
+    title: 'Backend mantenible',
+    description: 'APIs con Spring Boot, validación de DTO y manejo global de errores, listas para correr en Docker.',
+    href: anchorFor('Enterprise API Framework'),
+    evidence: 'Enterprise API Framework',
+  },
+  {
+    icon: 'shield',
+    title: 'Calidad en cada entrega',
+    description: 'Pruebas automatizadas con Playwright, Java y TypeScript dentro del ciclo de CI/CD.',
+    href: '#experiencia',
+    evidence: 'Rol actual',
+  },
+  {
+    icon: 'cpu',
+    title: 'Integración con la operación',
+    description: 'Rust lee balanzas industriales por TCP y valida cada trama antes de registrar el pesaje.',
+    href: anchorFor('Industrial Scale Integration'),
+    evidence: 'Industrial Scale Integration',
+  },
+  {
+    icon: 'users',
+    title: 'Criterio técnico en equipo',
+    description: 'Planificación, reparto de tareas y decisiones de arquitectura en el equipo actual.',
+    href: '#experiencia',
+    evidence: 'Trayectoria',
+  },
+];
+
+const interestIcons: IconName[] = ['cpu', 'terminal', 'network', 'dna'];
+
+const taglineLines = [
+  { text: 'Software conectado con la operación.', accent: false },
+  { text: 'Calidad integrada a cada entrega.', accent: true },
+];
+
+const faqs = [
+  {
+    question: '¿En qué áreas se concentra tu experiencia?',
+    answer: `Backend con Spring Boot, automatización de pruebas con Playwright e integración de sistemas industriales. Hoy trabajo como QA Automation y programador en ${currentJob?.company}.`,
+  },
+  {
+    question: '¿Dónde puedo revisar tu código?',
+    answer: `En GitHub, en ${personalInfo.github}. Los proyectos de esta página enlazan a su repositorio cuando es público.`,
+  },
+  {
+    question: '¿En qué sectores has trabajado?',
+    answer: 'Minería con Marcobre y Condestable, y banca con NTT DATA para el BCP. También desarrollé una app Android en R&B S.A.C.',
+  },
+  {
+    question: '¿Cómo puedo contactarte?',
+    answer: `Por correo a ${personalInfo.email} o por LinkedIn. El correo es la vía más directa.`,
+  },
+];
+
+const contactLinks = [
+  { label: 'LinkedIn', value: personalInfo.linkedin.replace('linkedin.com/', ''), href: linkedin, external: true },
+  { label: 'GitHub', value: personalInfo.github.replace('github.com/', ''), href: github, external: true },
+  { label: 'Teléfono', value: personalInfo.phone, href: phoneHref, external: false },
 ];
 
 const personSchema = {
@@ -48,149 +143,384 @@ const personSchema = {
 <Layout title="Steep Salvador | Ingeniería de software, backend y QA" current="inicio">
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(personSchema)} />
 
-  <AeroWindow caption="Steep Salvador" labelledBy="hero-titulo" open>
-    <div class="grid items-start gap-6 lg:grid-cols-12">
-      <div class="flex flex-col gap-6 lg:col-span-7">
-        <p class="text-sm font-semibold text-atrium">Ingeniero de Sistemas</p>
-        <h1 id="hero-titulo" class="max-w-[680px] text-4xl text-ink sm:text-5xl">
-          Desarrollo software e integro sistemas<br class="hidden sm:inline" />
-          para entornos críticos.
+  <section aria-labelledby="hero-titulo" class="flex flex-col gap-12 pt-6 lg:pt-12">
+    <div class="grid items-center gap-12 lg:grid-cols-12">
+      <div class="flex flex-col gap-6 lg:col-span-7" data-reveal>
+        <p class="hud-label">
+          <span class="hud-dot" aria-hidden="true"></span>
+          {personalInfo.name} · {personalInfo.title}
+        </p>
+        <h1 id="hero-titulo" class="hero-title max-w-[680px] text-5xl lg:text-6xl">
+          Desarrollo software e integro sistemas para <span class="hero-accent">entornos críticos.</span>
         </h1>
         <p class="max-w-[680px] text-lg text-ink-muted">{summary}</p>
         <div class="flex flex-wrap items-center gap-4">
-          <a href={email} class="btn btn-dune">Contactar por correo</a>
+          <a href={email} class="btn btn-dune">
+            Contactar por correo
+            <Icon name="arrow-right" class="size-4" />
+          </a>
           <a href="#proyectos" class="btn btn-glass">Ver proyectos</a>
         </div>
       </div>
 
-      <aside class="optic lg:col-span-5" aria-label="Ficha">
-        <VistaClock />
-        <dl class="optic-facts">
+      <aside
+        class="id-card hud-frame lg:col-span-5"
+        aria-labelledby="perfil-titulo"
+        data-reveal
+        style="--reveal-delay: 150ms"
+      >
+        <div class="flex items-center justify-between gap-4">
+          <h2 id="perfil-titulo" class="hud-label">Perfil</h2>
+          <p class="font-mono text-xs text-ink-muted">@{personalInfo.github.split('/')[1]}</p>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="monogram" aria-hidden="true">SS</span>
+          <div class="flex min-w-0 flex-col gap-1">
+            <p class="font-display text-2xl font-bold text-ink">{personalInfo.name}</p>
+            <p class="text-sm text-cyan">QA Automation y Programador</p>
+          </div>
+        </div>
+        <dl class="id-facts">
           {
             profileFacts.map((fact) => (
-              <div class="optic-fact">
-                <span class="optic-lamp" aria-hidden="true"></span>
+              <div>
                 <dt>{fact.label}</dt>
                 <dd>{fact.value}</dd>
               </div>
             ))
           }
         </dl>
+        <ul class="flex flex-wrap gap-2" aria-label="Stack principal">
+          {profileStack.map((tech) => <li class="chip chip-accent">{tech}</li>)}
+        </ul>
+        <p class="flex items-center gap-3 font-mono text-xs text-ink-muted">
+          <span class="hud-dot" aria-hidden="true"></span>
+          Rol actual desde {currentSince}
+        </p>
       </aside>
     </div>
-  </AeroWindow>
 
-  <AeroWindow id="proyectos" caption="Proyectos" as="h2" headingId="proyectos-titulo">
+    <dl class="stats" data-reveal style="--reveal-delay: 300ms">
+      {
+        stats.map((stat) => (
+          <div class="stat">
+            <dt class="text-sm text-ink-muted">{stat.label}</dt>
+            <dd class:list={['font-display text-5xl font-bold', stat.tone]}>{stat.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-track">
+      {
+        [...stack, ...stack].map((tech) => (
+          <span class="ticker-item">
+            {tech}
+            <span class="text-magenta">/</span>
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <section id="proyectos" aria-labelledby="proyectos-titulo" class="flex flex-col gap-12">
+    <SectionHeading
+      id="proyectos-titulo"
+      index="01"
+      label="Proyectos"
+      title="Código que puedes revisar"
+      intro="Integración industrial, backend de referencia y una comunidad de software. Debajo, el resto de trabajos en móvil e IA."
+    />
     <ul class="grid gap-6 lg:grid-cols-3">
       {
-        featured.map((project) => (
-          <li class="min-w-0">
-            <ProjectCard project={project} anchor={projectAnchor(project.id)} />
+        featured.map((project, index) => (
+          <li class="min-w-0" data-reveal style={`--reveal-delay: ${index * 100}ms`}>
+            <ProjectCard project={project} anchor={projectAnchor(project.id)} index={index + 1} />
           </li>
         ))
       }
     </ul>
-    <h3 class="text-xl font-semibold text-ink">Otros proyectos</h3>
-    <ul class="-mt-3 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {
-        moreProjects.map((project) => (
-          <li class="min-w-0">
-            <ProjectCard project={project} anchor={projectAnchor(project.id)} />
-          </li>
-        ))
-      }
-    </ul>
-  </AeroWindow>
 
-  <AeroWindow id="experiencia" caption="Experiencia" as="h2" headingId="experiencia-titulo">
-    <h3 class="text-xl font-semibold text-ink">Logros</h3>
-    <ul class="-mt-3 flex flex-col divide-y divide-line">
+    <div class="flex flex-col gap-4" data-reveal>
+      <h3 class="hud-label">Otros proyectos</h3>
+      <ul class="archive">
+        {
+          moreProjects.map((project, index) => (
+            <li class="archive-row">
+              <span class="font-mono text-xs text-ink-muted">{String(featured.length + index + 1).padStart(2, '0')}</span>
+              <div class="flex min-w-0 flex-col gap-1">
+                <h4 id={projectAnchor(project.id)} class="text-xl text-ink">{project.title}</h4>
+                <p class="text-sm text-ink-muted">{project.description}</p>
+              </div>
+              <ul class="flex flex-wrap gap-2" aria-label={`Tecnologías de ${project.title}`}>
+                {project.technologies.map((tech) => <li class="chip">{tech}</li>)}
+              </ul>
+              {project.githubUrl ? (
+                <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" class="card-link">
+                  Código
+                  <Icon name="arrow-up-right" class="size-4" />
+                  <span class="sr-only"> de {project.title} (se abre en una pestaña nueva)</span>
+                </a>
+              ) : (
+                <p class="font-mono text-xs text-ink-muted">Sin repositorio público</p>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section aria-label="Declaración de valor" class="flex flex-col gap-6 py-12" data-tagline>
+    <p class="hud-label" aria-hidden="true">
+      <span class="hud-rule"></span>
+      Manifiesto
+    </p>
+    <p class="max-w-4xl font-display text-4xl font-bold md:text-6xl">
       {
-        achievements.map((achievement) => (
-          <li class="flex flex-col gap-1 py-4 first:pt-0 last:pb-0">
-            <h4 class="text-base font-semibold text-ink">{achievement.title}</h4>
+        taglineLines.map((line) => (
+          <span class:list={['block', line.accent && 'tagline-accent']}>
+            {line.text.split(' ').map((word) => (
+              <span class="tagline-word">{word} </span>
+            ))}
+          </span>
+        ))
+      }
+    </p>
+  </section>
+
+  <section id="aportaciones" aria-labelledby="aportaciones-titulo" class="flex flex-col gap-12">
+    <SectionHeading
+      id="aportaciones-titulo"
+      index="02"
+      label="Aportaciones"
+      title="Dónde aporto en un equipo"
+      intro="Cuatro frentes, cada uno con su evidencia en esta página."
+    />
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        contributions.map((item, index) => (
+          <li class="panel panel-hover flex flex-col gap-4 p-6" data-reveal style={`--reveal-delay: ${index * 100}ms`}>
+            <span class="icon-box">
+              <Icon name={item.icon} class="size-6" />
+            </span>
+            <h3 class="text-xl text-ink">{item.title}</h3>
+            <p class="text-base text-ink-muted">{item.description}</p>
+            <a href={item.href} class="card-link mt-auto">
+              {item.evidence}
+              <Icon name="arrow-right" class="size-4" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section id="experiencia" aria-labelledby="experiencia-titulo" class="flex flex-col gap-12">
+    <SectionHeading
+      id="experiencia-titulo"
+      index="03"
+      label="Experiencia"
+      title="De la banca a la mina"
+      intro={`${experience.length} empresas desde ${firstYear}. Primero los logros, después la trayectoria completa.`}
+    />
+
+    <ul class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        achievements.map((achievement, index) => (
+          <li class="panel panel-hover flex flex-col gap-3 p-6" data-reveal style={`--reveal-delay: ${index * 100}ms`}>
+            <span class="font-mono text-xs text-magenta">LOG_{String(index + 1).padStart(2, '0')}</span>
+            <h3 class="text-xl text-ink">{achievement.title}</h3>
             <p class="text-base text-ink-muted">{achievement.description}</p>
           </li>
         ))
       }
     </ul>
-    <ol class="flex flex-col divide-y divide-line">
+
+    <ol class="timeline">
       {
-        experience.map((job) => (
-          <li class="grid gap-4 py-4 first:pt-0 last:pb-0 md:grid-cols-12 md:gap-6">
-            <div class="flex flex-col gap-1 md:col-span-4">
-              <p class="text-sm font-semibold text-atrium">{job.period}</p>
-              <h3 class="text-lg font-semibold text-ink">{job.role.replace(/ ([·/])/g, '\u00a0$1')}</h3>
-              <p class="text-sm text-ink-muted">{job.company}</p>
+        experience.map((job, index) => (
+          <li class="timeline-item" data-reveal>
+            <span class:list={['timeline-node', index === 0 && 'is-current']} aria-hidden="true" />
+            <div class="grid gap-4 md:grid-cols-12 md:gap-6">
+              <div class="flex flex-col gap-2 md:col-span-4">
+                <p class="flex flex-wrap items-center gap-3 font-mono text-xs text-cyan">
+                  {job.period}
+                  {index === 0 && <span class="badge">Actual</span>}
+                </p>
+                <h3 class="text-2xl text-ink">{job.role.replace(/ ([·/])/g, ' $1')}</h3>
+                <p class="text-sm text-ink-muted">{job.company}</p>
+              </div>
+              <ul class="panel flex flex-col gap-3 p-6 md:col-span-8">
+                {job.responsibilities.map((item) => (
+                  <li class="flex gap-3 text-base text-ink-muted">
+                    <span aria-hidden="true" class="mt-2 size-2 shrink-0 bg-magenta" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul class="flex flex-col gap-2 md:col-span-8">
-              {job.responsibilities.map((item) => (
-                <li class="flex gap-3 text-base text-ink-muted">
-                  <span aria-hidden="true" class="mt-2 size-2 shrink-0 bg-magenta"></span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
           </li>
         ))
       }
     </ol>
-  </AeroWindow>
+  </section>
 
   <SkillsPanel skills={skills} />
 
-  <AeroWindow id="formacion" caption="Formación" as="h2" headingId="formacion-titulo">
-    <div class="grid gap-6 lg:grid-cols-3">
+  <section id="intereses" aria-labelledby="intereses-titulo" class="flex flex-col gap-12">
+    <SectionHeading id="intereses-titulo" index="05" label="Intereses" title="Hacia dónde voy" />
+    <div class="grid gap-6 lg:grid-cols-12">
+      <div class="panel panel-accent flex flex-col gap-6 p-6 lg:col-span-5" data-reveal>
+        <p class="font-display text-3xl font-bold text-ink">{interestsSummary}</p>
+        <div class="mt-auto flex flex-col gap-3">
+          <h3 class="hud-label">Temas para conversar</h3>
+          <ul class="flex flex-wrap gap-2">
+            {conversationTopics.map((topic) => <li class="chip chip-accent">{topic}</li>)}
+          </ul>
+        </div>
+      </div>
+      <ol class="archive lg:col-span-7" data-reveal style="--reveal-delay: 100ms">
+        {
+          interests.map((interest, index) => (
+            <li class="interest-row">
+              <span class="icon-box">
+                <Icon name={interestIcons[index % interestIcons.length]!} class="size-6" />
+              </span>
+              <div class="flex min-w-0 flex-col gap-1">
+                <h3 class="text-xl text-ink">{interest.title}</h3>
+                <p class="text-base text-ink-muted">{interest.description}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section id="formacion" aria-labelledby="formacion-titulo" class="flex flex-col gap-12">
+    <SectionHeading id="formacion-titulo" index="06" label="Formación" title="Universidad y cursos" />
+    <div class="grid gap-6 lg:grid-cols-12">
       {
         education.map((edu) => (
-          <article class="flex flex-col gap-2 border border-yellow p-4">
-            <p class="text-sm font-semibold text-yellow">Universidad</p>
-            <h3 class="text-lg font-semibold text-ink">{edu.institution}</h3>
-            <p class="text-base text-ink">{edu.degree}</p>
-            <p class="text-sm text-ink-muted">{edu.location}</p>
+          <article class="panel panel-accent flex flex-col gap-4 p-6 lg:col-span-5" data-reveal>
+            <p class="hud-label">Universidad</p>
+            <h3 class="text-3xl text-ink">{edu.institution}</h3>
+            <p class="text-lg text-ink">{edu.degree}</p>
+            <p class="mt-auto font-mono text-xs text-ink-muted">{edu.location}</p>
           </article>
         ))
       }
-      <div class="lg:col-span-2">
-        <h3 class="text-lg font-semibold text-ink">Cursos seleccionados</h3>
-        <ul class="mt-2 flex flex-col divide-y divide-line">
+      <div class="panel flex flex-col gap-4 p-6 lg:col-span-7" data-reveal style="--reveal-delay: 100ms">
+        <h3 class="text-xl text-ink">Cursos seleccionados</h3>
+        <ul class="flex flex-col divide-y divide-line">
           {
             selectedCredentials.map((cert) => (
-              <li class="flex flex-col gap-1 py-3 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+              <li class="flex flex-col gap-1 py-3 first:pt-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
                 <span class="text-base text-ink">{cert.title}</span>
-                <span class="shrink-0 text-sm text-ink-muted">
-                  {cert.issuer}, {cert.date}
+                <span class="shrink-0 font-mono text-xs text-ink-muted">
+                  {cert.issuer} · {cert.date}
                 </span>
               </li>
             ))
           }
         </ul>
-        <a href="/certificados" class="mt-4 inline-flex min-h-11 items-center text-sm">
+        <a href="/certificados" class="card-link mt-auto">
           Ver los {certificates.length} cursos y certificados
+          <Icon name="arrow-right" class="size-4" />
         </a>
       </div>
     </div>
-  </AeroWindow>
+  </section>
 
-  <AeroWindow id="contacto" caption="Contacto" as="h2" headingId="contacto-titulo">
-    <div class="flex flex-wrap items-center gap-4">
-      <a href={email} class="btn btn-dune">Contactar por correo</a>
-      <span class="text-sm text-ink">{personalInfo.email}</span>
+  <section id="preguntas" aria-labelledby="preguntas-titulo" class="flex flex-col gap-12">
+    <SectionHeading id="preguntas-titulo" index="07" label="Preguntas" title="Preguntas frecuentes" />
+    <div class="flex flex-col gap-3" data-reveal>
+      {
+        faqs.map((faq) => (
+          <details class="faq-item">
+            <summary>
+              <h3 class="text-xl">{faq.question}</h3>
+              <Icon name="plus" class="faq-icon size-5 shrink-0" />
+            </summary>
+            <p class="px-6 pb-6 text-base text-ink-muted">{faq.answer}</p>
+          </details>
+        ))
+      }
     </div>
-    <ul class="flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-4 text-sm">
-      <li>
-        <a href={linkedin} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center">
-          LinkedIn<span class="sr-only"> (se abre en una pestaña nueva)</span>
+  </section>
+
+  <section id="contacto" aria-labelledby="contacto-titulo" class="cta-panel hud-frame" data-reveal>
+    <div class="flex flex-col gap-6 lg:col-span-7">
+      <p class="hud-label">
+        <span class="text-magenta">08</span>
+        <span class="hud-rule" aria-hidden="true"></span>
+        Contacto
+      </p>
+      <h2 id="contacto-titulo" class="max-w-[680px] text-4xl text-ink md:text-5xl">
+        ¿Tienes un sistema que construir, probar o integrar?
+      </h2>
+      <p class="max-w-[680px] text-lg text-ink-muted">Cuéntame el contexto por correo y lo revisamos juntos.</p>
+      <div class="flex flex-wrap items-center gap-4">
+        <a href={email} class="btn btn-dune">
+          Contactar por correo
+          <Icon name="arrow-right" class="size-4" />
         </a>
-      </li>
-      <li>
-        <a href={github} target="_blank" rel="noopener noreferrer" class="inline-flex min-h-11 items-center">
-          GitHub<span class="sr-only"> (se abre en una pestaña nueva)</span>
-        </a>
-      </li>
-      <li>
-        <a href={phoneHref} class="inline-flex min-h-11 items-center">{personalInfo.phone}</a>
-      </li>
+        <button type="button" class="btn btn-glass js-only" data-copy-email={personalInfo.email}>
+          <Icon name="copy" class="size-4" />
+          <span data-copy-label>Copiar correo</span>
+        </button>
+      </div>
+      <p class="font-mono text-xs text-ink-muted" data-copy-status aria-live="polite">{personalInfo.email}</p>
+    </div>
+    <ul class="flex flex-col gap-3 lg:col-span-5">
+      {
+        contactLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class="contact-tile"
+              {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
+              <span class="flex min-w-0 flex-col gap-1">
+                <span class="hud-label">{link.label}</span>
+                <span class="truncate text-base text-ink">{link.value}</span>
+              </span>
+              <Icon name="arrow-up-right" class="contact-arrow size-5 shrink-0" />
+              {link.external && <span class="sr-only"> (se abre en una pestaña nueva)</span>}
+            </a>
+          </li>
+        ))
+      }
     </ul>
-  </AeroWindow>
+  </section>
 </Layout>
+
+<script>
+  const copyButton = document.querySelector<HTMLButtonElement>('[data-copy-email]');
+  const copyLabel = copyButton?.querySelector<HTMLElement>('[data-copy-label]');
+  const copyStatus = document.querySelector<HTMLElement>('[data-copy-status]');
+
+  if (copyButton && copyLabel && copyStatus) {
+    const address = copyButton.dataset.copyEmail ?? '';
+    let reset: number | undefined;
+
+    copyButton.addEventListener('click', async () => {
+      window.clearTimeout(reset);
+      try {
+        await navigator.clipboard.writeText(address);
+        copyLabel.textContent = 'Correo copiado';
+        copyStatus.textContent = `${address} está en tu portapapeles.`;
+      } catch {
+        copyLabel.textContent = 'Copiar correo';
+        copyStatus.textContent = `No se pudo copiar. Escribe a ${address}.`;
+      }
+      reset = window.setTimeout(() => {
+        copyLabel.textContent = 'Copiar correo';
+        copyStatus.textContent = address;
+      }, 4000);
+    });
+  }
+</script>

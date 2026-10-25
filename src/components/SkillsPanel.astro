@@ -1,6 +1,6 @@
 ---
 import type { SkillCategory } from '../data/portfolio';
-import AeroWindow from './AeroWindow.astro';
+import SectionHeading from './SectionHeading.astro';
 
 interface Props {
   skills: SkillCategory[];
@@ -21,37 +21,44 @@ const languages =
   }) ?? [];
 ---
 
-<AeroWindow id="tecnologias" caption="Tecnologías e idiomas" as="h2" headingId="tecnologias-titulo">
-  <div class="grid gap-6 lg:grid-cols-3">
-    <dl class="flex flex-col divide-y divide-line lg:col-span-2">
-      {
-        techSkills.map((group) => (
-          <div class="grid gap-2 py-4 first:pt-0 last:pb-0 sm:grid-cols-3 sm:gap-6">
-            <dt class="text-sm font-semibold text-atrium">{group.category}</dt>
-            <dd class="sm:col-span-2">
-              <ul class="flex flex-wrap gap-2">
-                {group.skills.map((skill) => (
-                  <li class="border border-line px-2 py-1 text-xs text-ink">{skill}</li>
-                ))}
-              </ul>
-            </dd>
-          </div>
-        ))
-      }
-    </dl>
+<section id="tecnologias" aria-labelledby="tecnologias-titulo" class="flex flex-col gap-12">
+  <SectionHeading
+    id="tecnologias-titulo"
+    index="04"
+    label="Tecnologías"
+    title="Herramientas con las que trabajo"
+    intro="Del backend y las pruebas a la nube, las bases de datos y el hardware industrial."
+  />
 
-    <div class="h-max border border-line p-4">
-      <h3 class="text-lg font-semibold text-ink">Idiomas</h3>
-      <dl class="mt-2 flex flex-col divide-y divide-line">
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {
+      techSkills.map((group, index) => (
+        <div class="panel panel-hover flex flex-col gap-4 p-6" data-reveal style={`--reveal-delay: ${(index % 4) * 100}ms`}>
+          <div class="flex items-baseline justify-between gap-4">
+            <h3 class="text-xl text-cyan">{group.category}</h3>
+            <span class="font-mono text-xs text-ink-muted">{String(group.skills.length).padStart(2, '0')}</span>
+          </div>
+          <ul class="flex flex-wrap gap-2">
+            {group.skills.map((skill) => (
+              <li class="chip">{skill}</li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+
+    <div class="panel panel-accent flex flex-col gap-4 p-6" data-reveal style="--reveal-delay: 300ms">
+      <h3 class="text-xl text-magenta">Idiomas</h3>
+      <dl class="flex flex-col divide-y divide-line">
         {
           languages.map((lang) => (
-            <div class="flex items-baseline justify-between gap-4 py-3">
-              <dt class="text-base">{lang.name}</dt>
-              <dd class="text-sm text-ink-muted">{lang.level}</dd>
+            <div class="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
+              <dt class="text-base text-ink">{lang.name}</dt>
+              <dd class:list={['level-tag', lang.level === 'Avanzado' && 'level-tag-high']}>{lang.level}</dd>
             </div>
           ))
         }
       </dl>
     </div>
   </div>
-</AeroWindow>
+</section>

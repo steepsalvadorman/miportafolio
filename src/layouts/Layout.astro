@@ -64,7 +64,7 @@ const favicon =
       Saltar al contenido
     </a>
     <SiteHeader current={current} />
-    <main id="contenido" tabindex="-1" class="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-6 outline-none sm:px-6">
+    <main id="contenido" tabindex="-1" class="mx-auto flex w-full max-w-6xl flex-col gap-24 px-4 pb-24 pt-6 outline-none sm:px-6">
       <slot />
     </main>
     <SiteFooter />
@@ -73,25 +73,9 @@ const favicon =
       const root = document.documentElement;
 
       const paintClock = () => {
-        const now = new Date();
-        const hours = now.getHours();
-        const minutes = now.getMinutes();
-        const seconds = now.getSeconds();
-        document.querySelectorAll<HTMLElement>('[data-clock-face]').forEach((face) => {
-          const hour = face.querySelector<HTMLElement>('[data-hand="hour"]');
-          const minute = face.querySelector<HTMLElement>('[data-hand="minute"]');
-          const second = face.querySelector<HTMLElement>('[data-hand="second"]');
-          if (hour) hour.style.transform = `rotate(${(hours % 12) * 30 + minutes * 0.5}deg)`;
-          if (minute) minute.style.transform = `rotate(${minutes * 6 + seconds * 0.1}deg)`;
-          if (second) second.style.transform = `rotate(${seconds * 6}deg)`;
-        });
-        const time = new Intl.DateTimeFormat('es-PE', { hour: '2-digit', minute: '2-digit' }).format(now);
-        const date = new Intl.DateTimeFormat('es-PE', { weekday: 'long', day: 'numeric', month: 'long' }).format(now);
+        const time = new Intl.DateTimeFormat('es-PE', { hour: '2-digit', minute: '2-digit' }).format(new Date());
         document.querySelectorAll<HTMLElement>('[data-clock-text]').forEach((node) => {
           node.textContent = time;
-        });
-        document.querySelectorAll<HTMLElement>('[data-clock-date]').forEach((node) => {
-          node.textContent = date;
         });
       };
 
@@ -99,6 +83,18 @@ const favicon =
       window.setInterval(paintClock, 1000);
 
       if (root.classList.contains('motion-ok')) {
+        const revealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add('is-visible');
+              revealObserver.unobserve(entry.target);
+            });
+          },
+          { rootMargin: '0px 0px -10% 0px' },
+        );
+        document.querySelectorAll('[data-reveal]').forEach((node) => revealObserver.observe(node));
+
         const words = Array.from(document.querySelectorAll<HTMLElement>('[data-tagline] .tagline-word'));
         const wordObserver = new IntersectionObserver(
           (entries) => {
