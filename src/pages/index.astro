@@ -17,14 +17,14 @@ import {
   interestsSummary,
   conversationTopics,
 } from '../data/portfolio';
-import { certificates } from '../data/certificates';
+import { certificates, coursesInProgress, inProgressIssuer, inProgressProgram } from '../data/certificates';
 
 const email = `mailto:${personalInfo.email}`;
 const github = `https://${personalInfo.github}`;
 const linkedin = `https://${personalInfo.linkedin}`;
 const phoneHref = `tel:${personalInfo.phone.replace(/[^+\d]/g, '')}`;
 
-const featuredOrder = ['Industrial Scale Integration', 'Enterprise API Framework', 'CodeCraft Peru'];
+const featuredOrder = ['WeighFlow IoT', 'DaiBot', 'E-commerce en microservicios'];
 const featured = projects
   .filter((project) => project.featured)
   .sort((a, b) => featuredOrder.indexOf(a.title) - featuredOrder.indexOf(b.title));
@@ -46,12 +46,19 @@ const stack = [
   ...new Set(skills.filter((group) => group.category !== 'Idiomas').flatMap((group) => group.skills)),
 ].filter((skill) => skill.length < 20);
 
-const credentialTitles = ['Spring Boot 3 y Spring Framework 6', 'Curso completo del lenguaje Rust', 'Docker · Guía práctica para desarrolladores'];
+const credentialTitles = [
+  'Data Science: Machine Learning',
+  'Oracle Cloud Infrastructure 2022 Foundations Associate',
+  'Spring Boot 3 y Spring Framework 6',
+  'Fundamentos de Rust desde cero',
+];
 const selectedCredentials = certificates.filter((cert) => credentialTitles.includes(cert.title));
+
+const clouds = ['Azure', 'AWS', 'OCI'];
 
 const profileFacts = [
   { label: 'Empresa', value: currentJob?.company },
-  { label: 'Sectores', value: 'Minería, banca y consultoría' },
+  { label: 'Sectores', value: 'Minería, consultoría minera y de TI' },
   { label: 'Formación', value: university?.institution },
   { label: 'Inglés', value: 'Avanzado' },
 ];
@@ -59,40 +66,40 @@ const profileFacts = [
 const profileStack = ['Spring Boot', 'TypeScript', 'Playwright', 'Rust'];
 
 const stats = [
-  { value: String(experience.length), label: 'empresas, de la banca a la minería', tone: 'text-cyan' },
-  { value: String(projects.length), label: 'proyectos en este portafolio', tone: 'text-yellow' },
-  { value: String(certificates.length), label: 'cursos y certificados', tone: 'text-magenta' },
+  { value: String(experience.length), label: 'empresas en minería y consultoría', tone: 'text-cyan' },
+  { value: String(certificates.length), label: 'cursos y certificaciones', tone: 'text-yellow' },
+  { value: String(clouds.length), label: `nubes con formación: ${clouds.join(', ').replace(/, ([^,]+)$/, ' y $1')}`, tone: 'text-magenta' },
   { value: firstYear ?? '', label: 'primer rol backend, en NTT DATA', tone: 'text-ink' },
 ];
 
 const contributions: { icon: IconName; title: string; description: string; href: string; evidence: string }[] = [
   {
     icon: 'code',
-    title: 'Backend mantenible',
-    description: 'APIs con Spring Boot, validación de DTO y manejo global de errores, listas para correr en Docker.',
-    href: anchorFor('Enterprise API Framework'),
-    evidence: 'Enterprise API Framework',
+    title: 'Backend con microservicios',
+    description: 'Microservicios con Spring Boot y Spring Cloud, APIs REST y mensajería con Kafka y RabbitMQ.',
+    href: anchorFor('E-commerce en microservicios'),
+    evidence: 'E-commerce en microservicios',
   },
   {
     icon: 'shield',
     title: 'Calidad en cada entrega',
-    description: 'Pruebas automatizadas con Playwright, Java y TypeScript dentro del ciclo de CI/CD.',
+    description: 'Framework de pruebas end to end montado desde cero y conectado al pipeline de CI/CD.',
     href: '#experiencia',
-    evidence: 'Rol actual',
+    evidence: `Rol en ${currentJob?.company}`,
   },
   {
     icon: 'cpu',
     title: 'Integración con la operación',
-    description: 'Rust lee balanzas industriales por TCP y valida cada trama antes de registrar el pesaje.',
-    href: anchorFor('Industrial Scale Integration'),
-    evidence: 'Industrial Scale Integration',
+    description: 'Balanzas e instrumentos de laboratorio conectados por RS-232 a los sistemas de planta y al LIMS.',
+    href: anchorFor('WeighFlow IoT'),
+    evidence: 'WeighFlow IoT',
   },
   {
     icon: 'users',
     title: 'Criterio técnico en equipo',
     description: 'Planificación, reparto de tareas y decisiones de arquitectura en el equipo actual.',
     href: '#experiencia',
-    evidence: 'Trayectoria',
+    evidence: 'Liderazgo en el rol actual',
   },
 ];
 
@@ -114,7 +121,8 @@ const faqs = [
   },
   {
     question: '¿En qué sectores has trabajado?',
-    answer: 'Minería con Marcobre y Condestable, y banca con NTT DATA para el BCP. También desarrollé una app Android en R&B S.A.C.',
+    answer:
+      'Minería con Marcobre y Condestable, consultoría minera con HR Ingenieros Asociados y consultoría de TI con NTT DATA, donde trabajé para el BCP. También desarrollé una app Android en R&B S.A.C.',
   },
   {
     question: '¿Cómo puedo contactarte?',
@@ -122,7 +130,8 @@ const faqs = [
   },
 ];
 
-const contactLinks = [
+const contactLinks: { label: string; value: string; href: string; external: boolean; download?: boolean }[] = [
+  { label: 'CV', value: 'Descargar en PDF', href: personalInfo.cv, external: false, download: true },
   { label: 'LinkedIn', value: personalInfo.linkedin.replace('linkedin.com/', ''), href: linkedin, external: true },
   { label: 'GitHub', value: personalInfo.github.replace('github.com/', ''), href: github, external: true },
   { label: 'Teléfono', value: personalInfo.phone, href: phoneHref, external: false },
@@ -159,7 +168,10 @@ const personSchema = {
             Contactar por correo
             <Icon name="arrow-right" class="size-4" />
           </a>
-          <a href="#proyectos" class="btn btn-glass">Ver proyectos</a>
+          <a href={personalInfo.cv} download class="btn btn-glass">
+            <Icon name="download" class="size-4" />
+            Descargar CV
+          </a>
         </div>
       </div>
 
@@ -231,7 +243,7 @@ const personSchema = {
       index="01"
       label="Proyectos"
       title="Código que puedes revisar"
-      intro="Integración industrial, backend de referencia y una comunidad de software. Debajo, el resto de trabajos en móvil e IA."
+      intro="Balanzas industriales, un bot en tiempo real y una arquitectura de microservicios. Debajo, visión por computadora, sistemas distribuidos y comunidad."
     />
     <ul class="grid gap-6 lg:grid-cols-3">
       {
@@ -273,24 +285,6 @@ const personSchema = {
     </div>
   </section>
 
-  <section aria-label="Declaración de valor" class="flex flex-col gap-6 py-12" data-tagline>
-    <p class="hud-label" aria-hidden="true">
-      <span class="hud-rule"></span>
-      Manifiesto
-    </p>
-    <p class="max-w-4xl font-display text-4xl font-bold md:text-6xl">
-      {
-        taglineLines.map((line) => (
-          <span class:list={['block', line.accent && 'tagline-accent']}>
-            {line.text.split(' ').map((word) => (
-              <span class="tagline-word">{word} </span>
-            ))}
-          </span>
-        ))
-      }
-    </p>
-  </section>
-
   <section id="aportaciones" aria-labelledby="aportaciones-titulo" class="flex flex-col gap-12">
     <SectionHeading
       id="aportaciones-titulo"
@@ -316,6 +310,24 @@ const personSchema = {
         ))
       }
     </ul>
+  </section>
+
+  <section aria-label="Declaración de valor" class="flex flex-col gap-6 py-12" data-tagline>
+    <p class="hud-label" aria-hidden="true">
+      <span class="hud-rule"></span>
+      Manifiesto
+    </p>
+    <p class="max-w-4xl font-display text-4xl font-bold md:text-6xl">
+      {
+        taglineLines.map((line) => (
+          <span class:list={['block', line.accent && 'tagline-accent']}>
+            {line.text.split(' ').map((word) => (
+              <span class="tagline-word">{word} </span>
+            ))}
+          </span>
+        ))
+      }
+    </p>
   </section>
 
   <section id="experiencia" aria-labelledby="experiencia-titulo" class="flex flex-col gap-12">
@@ -351,7 +363,10 @@ const personSchema = {
                   {index === 0 && <span class="badge">Actual</span>}
                 </p>
                 <h3 class="text-2xl text-ink">{job.role.replace(/ ([·/])/g, ' $1')}</h3>
-                <p class="text-sm text-ink-muted">{job.company}</p>
+                <p class="text-sm text-ink-muted">
+                  {job.company}
+                  {job.sector && <span class="text-cyan"> · {job.sector}</span>}
+                </p>
               </div>
               <ul class="panel flex flex-col gap-3 p-6 md:col-span-8">
                 {job.responsibilities.map((item) => (
@@ -370,8 +385,62 @@ const personSchema = {
 
   <SkillsPanel skills={skills} />
 
+  <section id="formacion" aria-labelledby="formacion-titulo" class="flex flex-col gap-12">
+    <SectionHeading id="formacion-titulo" index="05" label="Formación" title="Universidad y cursos" />
+    <div class="grid gap-6 lg:grid-cols-12">
+      {
+        education.map((edu) => (
+          <article class="panel panel-accent flex flex-col gap-4 p-6 lg:col-span-5" data-reveal>
+            <p class="hud-label">Universidad</p>
+            <h3 class="text-3xl text-ink">{edu.institution}</h3>
+            <p class="text-lg text-ink">{edu.degree}</p>
+            <p class="mt-auto font-mono text-xs text-ink-muted">{edu.location}</p>
+          </article>
+        ))
+      }
+      <div class="panel flex flex-col gap-4 p-6 lg:col-span-7" data-reveal style="--reveal-delay: 100ms">
+        <h3 class="text-xl text-ink">Cursos seleccionados</h3>
+        <ul class="flex flex-col divide-y divide-line">
+          {
+            selectedCredentials.map((cert) => (
+              <li class="flex flex-col gap-1 py-3 first:pt-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
+                <span class="text-base text-ink">{cert.title}</span>
+                <span class="shrink-0 font-mono text-xs text-ink-muted">
+                  {[cert.issuer, cert.date].filter(Boolean).join(' · ')}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <a href="/certificados" class="card-link mt-auto">
+          Ver los {certificates.length} cursos y certificados
+          <Icon name="arrow-right" class="size-4" />
+        </a>
+      </div>
+      <div class="panel flex flex-col gap-4 p-6 lg:col-span-12" data-reveal style="--reveal-delay: 200ms">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <h3 class="flex items-center gap-3 text-xl text-ink">
+            <span class="hud-dot" aria-hidden="true"></span>
+            En curso
+          </h3>
+          <p class="font-mono text-xs text-cyan">{inProgressIssuer} · {inProgressProgram}</p>
+        </div>
+        <ul class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            coursesInProgress.map((course) => (
+              <li class="flex items-baseline gap-3 border border-line px-4 py-3">
+                <span class="shrink-0 font-mono text-xs text-ink-muted">{course.code}</span>
+                <span class="text-base text-ink">{course.title}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <section id="intereses" aria-labelledby="intereses-titulo" class="flex flex-col gap-12">
-    <SectionHeading id="intereses-titulo" index="05" label="Intereses" title="Hacia dónde voy" />
+    <SectionHeading id="intereses-titulo" index="06" label="Intereses" title="Hacia dónde voy" />
     <div class="grid gap-6 lg:grid-cols-12">
       <div class="panel panel-accent flex flex-col gap-6 p-6 lg:col-span-5" data-reveal>
         <p class="font-display text-3xl font-bold text-ink">{interestsSummary}</p>
@@ -397,41 +466,6 @@ const personSchema = {
           ))
         }
       </ol>
-    </div>
-  </section>
-
-  <section id="formacion" aria-labelledby="formacion-titulo" class="flex flex-col gap-12">
-    <SectionHeading id="formacion-titulo" index="06" label="Formación" title="Universidad y cursos" />
-    <div class="grid gap-6 lg:grid-cols-12">
-      {
-        education.map((edu) => (
-          <article class="panel panel-accent flex flex-col gap-4 p-6 lg:col-span-5" data-reveal>
-            <p class="hud-label">Universidad</p>
-            <h3 class="text-3xl text-ink">{edu.institution}</h3>
-            <p class="text-lg text-ink">{edu.degree}</p>
-            <p class="mt-auto font-mono text-xs text-ink-muted">{edu.location}</p>
-          </article>
-        ))
-      }
-      <div class="panel flex flex-col gap-4 p-6 lg:col-span-7" data-reveal style="--reveal-delay: 100ms">
-        <h3 class="text-xl text-ink">Cursos seleccionados</h3>
-        <ul class="flex flex-col divide-y divide-line">
-          {
-            selectedCredentials.map((cert) => (
-              <li class="flex flex-col gap-1 py-3 first:pt-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-                <span class="text-base text-ink">{cert.title}</span>
-                <span class="shrink-0 font-mono text-xs text-ink-muted">
-                  {cert.issuer} · {cert.date}
-                </span>
-              </li>
-            ))
-          }
-        </ul>
-        <a href="/certificados" class="card-link mt-auto">
-          Ver los {certificates.length} cursos y certificados
-          <Icon name="arrow-right" class="size-4" />
-        </a>
-      </div>
     </div>
   </section>
 
@@ -482,13 +516,14 @@ const personSchema = {
             <a
               href={link.href}
               class="contact-tile"
+              download={link.download}
               {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             >
               <span class="flex min-w-0 flex-col gap-1">
                 <span class="hud-label">{link.label}</span>
                 <span class="truncate text-base text-ink">{link.value}</span>
               </span>
-              <Icon name="arrow-up-right" class="contact-arrow size-5 shrink-0" />
+              <Icon name={link.download ? 'download' : 'arrow-up-right'} class="contact-arrow size-5 shrink-0" />
               {link.external && <span class="sr-only"> (se abre en una pestaña nueva)</span>}
             </a>
           </li>

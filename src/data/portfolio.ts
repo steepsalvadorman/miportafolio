@@ -1,5 +1,6 @@
 export interface Experience {
   company: string;
+  sector?: string;
   role: string;
   period: string;
   responsibilities: string[];
@@ -43,6 +44,7 @@ export const personalInfo = {
   email: 'steepbsm@gmail.com',
   linkedin: 'linkedin.com/in/steepsalvador',
   github: 'github.com/steepsalvadorman',
+  cv: '/cv/Steep-Salvador-CV.pdf',
 };
 
 export const summary =
@@ -51,6 +53,7 @@ export const summary =
 export const experience: Experience[] = [
   {
     company: 'HR Ingenieros Asociados',
+    sector: 'Consultoría minera',
     role: 'QA Automation Engineer / Programador',
     period: '06/2026 – actualidad',
     responsibilities: [
@@ -61,6 +64,7 @@ export const experience: Experience[] = [
   },
   {
     company: 'Marcobre S.A.C.',
+    sector: 'Minería',
     role: 'Practicante Profesional · Sistemas (SIG)',
     period: '09/2025 – 03/2026',
     responsibilities: [
@@ -72,6 +76,7 @@ export const experience: Experience[] = [
   },
   {
     company: 'Compañía Minera Condestable S.A.',
+    sector: 'Minería',
     role: 'Practicante Profesional de Sistemas',
     period: '01/2025 – 06/2025',
     responsibilities: [
@@ -92,6 +97,7 @@ export const experience: Experience[] = [
   },
   {
     company: 'NTT DATA Europe & Latam',
+    sector: 'Consultoría de TI',
     role: 'Java Backend Junior / Solutions Assistant',
     period: '09/2019 – 02/2020',
     responsibilities: [
@@ -190,47 +196,58 @@ export const skills: SkillCategory[] = [
 export const projects: Project[] = [
   {
     id: 1,
-    title: 'Industrial Scale Integration',
+    title: 'WeighFlow IoT',
     featured: true,
+    description:
+      'Lee balanzas industriales de cualquier marca por RS-232, muestra el peso en tiempo real, lo escribe como teclado en Excel o SAP y firma cada lectura con HMAC-SHA256.',
+    technologies: ['Rust', 'RS-232', 'HMAC-SHA256'],
+    githubUrl: 'https://github.com/steepsalvadorman/MiningSmartScale',
+  },
+  {
+    id: 2,
+    title: 'DaiBot',
+    featured: true,
+    description:
+      'Bot multicanal para Kick: verifica la firma RSA de cada webhook, guarda el estado en PostgreSQL y controla la cola de video, el TTS y el overlay de OBS por Socket.IO.',
+    technologies: ['Rust', 'Axum', 'PostgreSQL', 'Docker'],
+    githubUrl: 'https://github.com/steepsalvadorman/DaiBotkick',
+  },
+  {
+    id: 3,
+    title: 'E-commerce en microservicios',
+    featured: true,
+    description:
+      'Gateway, Config Server y Eureka con Spring Cloud, seguridad con Keycloak y servicios de producto, pedido, inventario y notificación sobre MongoDB, MySQL y PostgreSQL.',
+    technologies: ['Java', 'Spring Cloud', 'Keycloak', 'Docker'],
+    githubUrl: 'https://github.com/steepsalvadorman/microservices_java',
+  },
+  {
+    id: 4,
+    title: 'Evaluador ROSA',
+    description: 'Evalúa la ergonomía de puestos de oficina con el método ROSA: mide la postura por cámara y exporta el informe a Excel.',
+    technologies: ['Python', 'MediaPipe', 'OpenCV'],
+    githubUrl: 'https://github.com/steepsalvadorman/newposture_detector',
+  },
+  {
+    id: 5,
+    title: 'Industrial Scale Integration',
     description: 'Rust lee balanzas industriales TI420 por TCP y comprueba cada trama con STX/CKS.',
     technologies: ['Rust', 'Industrial IoT', 'TCP/IP'],
     githubUrl: 'https://github.com/steepsalvadorman/Rust_Scale_Weigth',
   },
   {
-    id: 2,
-    title: 'Cerca App',
-    description: 'App Android para trabajo informal, con Jetpack Compose, MVVM y Firebase.',
-    technologies: ['Kotlin', 'Jetpack Compose', 'Firebase'],
+    id: 6,
+    title: 'Patrón SAGA por coreografía',
+    description: 'Pedidos y pagos coordinados por eventos entre microservicios, sin un orquestador central.',
+    technologies: ['Java', 'Spring Boot', 'Spring Cloud Stream'],
+    githubUrl: 'https://github.com/steepsalvadorman/Patron-de-Diseno-SAGA-Choreography',
   },
   {
-    id: 3,
+    id: 7,
     title: 'CodeCraft Peru',
-    featured: true,
     description: 'Sitio de una comunidad de software, hecho con Astro.',
     technologies: ['Astro', 'TypeScript', 'Tailwind CSS'],
     githubUrl: 'https://github.com/steepsalvadorman/CodeCraftPeru',
-  },
-  {
-    id: 4,
-    title: 'AI-Powered Assistant',
-    description: 'Chat de empresa con Spring AI.',
-    technologies: ['Java', 'Spring Boot', 'Spring AI'],
-    githubUrl: 'https://github.com/steepsalvadorman/ChatAI',
-  },
-  {
-    id: 5,
-    title: 'Enterprise API Framework',
-    featured: true,
-    description: 'API de referencia con errores globales, validación de DTO y Docker.',
-    technologies: ['Java', 'Spring Boot', 'Docker'],
-    githubUrl: 'https://github.com/steepsalvadorman/APIRestWithExceptions',
-  },
-  {
-    id: 6,
-    title: 'Cinemapedia',
-    description: 'Catálogo de cine en Flutter, con Riverpod.',
-    technologies: ['Flutter', 'Dart', 'Riverpod'],
-    githubUrl: 'https://github.com/steepsalvadorman/Cinemapedia',
   },
 ];
 
