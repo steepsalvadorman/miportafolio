@@ -74,6 +74,23 @@ const favicon =
     <script>
       const root = document.documentElement;
 
+      const intro = document.querySelector<HTMLElement>('[data-intro]');
+      if (intro && root.classList.contains('intro-on')) {
+        const endIntro = () => {
+          root.classList.remove('intro-on');
+          try {
+            sessionStorage.setItem('introVista', '1');
+          } catch {}
+          window.removeEventListener('keydown', endIntro);
+        };
+        intro.addEventListener('animationend', (event) => {
+          if (event.target === intro) endIntro();
+        });
+        intro.querySelector('[data-intro-skip]')?.addEventListener('click', endIntro);
+        window.addEventListener('keydown', endIntro);
+        window.setTimeout(endIntro, 7000);
+      }
+
       const paintClock = () => {
         const time = new Intl.DateTimeFormat('es-PE', { hour: '2-digit', minute: '2-digit' }).format(new Date());
         document.querySelectorAll<HTMLElement>('[data-clock-text]').forEach((node) => {

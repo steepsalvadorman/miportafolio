@@ -151,6 +151,24 @@ const personSchema = {
 
 <Layout title="Steep Salvador | Ingeniería de software, backend y QA" current="inicio">
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(personSchema)} />
+  <script is:inline slot="head">
+    try {
+      if (document.documentElement.classList.contains('motion-ok') && !sessionStorage.getItem('introVista')) {
+        document.documentElement.classList.add('intro-on');
+      }
+    } catch (error) {}
+  </script>
+
+  <div class="intro" data-intro>
+    <div class="intro-layer intro-stars" aria-hidden="true"></div>
+    <div class="intro-layer intro-skyline" aria-hidden="true"></div>
+    <div class="intro-layer intro-office" aria-hidden="true"></div>
+    <div class="intro-stage" aria-hidden="true">
+      <p class="intro-title">{personalInfo.name}</p>
+      <p class="intro-sub">{personalInfo.title} · Backend · QA · Integración</p>
+    </div>
+    <button type="button" class="intro-skip" data-intro-skip>Saltar intro</button>
+  </div>
 
   <section aria-labelledby="hero-titulo" class="relative flex flex-col gap-12 pt-6 lg:pt-12">
     <div class="grid items-center gap-12 lg:grid-cols-12">
@@ -215,9 +233,9 @@ const personSchema = {
       </aside>
     </div>
 
-    <figure class="pixel-strip" aria-hidden="true" data-reveal style="--reveal-delay: 200ms">
-      <img src="/pixel-office.png" alt="" width="368" height="84" decoding="async" />
-    </figure>
+    <div class="pixel-strip" aria-hidden="true" data-reveal style="--reveal-delay: 200ms">
+      <div class="pixel-pan"></div>
+    </div>
 
     <dl class="stats" data-reveal style="--reveal-delay: 300ms">
       {
