@@ -152,7 +152,12 @@ const personSchema = {
 <Layout title="Steep Salvador | Ingeniería de software, backend y QA" current="inicio">
   <script type="application/ld+json" slot="head" set:html={JSON.stringify(personSchema)} />
 
-  <section aria-labelledby="hero-titulo" class="flex flex-col gap-12 pt-6 lg:pt-12">
+  <section aria-labelledby="hero-titulo" class="relative flex flex-col gap-12 pt-6 lg:pt-12">
+    <div class="retro-scene" aria-hidden="true">
+      <p class="vapor-kana" lang="ja">ソフトウェア</p>
+      <div class="retro-sun"></div>
+      <div class="retro-floor"></div>
+    </div>
     <div class="grid items-center gap-12 lg:grid-cols-12">
       <div class="flex flex-col gap-6 lg:col-span-7" data-reveal>
         <p class="hud-label">

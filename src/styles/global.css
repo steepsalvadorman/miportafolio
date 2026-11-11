@@ -12,23 +12,23 @@
   --font-display: 'Saira Condensed', 'Saira', sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, monospace;
 
-  --color-void: #07060d;
-  --color-panel: #12101c;
-  --color-paper: #f4f0ff;
-  --color-mute: #b7b0c9;
-  --color-magenta: #ff2bd6;
-  --color-cyan: #3dfff2;
-  --color-yellow: #f4f227;
-  --color-line: #3a3450;
+  --color-void: #1a1033;
+  --color-panel: #241848;
+  --color-paper: #fdf6ff;
+  --color-mute: #d3c8ee;
+  --color-magenta: #ff71ce;
+  --color-cyan: #01cdfe;
+  --color-yellow: #fffb96;
+  --color-line: #5b4a9c;
 
-  --color-ink: #f4f0ff;
-  --color-ink-muted: #b7b0c9;
-  --color-atrium: #3dfff2;
-  --color-dune: #f4f227;
-  --color-dune-deep: #07060d;
-  --color-foam: #1c1830;
-  --color-cove: #07060d;
-  --color-glass: #f4f0ff;
+  --color-ink: #fdf6ff;
+  --color-ink-muted: #d3c8ee;
+  --color-atrium: #01cdfe;
+  --color-dune: #fffb96;
+  --color-dune-deep: #1a1033;
+  --color-foam: #33236a;
+  --color-cove: #1a1033;
+  --color-glass: #fdf6ff;
 
   --ease-fluid: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-snap: cubic-bezier(0.2, 0.8, 0.2, 1);
@@ -36,7 +36,7 @@
 
 @layer base {
   html {
-    background-color: #07060d;
+    background-color: #1a1033;
     color-scheme: dark;
     scroll-padding-top: 4.5rem;
   }
@@ -1308,6 +1308,364 @@
     background-position:
       0 3rem,
       0 0;
+  }
+}
+
+/* Vaporwave: pasteles, ventanas de escritorio noventero, sol a rayas, suelo de damero y kana decorativo. */
+
+body::before {
+  background: linear-gradient(180deg, #1a1033 0%, #2b1d5c 45%, #4a2f8a 80%, #6a3fa3 100%);
+}
+
+body::after {
+  background-image: none;
+}
+
+.retro-scene {
+  position: absolute;
+  top: 0;
+  bottom: 3rem;
+  left: 50%;
+  z-index: -1;
+  width: 100vw;
+  overflow: hidden;
+  transform: translateX(-50%);
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, #000 85%, transparent);
+  mask-image: linear-gradient(180deg, #000 85%, transparent);
+}
+
+.retro-sun {
+  position: absolute;
+  bottom: 6rem;
+  left: 56%;
+  width: min(22rem, 70vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #fffb96 0%, #ffb8de 30%, #ff71ce 50%);
+  transform: translate(-50%, 50%);
+  -webkit-mask-image: linear-gradient(
+    180deg,
+    #000 0 22%,
+    transparent 22% 23.5%,
+    #000 23.5% 30%,
+    transparent 30% 32.5%,
+    #000 32.5% 38%,
+    transparent 38% 41.5%,
+    #000 41.5% 45%,
+    transparent 45% 50%
+  );
+  mask-image: linear-gradient(
+    180deg,
+    #000 0 22%,
+    transparent 22% 23.5%,
+    #000 23.5% 30%,
+    transparent 30% 32.5%,
+    #000 32.5% 38%,
+    transparent 38% 41.5%,
+    #000 41.5% 45%,
+    transparent 45% 50%
+  );
+}
+
+.vapor-kana {
+  position: absolute;
+  top: 5rem;
+  left: calc(56% - 2.5rem);
+  display: none;
+  color: transparent;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.2em;
+  writing-mode: vertical-rl;
+  -webkit-text-stroke: 1px rgb(1 205 254 / 0.75);
+}
+
+@media (min-width: 80rem) {
+  .vapor-kana {
+    display: block;
+  }
+}
+
+.retro-floor {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 6rem;
+  overflow: hidden;
+  border-top: 3px solid #01cdfe;
+  background: #1a1033;
+  perspective: 18rem;
+}
+
+.retro-floor::before,
+.horizon::before {
+  content: '';
+  position: absolute;
+  inset: 0 -60% -140%;
+  background-image: repeating-conic-gradient(#ff71ce 0 25%, #2b1d5c 0 50%);
+  background-size: 6rem 6rem;
+  transform: rotateX(64deg);
+  transform-origin: top;
+}
+
+.horizon {
+  border-top: 3px solid #01cdfe;
+  background: #1a1033;
+  box-shadow: none;
+}
+
+.horizon::after {
+  background: linear-gradient(180deg, rgb(26 16 51 / 0.55), transparent 60%);
+}
+
+/* Tipografía: etiquetas muy espaciadas y titulares en degradado pastel con sombra dura. */
+
+.hud-label {
+  letter-spacing: 0.3em;
+}
+
+.hero-title {
+  background: linear-gradient(180deg, #ffffff, #e8dcff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(3px 3px 0 rgb(26 16 51 / 0.85));
+}
+
+.hero-accent {
+  background: linear-gradient(90deg, #ff71ce, #b967ff 50%, #01cdfe);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-style: italic;
+  text-shadow: none;
+  padding-right: 0.1em;
+}
+
+.hero-accent::before,
+.hero-accent::after {
+  content: none;
+}
+
+h2 {
+  background: linear-gradient(90deg, #ff9ad5, #c9a4ff 55%, #7fe3ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(2px 2px 0 rgb(26 16 51 / 0.9));
+}
+
+h2.hud-label {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  filter: none;
+}
+
+.hero-typed {
+  color: #05ffa1;
+}
+
+.hero-typed span {
+  border-right-color: #ff71ce;
+}
+
+.tagline-accent {
+  color: #ff9ad5;
+  text-shadow: 3px 3px 0 #5a3d9a;
+}
+
+/* Ventanas: bisel claro arriba e izquierda, oscuro abajo y derecha, y barra de título. */
+
+.id-card,
+.cta-panel,
+.stats,
+.archive,
+.panel,
+.faq-item,
+.ticker {
+  border: 2px solid;
+  border-color: #e8dcff #3d2c7a #3d2c7a #e8dcff;
+  background: rgb(36 24 72 / 0.94);
+  backdrop-filter: none;
+}
+
+.id-card,
+.cta-panel {
+  padding-top: 3.75rem;
+  box-shadow: 10px 10px 0 rgb(1 205 254 / 0.55);
+}
+
+.cta-panel {
+  box-shadow: 10px 10px 0 rgb(255 113 206 / 0.55);
+}
+
+@media (min-width: 64rem) {
+  .cta-panel {
+    padding-top: 6rem;
+  }
+}
+
+.hud-frame::before,
+.hud-frame::after {
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: 0;
+  width: auto;
+  height: 2.25rem;
+  border: 0;
+  filter: none;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 2.25rem;
+}
+
+.hud-frame::before {
+  content: 'ｐｅｒｆｉｌ．ｅｘｅ';
+  padding-left: 0.75rem;
+  background: linear-gradient(90deg, #b967ff, #ff71ce 55%, #01cdfe);
+  color: #1a1033;
+}
+
+.cta-panel.hud-frame::before {
+  content: 'ｃｏｎｔａｃｔｏ．ｅｘｅ';
+}
+
+.hud-frame::after {
+  content: '_  □  ×';
+  left: auto;
+  padding: 0 0.75rem;
+  color: #1a1033;
+  letter-spacing: 0.1em;
+}
+
+.stat {
+  background: rgb(36 24 72 / 0.96);
+}
+
+.stat dd {
+  text-shadow: 3px 3px 0 rgb(26 16 51 / 0.9);
+}
+
+.ticker {
+  box-shadow: none;
+}
+
+.ticker-item:nth-child(even) {
+  -webkit-text-stroke-color: #ff9ad5;
+}
+
+.btn-dune,
+.btn-glass {
+  border: 2px solid;
+  border-color: #ffffff #3d2c7a #3d2c7a #ffffff;
+  box-shadow: 4px 4px 0 rgb(26 16 51 / 0.7);
+  clip-path: none;
+  filter: none;
+}
+
+.btn-dune {
+  background: linear-gradient(90deg, #ff9ad5, #fffb96);
+  color: #1a1033;
+}
+
+.btn-dune:hover {
+  background: #fffb96;
+}
+
+.btn-glass {
+  background: #d3c8ee;
+  color: #1a1033;
+}
+
+.btn-glass:hover {
+  background: #7fe3ff;
+}
+
+.hud-index,
+.monogram {
+  background: linear-gradient(135deg, #ff9ad5, #7fe3ff);
+  filter: none;
+}
+
+.monogram {
+  clip-path: none;
+  border: 2px solid;
+  border-color: #ffffff #3d2c7a #3d2c7a #ffffff;
+}
+
+.chip-accent,
+.icon-box {
+  box-shadow: none;
+}
+
+.taskbar {
+  background: rgb(26 16 51 / 0.85);
+}
+
+.taskbar::after {
+  background: linear-gradient(90deg, #ff71ce, #b967ff 50%, #01cdfe);
+  box-shadow: none;
+}
+
+.card {
+  --cut: 0rem;
+  background: linear-gradient(135deg, #ff9ad5, #7fe3ff);
+  padding: 2px;
+  filter: drop-shadow(8px 8px 0 rgb(185 103 255 / 0.45));
+}
+
+.card:hover {
+  background: linear-gradient(135deg, #fffb96, #ff71ce);
+}
+
+.card-inner {
+  background: linear-gradient(180deg, #2b1d5c, #241848);
+}
+
+.card-inner > :first-child > :first-child {
+  background: linear-gradient(180deg, #fffb96, #ff9ad5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: none;
+}
+
+.panel-hover:hover,
+.faq-item[open],
+.contact-tile:hover {
+  box-shadow: 6px 6px 0 rgb(1 205 254 / 0.5);
+}
+
+.timeline::before {
+  background: linear-gradient(180deg, #fffb96, #ff71ce 40%, #01cdfe);
+  box-shadow: none;
+}
+
+.timeline-node {
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .motion-ok .retro-floor::before {
+    animation: checker 2.4s linear infinite;
+  }
+
+  .motion-ok .horizon::before {
+    animation: checker 2.4s linear infinite;
+  }
+
+  .motion-ok .hero-accent {
+    animation: none;
+  }
+}
+
+@keyframes checker {
+  to {
+    background-position: 0 6rem;
   }
 }
 }
