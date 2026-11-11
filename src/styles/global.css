@@ -1318,7 +1318,8 @@ body::before {
 }
 
 body::after {
-  background-image: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='520' fill='none' stroke-width='3'%3E%3Cpath d='M60 90l34 58H26z' stroke='%2301cdfe'/%3E%3Ccircle cx='410' cy='120' r='22' stroke='%23ff71ce'/%3E%3Cpath d='M250 300q14-22 28 0t28 0 28 0 28 0' stroke='%23fffb96'/%3E%3Cpath d='M110 400h36M128 382v36' stroke='%23b967ff'/%3E%3Cpath d='M430 420l30 30-30 30-30-30z' stroke='%2305ffa1'/%3E%3Cpath d='M300 60q10-16 20 0t20 0 20 0' stroke='%23ff71ce'/%3E%3C/svg%3E");
+  opacity: 0.28;
 }
 
 .retro-scene {
@@ -1337,9 +1338,9 @@ body::after {
 
 .retro-sun {
   position: absolute;
-  bottom: 6rem;
+  bottom: 8rem;
   left: 56%;
-  width: min(22rem, 70vw);
+  width: min(26rem, 76vw);
   aspect-ratio: 1;
   border-radius: 50%;
   background: linear-gradient(180deg, #fffb96 0%, #ffb8de 30%, #ff71ce 50%);
@@ -1393,7 +1394,7 @@ body::after {
   right: 0;
   bottom: 0;
   left: 0;
-  height: 6rem;
+  height: 8rem;
   overflow: hidden;
   border-top: 3px solid #01cdfe;
   background: #1a1033;
@@ -1649,6 +1650,174 @@ h2.hud-label {
   box-shadow: none;
 }
 
+
+/* Alto impacto: cielo rosa en el horizonte, palmeras, aberración cromática, marquesina y ventanas con barra. */
+
+.retro-scene::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 8rem;
+  background: linear-gradient(180deg, transparent 52%, rgb(185 103 255 / 0.45) 78%, rgb(255 113 206 / 0.8) 100%);
+}
+
+.retro-sun {
+  background: linear-gradient(180deg, #fffb96 0%, #ffd0a8 18%, #ff9ad5 34%, #ff71ce 50%);
+  filter: drop-shadow(0 0 2.5rem rgb(255 251 150 / 0.55));
+}
+
+.vapor-palm {
+  position: absolute;
+  bottom: 7.5rem;
+  display: none;
+  width: 14rem;
+  fill: #1a1033;
+}
+
+.vapor-palm-left {
+  left: 0.5rem;
+}
+
+.vapor-palm-right {
+  right: 0.5rem;
+  transform: scaleX(-1);
+}
+
+@media (min-width: 80rem) {
+  .vapor-palm {
+    display: block;
+  }
+}
+
+.vapor-kana {
+  top: 4rem;
+  letter-spacing: 0.05em;
+  -webkit-text-stroke: 1.5px #01cdfe;
+  filter: drop-shadow(3px 3px 0 rgb(255 113 206 / 0.8));
+}
+
+.hero-title {
+  filter: drop-shadow(3px 3px 0 #7a4bd0) drop-shadow(0 0 1.5rem rgb(26 16 51 / 0.9));
+}
+
+.hero-accent {
+  font-size: 1.12em;
+  filter: drop-shadow(-3px 0 0 rgb(1 205 254 / 0.9)) drop-shadow(3px 3px 0 #fffb96);
+}
+
+.hero-typed span {
+  padding: 0.25rem 0.5rem;
+  background: #1a1033;
+  box-shadow: 4px 4px 0 #ff71ce;
+}
+
+h2 {
+  filter: drop-shadow(2px 2px 0 #1a1033) drop-shadow(3px 3px 0 rgb(1 205 254 / 0.55));
+}
+
+.task-start {
+  min-height: 2rem;
+  border: 2px solid;
+  border-color: #ffffff #3d2c7a #3d2c7a #ffffff;
+  padding: 0 0.75rem;
+  background: linear-gradient(90deg, #ff9ad5, #7fe3ff);
+  color: #1a1033;
+  font-style: normal;
+}
+
+.task-start[aria-current='page'] {
+  color: #1a1033;
+}
+
+.taskbar::after {
+  height: 3px;
+}
+
+.stat::before {
+  width: 100%;
+  height: 0.375rem;
+  background: linear-gradient(90deg, currentColor, transparent);
+}
+
+.stat dd {
+  font-size: 3.75rem;
+  text-shadow:
+    3px 3px 0 #1a1033,
+    6px 6px 0 rgb(185 103 255 / 0.8);
+}
+
+.ticker {
+  background: linear-gradient(90deg, #ff71ce, #b967ff 50%, #01cdfe);
+  -webkit-mask-image: none;
+  mask-image: none;
+  box-shadow: 8px 8px 0 #fffb96;
+}
+
+.ticker-item {
+  color: #1a1033;
+  font-style: italic;
+  text-transform: uppercase;
+}
+
+.ticker-item .text-magenta {
+  color: #fffb96;
+}
+
+.ticker-item:nth-child(even) {
+  color: transparent;
+  -webkit-text-stroke: 1.5px #ffffff;
+}
+
+.card-inner {
+  padding-top: 3.25rem;
+}
+
+.card-inner::before {
+  top: 0;
+  right: 0;
+  left: 0;
+  width: auto;
+  height: 2rem;
+  background: linear-gradient(90deg, #b967ff, #ff71ce 55%, #01cdfe);
+  opacity: 1;
+}
+
+.card-inner::after {
+  content: '_  □  ×';
+  position: absolute;
+  top: 0;
+  right: 0.75rem;
+  color: #1a1033;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 2rem;
+}
+
+.card,
+.card-inner {
+  clip-path: none;
+}
+
+.card {
+  filter: none;
+  box-shadow: 10px 10px 0 rgb(1 205 254 / 0.6);
+}
+
+li:nth-child(even) > .card {
+  box-shadow: 10px 10px 0 rgb(255 113 206 / 0.6);
+}
+
+.horizon {
+  height: 13rem;
+}
+
+.cta-panel {
+  background:
+    radial-gradient(60% 90% at 100% 100%, rgb(255 113 206 / 0.3), transparent 70%),
+    radial-gradient(50% 80% at 0% 0%, rgb(1 205 254 / 0.22), transparent 70%),
+    rgb(36 24 72 / 0.96);
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .motion-ok .retro-floor::before {
     animation: checker 2.4s linear infinite;
@@ -1660,6 +1829,14 @@ h2.hud-label {
 
   .motion-ok .hero-accent {
     animation: none;
+  }
+
+  .motion-ok .card:hover .card-inner::before {
+    animation: none;
+  }
+
+  .motion-ok .card:hover {
+    transform: translate(-4px, -6px);
   }
 }
 

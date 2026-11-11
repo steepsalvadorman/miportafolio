@@ -22,18 +22,21 @@
       }
 
       :root {
-        --void: #07060d;
-        --paper: #f4f0ff;
-        --mute-dark: #b7b0c9;
-        --ink: #17141f;
-        --mute: #5d5772;
-        --line: #dcd7e8;
-        --panel: #f6f4fb;
-        --magenta: #ff2bd6;
-        --magenta-ink: #b0088a;
-        --cyan: #3dfff2;
-        --cyan-ink: #00727a;
-        --yellow: #f4f227;
+        --void: #1a1033;
+        --paper: #fdf6ff;
+        --mute-dark: #ddd3f5;
+        --ink: #1d1436;
+        --mute: #5f5680;
+        --line: #e0d6f5;
+        --panel: #f8f3ff;
+        --magenta: #ff71ce;
+        --magenta-ink: #b3127f;
+        --cyan: #01cdfe;
+        --cyan-ink: #006b8f;
+        --yellow: #fffb96;
+        --violet: #b967ff;
+        --violet-ink: #6d28c9;
+        --bar: linear-gradient(90deg, #b967ff, #ff71ce 55%, #01cdfe);
       }
 
       * {
@@ -75,14 +78,15 @@
 
       /* Sin position ni clip-path en bloques con texto: mantienen el orden de lectura del PDF para los ATS. */
       .hero {
+        /* Vaporwave: barra de ventana, sol a rayas y suelo de damero, todo como fondo. */
         background:
-          linear-gradient(var(--cyan), var(--cyan)) 6mm 5mm / 7mm 1.5px no-repeat,
-          linear-gradient(var(--cyan), var(--cyan)) 6mm 5mm / 1.5px 7mm no-repeat,
-          linear-gradient(var(--magenta), var(--magenta)) right 6mm bottom 5mm / 7mm 1.5px no-repeat,
-          linear-gradient(var(--magenta), var(--magenta)) right 6mm bottom 5mm / 1.5px 7mm no-repeat,
-          var(--void);
+          var(--bar) top / 100% 5mm no-repeat,
+          repeating-conic-gradient(#ff71ce 0 25%, #1a1033 0 50%) left bottom / 3.6mm 3.6mm repeat-x,
+          linear-gradient(#01cdfe, #01cdfe) left bottom 3.6mm / 100% 0.5mm no-repeat,
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fffb96'/%3E%3Cstop offset='.45' stop-color='%23ff9ad5'/%3E%3Cstop offset='1' stop-color='%23ff71ce'/%3E%3C/linearGradient%3E%3CclipPath id='c'%3E%3Cpath d='M0 0h200v44H0zM0 48h200v12H0zM0 65h200v10H0zM0 81h200v8H0zM0 95h200v5H0z'/%3E%3C/clipPath%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='96' fill='url(%23g)' clip-path='url(%23c)'/%3E%3C/svg%3E") right 15mm bottom 4.1mm / 36mm 18mm no-repeat,
+          linear-gradient(180deg, #1a1033 0%, #2b1d5c 55%, #5a3d9a 100%);
         color: var(--paper);
-        padding: 8mm 13mm 0;
+        padding: 8mm 13mm 5.6mm;
       }
 
       .hero-top {
@@ -106,10 +110,10 @@
         flex-shrink: 0;
         align-items: center;
         justify-content: center;
-        background:
-          linear-gradient(225deg, var(--void) 0 2.83mm, transparent 2.83mm),
-          linear-gradient(45deg, var(--void) 0 2.83mm, transparent 2.83mm),
-          var(--yellow);
+        border: 0.6mm solid;
+        border-color: #ffffff #3d2c7a #3d2c7a #ffffff;
+        background: linear-gradient(135deg, #ff9ad5, #7fe3ff);
+        box-shadow: 1.5mm 1.5mm 0 #01cdfe;
         color: var(--void);
         font-family: 'Saira Condensed', sans-serif;
         font-size: 20pt;
@@ -137,11 +141,12 @@
       .hero h1 {
         margin-top: 1.5mm;
         font-size: 24pt;
+        font-style: italic;
       }
 
       .role {
         margin-top: 1mm;
-        color: var(--cyan);
+        color: #7fe3ff;
         font-size: 10pt;
         font-weight: 600;
       }
@@ -150,7 +155,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 1.5mm 7mm;
-        margin-top: 4mm;
+        margin-top: 3mm;
         font-size: 8.5pt;
         white-space: nowrap;
       }
@@ -174,21 +179,24 @@
 
       .stats {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        margin-top: 4mm;
-        border-top: 1px solid #3a3450;
+        grid-template-columns: 1fr 0.9fr 1.1fr 1.25fr;
+        width: 130mm;
+        margin-top: 2.5mm;
+        border: 0.5mm solid;
+        border-color: #e8dcff #3d2c7a #3d2c7a #e8dcff;
+        background: rgb(26 16 51 / 0.82);
       }
 
       .stat {
         display: flex;
         align-items: baseline;
         gap: 2.5mm;
-        padding: 3.5mm 0 4.5mm;
+        gap: 2mm;
+        padding: 1.5mm 2.2mm;
       }
 
       .stat + .stat {
-        padding-left: 4mm;
-        border-left: 1px solid #3a3450;
+        border-left: 1px solid #5b4a9c;
       }
 
       .stat b {
@@ -214,7 +222,7 @@
         align-items: center;
         gap: 2.5mm;
         margin: 4mm 0 2mm;
-        color: var(--mute);
+        color: var(--ink);
         font-family: 'Geist Mono', monospace;
         font-size: 7.5pt;
         font-weight: 500;
@@ -224,7 +232,12 @@
       }
 
       .sec .idx {
-        color: var(--magenta-ink);
+        padding: 0 2mm;
+        background: linear-gradient(135deg, #ff9ad5, #7fe3ff);
+        color: var(--void);
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        box-shadow: 0.8mm 0.8mm 0 var(--void);
       }
 
       .sec .rule {
@@ -236,8 +249,8 @@
       .sec::after {
         content: '';
         flex: 1;
-        height: 1px;
-        background: var(--line);
+        height: 0.6mm;
+        background: var(--bar);
       }
 
       .profile {
@@ -280,14 +293,14 @@
         width: 2.5mm;
         height: 2.5mm;
         margin: 1mm 0 0 -6mm;
-        border: 1.5px solid var(--cyan-ink);
+        border: 1.5px solid var(--violet-ink);
         background: #fff;
         transform: rotate(45deg);
       }
 
       .job.current::before {
         border-color: var(--void);
-        background: var(--yellow);
+        background: var(--magenta);
       }
 
       .job-head {
@@ -338,7 +351,7 @@
         display: inline-block;
         margin-right: 1.5mm;
         padding: 0 1.5mm;
-        background: var(--yellow);
+        background: linear-gradient(90deg, #ff9ad5, #fffb96);
         color: var(--void);
         font-weight: 500;
         text-transform: uppercase;
@@ -401,11 +414,22 @@
         height: 100%;
         flex-direction: column;
         gap: 1.5mm;
-        border: 1px solid var(--line);
-        padding: 3.5mm;
+        border: 0.5mm solid var(--void);
+        padding: 5mm 3.5mm 2.5mm;
         background:
-          linear-gradient(225deg, var(--magenta) 0 2.1mm, transparent 2.1mm) top right / 5mm 5mm no-repeat,
+          linear-gradient(var(--void), var(--void)) right 2mm top 1mm / 1.6mm 1.6mm no-repeat,
+          linear-gradient(var(--void), var(--void)) right 5mm top 1mm / 1.6mm 1.6mm no-repeat,
+          var(--bar) top / 100% 3.6mm no-repeat,
           var(--panel);
+        box-shadow: 1.6mm 1.6mm 0 var(--cyan);
+      }
+
+      .card:nth-child(2) .card-inner {
+        box-shadow: 1.6mm 1.6mm 0 var(--magenta);
+      }
+
+      .card:nth-child(3) .card-inner {
+        box-shadow: 1.6mm 1.6mm 0 var(--violet);
       }
 
       .card-num {
@@ -458,7 +482,7 @@
       }
 
       .row dt {
-        color: var(--cyan-ink);
+        color: var(--violet-ink);
         font-family: 'Saira Condensed', sans-serif;
         font-size: 10pt;
         font-weight: 700;
@@ -525,7 +549,7 @@
 
       .level.high {
         border-color: var(--void);
-        background: var(--yellow);
+        background: linear-gradient(90deg, #ff9ad5, #7fe3ff);
         color: var(--void);
       }
     </style>
