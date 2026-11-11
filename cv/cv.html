@@ -8,14 +8,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Saira+Condensed:wght@600;700&family=Saira:wght@400;600&display=block"
+      href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500&family=Jersey+15&family=Saira:wght@400;600&family=VT323&display=block"
       rel="stylesheet"
     />
     <style>
       @page {
         size: A4;
         margin: 10mm 0;
-        background: #1a1033;
+        background: #c3c7cb;
       }
 
       @page :first {
@@ -23,21 +23,24 @@
       }
 
       :root {
-        --void: #1a1033;
-        --paper: #fdf6ff;
-        --mute-dark: #ddd3f5;
-        --ink: #fdf6ff;
-        --mute: #cfc3ea;
-        --line: #4f3f92;
-        --panel: #2a1d5a;
-        --magenta: #ff71ce;
-        --magenta-ink: #ff9ad5;
-        --cyan: #01cdfe;
-        --cyan-ink: #7fe3ff;
-        --yellow: #fffb96;
-        --violet: #b967ff;
-        --violet-ink: #d1b3ff;
-        --bar: linear-gradient(90deg, #b967ff, #ff71ce 55%, #01cdfe);
+        --void: #0c1c3c;
+        --paper: #f2efe6;
+        --mute-dark: #c2cbe0;
+        --ink: #10131f;
+        --mute: #3d4450;
+        --line: #868a8e;
+        --panel: #dfe3e7;
+        --magenta: #000080;
+        --magenta-ink: #800020;
+        --cyan: #5fd3c8;
+        --cyan-ink: #005a5a;
+        --yellow: #f2c94c;
+        --violet: #000080;
+        --violet-ink: #000080;
+        --grey: #c3c7cb;
+        --bar: linear-gradient(90deg, #000080, #1084d0);
+        --raised: #ffffff #40444a #40444a #ffffff;
+        --sunken: #40444a #ffffff #ffffff #40444a;
       }
 
       * {
@@ -46,9 +49,9 @@
         padding: 0;
       }
 
-      /* Página completa en oscuro: el fondo del html cubre también los márgenes de impresión. */
+      /* Gris de sistema en toda la página; el fondo de @page cubre también los márgenes. */
       html {
-        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' fill='none' stroke-width='2'%3E%3Cpath d='M40 60l20 34H20z' stroke='%23284a7a'/%3E%3Ccircle cx='235' cy='70' r='13' stroke='%236a2f7a'/%3E%3Cpath d='M140 175q8-13 16 0t16 0 16 0 16 0' stroke='%235a5a52'/%3E%3Cpath d='M65 235h22M76 224v22' stroke='%23553a8a'/%3E%3Cpath d='M250 245l17 17-17 17-17-17z' stroke='%231f6a5a'/%3E%3C/svg%3E") 0 0 / 60mm 60mm, #1a1033;
+        background: #c3c7cb;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
@@ -81,15 +84,14 @@
 
       /* Sin position ni clip-path en bloques con texto: mantienen el orden de lectura del PDF para los ATS. */
       .hero {
-        /* Vaporwave: barra de ventana, sol a rayas y suelo de damero, todo como fondo. */
+        /* Ventana de escritorio: barra de título y tira de oficina en pixel art, todo como fondo. */
         background:
           var(--bar) top / 100% 5mm no-repeat,
-          repeating-conic-gradient(#ff71ce 0 25%, #1a1033 0 50%) left bottom / 3.6mm 3.6mm repeat-x,
-          linear-gradient(#01cdfe, #01cdfe) left bottom 3.6mm / 100% 0.5mm no-repeat,
-          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23fffb96'/%3E%3Cstop offset='.45' stop-color='%23ff9ad5'/%3E%3Cstop offset='1' stop-color='%23ff71ce'/%3E%3C/linearGradient%3E%3CclipPath id='c'%3E%3Cpath d='M0 0h200v44H0zM0 48h200v12H0zM0 65h200v10H0zM0 81h200v8H0zM0 95h200v5H0z'/%3E%3C/clipPath%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='96' fill='url(%23g)' clip-path='url(%23c)'/%3E%3C/svg%3E") right 15mm bottom 4.1mm / 36mm 18mm no-repeat,
-          linear-gradient(180deg, #1a1033 0%, #2b1d5c 55%, #5a3d9a 100%);
+          linear-gradient(#c3c7cb, #c3c7cb) left bottom 11mm / 100% 0.8mm no-repeat,
+          url('pixel-office-4x.png') left bottom / auto 11mm repeat-x,
+          #0c1c3c;
         color: var(--paper);
-        padding: 8mm 13mm 5.6mm;
+        padding: 7.5mm 13mm 13.2mm;
       }
 
       .hero-top {
@@ -563,6 +565,230 @@
         border-color: #ffffff;
         background: linear-gradient(90deg, #ff9ad5, #7fe3ff);
         color: var(--void);
+      }
+
+      /* Tema: oficina de los 90 en pixel art. Ventanas grises con bisel, barras de título
+         azules y tipografía de píxel en títulos y etiquetas. */
+
+      h1,
+      h3,
+      .monogram,
+      .stat b,
+      .card-num,
+      .row dt {
+        font-family: 'Jersey 15', sans-serif;
+        font-weight: 400;
+      }
+
+      .kicker,
+      .sec,
+      .tag,
+      .when,
+      .chips li,
+      .card .repo,
+      .level,
+      .total,
+      .mono {
+        font-family: 'VT323', monospace;
+        letter-spacing: 0;
+      }
+
+      h3 {
+        line-height: 1;
+      }
+
+      .row {
+        padding: 0.6mm 0;
+      }
+
+      .profile {
+        padding: 0.8mm 3mm;
+      }
+
+      .monogram {
+        border: 0.7mm solid;
+        border-color: var(--raised);
+        background: #000080;
+        box-shadow: 1.2mm 1.2mm 0 #000;
+        color: var(--yellow);
+        font-size: 24pt;
+      }
+
+      .kicker {
+        font-size: 9.5pt;
+      }
+
+      .hero h1 {
+        color: var(--yellow);
+        font-size: 25pt;
+        font-style: normal;
+      }
+
+      .role {
+        color: var(--paper);
+      }
+
+      .contact svg {
+        stroke: var(--cyan);
+      }
+
+      .stats {
+        width: 134mm;
+        border: 0.7mm solid;
+        border-color: var(--raised);
+        background: var(--grey);
+        color: var(--ink);
+      }
+
+      .stat + .stat {
+        border-left: 0.3mm solid var(--line);
+      }
+
+      .stat b {
+        color: #000080 !important;
+        font-size: 19pt;
+      }
+
+      .stat span {
+        color: var(--ink);
+      }
+
+      .sec {
+        gap: 2mm;
+        margin: 2.6mm 0 1.4mm;
+        padding: 0.2mm 2mm;
+        line-height: 1.15;
+        background:
+          linear-gradient(#fff, #fff) right 2mm center / 1.8mm 1.8mm no-repeat,
+          linear-gradient(#fff, #fff) right 5mm center / 1.8mm 1.8mm no-repeat,
+          linear-gradient(#fff, #fff) right 8mm center / 1.8mm 0.5mm no-repeat,
+          var(--bar);
+        color: #fff;
+        font-size: 10pt;
+        font-weight: 400;
+        letter-spacing: 0;
+      }
+
+      .sec .idx {
+        padding: 0 1.5mm;
+        background: var(--yellow);
+        box-shadow: none;
+        color: var(--void);
+      }
+
+      .sec .rule,
+      .sec::after {
+        background: none;
+      }
+
+      .sec-note {
+        margin-right: 12mm;
+        color: var(--yellow);
+      }
+
+      .profile {
+        border: 0.5mm solid;
+        border-color: var(--sunken);
+        background: #fff;
+        box-shadow: none;
+      }
+
+      .profile strong {
+        color: #000080;
+      }
+
+      .jobs {
+        gap: 2mm;
+      }
+
+      .job::before {
+        border: 0.4mm solid #000;
+        background: #000080;
+        transform: none;
+      }
+
+      .job.current::before {
+        border-color: #000;
+        background: var(--yellow);
+      }
+
+      .job h3,
+      .edu h3,
+      .card h3 {
+        color: #000080;
+        font-size: 12pt;
+      }
+
+      .tag {
+        font-size: 9pt;
+      }
+
+      .when {
+        font-size: 9pt;
+        line-height: 1.15;
+      }
+
+      .badge {
+        background: var(--yellow);
+      }
+
+      .bullets li::before {
+        background: #000080;
+      }
+
+      .chips li {
+        border: 0.3mm solid;
+        border-color: var(--sunken);
+        background: #fff;
+        font-size: 8.5pt;
+        line-height: 1.1;
+      }
+
+      .chips.accent li {
+        border-color: var(--raised);
+        background: #000080;
+        color: #fff;
+      }
+
+      .card-inner {
+        border-color: var(--raised);
+        background:
+          linear-gradient(#fff, #fff) right 2mm top 1mm / 1.6mm 1.6mm no-repeat,
+          linear-gradient(#fff, #fff) right 5mm top 1mm / 1.6mm 1.6mm no-repeat,
+          var(--bar) top / 100% 3.6mm no-repeat,
+          var(--panel);
+        box-shadow: 1.4mm 1.4mm 0 #000080 !important;
+      }
+
+      .card-num {
+        font-size: 14pt;
+      }
+
+      .card .repo {
+        font-size: 8.5pt;
+      }
+
+      .row dt {
+        font-size: 10.5pt;
+      }
+
+      .level {
+        border: 0.3mm solid;
+        border-color: var(--sunken);
+        background: #fff;
+        color: var(--ink);
+        font-size: 9pt;
+        line-height: 1.1;
+      }
+
+      .level.high {
+        border-color: var(--raised);
+        background: #000080;
+        color: #fff;
+      }
+
+      .total {
+        font-size: 9pt;
       }
     </style>
   </head>

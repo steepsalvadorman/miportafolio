@@ -146,4 +146,6 @@ plant(314, 60)
 cabinet(336, 62)
 
 img.save(OUT)
+# Copia ampliada para el CV: en PDF no hay image-rendering, así que se amplía aquí sin suavizado.
+img.resize((W * 4, H * 4), Image.NEAREST).save(OUT.parent.parent / "cv" / "pixel-office-4x.png")
 print("escrito", OUT, img.size)
