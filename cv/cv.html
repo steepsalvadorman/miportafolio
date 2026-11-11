@@ -15,6 +15,7 @@
       @page {
         size: A4;
         margin: 10mm 0;
+        background: #1a1033;
       }
 
       @page :first {
@@ -25,17 +26,17 @@
         --void: #1a1033;
         --paper: #fdf6ff;
         --mute-dark: #ddd3f5;
-        --ink: #1d1436;
-        --mute: #5f5680;
-        --line: #e0d6f5;
-        --panel: #f8f3ff;
+        --ink: #fdf6ff;
+        --mute: #cfc3ea;
+        --line: #4f3f92;
+        --panel: #2a1d5a;
         --magenta: #ff71ce;
-        --magenta-ink: #b3127f;
+        --magenta-ink: #ff9ad5;
         --cyan: #01cdfe;
-        --cyan-ink: #006b8f;
+        --cyan-ink: #7fe3ff;
         --yellow: #fffb96;
         --violet: #b967ff;
-        --violet-ink: #6d28c9;
+        --violet-ink: #d1b3ff;
         --bar: linear-gradient(90deg, #b967ff, #ff71ce 55%, #01cdfe);
       }
 
@@ -45,13 +46,15 @@
         padding: 0;
       }
 
+      /* Página completa en oscuro: el fondo del html cubre también los márgenes de impresión. */
       html {
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' fill='none' stroke-width='2'%3E%3Cpath d='M40 60l20 34H20z' stroke='%23284a7a'/%3E%3Ccircle cx='235' cy='70' r='13' stroke='%236a2f7a'/%3E%3Cpath d='M140 175q8-13 16 0t16 0 16 0 16 0' stroke='%235a5a52'/%3E%3Cpath d='M65 235h22M76 224v22' stroke='%23553a8a'/%3E%3Cpath d='M250 245l17 17-17 17-17-17z' stroke='%231f6a5a'/%3E%3C/svg%3E") 0 0 / 60mm 60mm, #1a1033;
         -webkit-print-color-adjust: exact;
         print-color-adjust: exact;
       }
 
       body {
-        background: #fff;
+        background: transparent;
         color: var(--ink);
         font-family: 'Saira', sans-serif;
         font-size: 9pt;
@@ -237,7 +240,7 @@
         color: var(--void);
         font-weight: 500;
         letter-spacing: 0.05em;
-        box-shadow: 0.8mm 0.8mm 0 var(--void);
+        box-shadow: 0.8mm 0.8mm 0 var(--cyan);
       }
 
       .sec .rule {
@@ -254,11 +257,16 @@
       }
 
       .profile {
-        font-size: 9.5pt;
+        border: 0.5mm solid;
+        border-color: #e8dcff #3d2c7a #3d2c7a #e8dcff;
+        padding: 1.2mm 3mm;
+        background: var(--panel);
+        box-shadow: 1.6mm 1.6mm 0 var(--magenta);
+        font-size: 9.25pt;
       }
 
       .profile strong {
-        color: var(--ink);
+        color: var(--magenta-ink);
         font-weight: 600;
       }
 
@@ -293,13 +301,13 @@
         width: 2.5mm;
         height: 2.5mm;
         margin: 1mm 0 0 -6mm;
-        border: 1.5px solid var(--violet-ink);
-        background: #fff;
+        border: 1.5px solid var(--cyan);
+        background: var(--void);
         transform: rotate(45deg);
       }
 
       .job.current::before {
-        border-color: var(--void);
+        border-color: var(--yellow);
         background: var(--magenta);
       }
 
@@ -311,6 +319,7 @@
       }
 
       .job h3 {
+        color: var(--yellow);
         font-size: 12pt;
       }
 
@@ -414,7 +423,8 @@
         height: 100%;
         flex-direction: column;
         gap: 1.5mm;
-        border: 0.5mm solid var(--void);
+        border: 0.5mm solid;
+        border-color: #e8dcff #3d2c7a #3d2c7a #e8dcff;
         padding: 5mm 3.5mm 2.5mm;
         background:
           linear-gradient(var(--void), var(--void)) right 2mm top 1mm / 1.6mm 1.6mm no-repeat,
@@ -441,6 +451,7 @@
       }
 
       .card h3 {
+        color: var(--cyan-ink);
         font-size: 11.5pt;
       }
 
@@ -524,6 +535,7 @@
       }
 
       .edu h3 {
+        color: var(--yellow);
         font-size: 12pt;
       }
 
@@ -548,7 +560,7 @@
       }
 
       .level.high {
-        border-color: var(--void);
+        border-color: #ffffff;
         background: linear-gradient(90deg, #ff9ad5, #7fe3ff);
         color: var(--void);
       }

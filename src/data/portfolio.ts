@@ -44,7 +44,7 @@ export const personalInfo = {
   email: 'steepbsm@gmail.com',
   linkedin: 'linkedin.com/in/steepsalvador',
   github: 'github.com/steepsalvadorman',
-  cv: '/cv/Steep-Salvador-CV.pdf',
+  cv: '/cv/Steep-Salvador-CV.pdf?v=2',
 };
 
 export const summary =
