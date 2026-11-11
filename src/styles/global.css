@@ -943,6 +943,373 @@
     opacity: 0.3;
   }
 }
+
+/* Refuerzo neón: brillo, glitch, líneas de barrido y horizonte. Todo decorativo;
+   las animaciones solo corren con .motion-ok (sin movimiento reducido). */
+
+.taskbar::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-cyan), var(--color-magenta) 60%, var(--color-yellow));
+  box-shadow: 0 0 12px rgb(255 43 214 / 0.7);
+  pointer-events: none;
+}
+
+.scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  overflow: hidden;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgb(0 0 0 / 0.16) 0 1px, transparent 1px 3px);
+}
+
+.scanlines::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: -20vh;
+  height: 20vh;
+  background: linear-gradient(180deg, transparent, rgb(61 255 242 / 0.05), transparent);
+}
+
+.hero-accent {
+  position: relative;
+  display: inline-block;
+  text-shadow:
+    -2px 0 rgb(255 43 214 / 0.75),
+    2px 0 rgb(244 242 39 / 0.35),
+    0 0 28px rgb(61 255 242 / 0.45);
+}
+
+.hero-accent::before,
+.hero-accent::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: none;
+}
+
+.hero-accent::before {
+  -webkit-text-fill-color: var(--color-magenta);
+}
+
+.hero-accent::after {
+  -webkit-text-fill-color: var(--color-yellow);
+}
+
+.hero-typed {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--color-cyan);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.04em;
+}
+
+.hero-typed span {
+  display: inline-block;
+  overflow: hidden;
+  max-width: 100%;
+  border-right: 0.5rem solid var(--color-magenta);
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
+.hud-index {
+  padding: 0.125rem 0.875rem 0.125rem 0.5rem;
+  background: var(--color-yellow);
+  color: var(--color-void);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.25rem;
+  clip-path: polygon(0 0, 100% 0, calc(100% - 0.5rem) 100%, 0 100%);
+}
+
+.hud-dot {
+  box-shadow: 0 0 10px var(--color-cyan);
+}
+
+.id-card {
+  box-shadow:
+    0 0 0 1px rgb(61 255 242 / 0.12),
+    0 0 48px rgb(255 43 214 / 0.22),
+    inset 0 0 48px rgb(61 255 242 / 0.04);
+}
+
+.hud-frame::before {
+  filter: drop-shadow(0 0 6px var(--color-cyan));
+}
+
+.hud-frame::after {
+  filter: drop-shadow(0 0 6px var(--color-magenta));
+}
+
+.monogram {
+  filter: drop-shadow(0 0 10px rgb(244 242 39 / 0.55));
+}
+
+.btn-dune {
+  filter: drop-shadow(0 0 10px rgb(244 242 39 / 0.45));
+}
+
+.btn-glass {
+  border-color: var(--color-cyan);
+  box-shadow:
+    0 0 14px rgb(61 255 242 / 0.25),
+    inset 0 0 14px rgb(61 255 242 / 0.08);
+}
+
+.btn-glass:hover {
+  background: var(--color-cyan);
+}
+
+.chip-accent {
+  background: rgb(61 255 242 / 0.08);
+  box-shadow: 0 0 10px rgb(61 255 242 / 0.2);
+}
+
+.stat {
+  position: relative;
+}
+
+.stat::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2.5rem;
+  height: 2px;
+  background: currentColor;
+}
+
+.stat dd {
+  text-shadow: 0 0 22px color-mix(in srgb, currentColor 60%, transparent);
+}
+
+.ticker {
+  border-color: var(--color-magenta);
+  box-shadow: 0 0 24px rgb(255 43 214 / 0.18);
+}
+
+.ticker-item:nth-child(even) {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--color-cyan);
+}
+
+.card {
+  background: linear-gradient(
+    135deg,
+    rgb(61 255 242 / 0.7),
+    var(--color-line) 30%,
+    var(--color-line) 70%,
+    rgb(255 43 214 / 0.7)
+  );
+}
+
+.card:hover {
+  background: linear-gradient(135deg, var(--color-cyan), var(--color-magenta));
+}
+
+.card-inner {
+  position: relative;
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgb(255 43 214 / 0.1), transparent 60%),
+    var(--color-panel);
+}
+
+.card-inner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 40%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-cyan), transparent);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.card-inner > :first-child > :first-child {
+  text-shadow: 0 0 20px rgb(244 242 39 / 0.5);
+}
+
+.panel-hover:hover,
+.faq-item[open],
+.contact-tile:hover {
+  box-shadow: 0 0 24px rgb(61 255 242 / 0.2);
+}
+
+.icon-box {
+  background: rgb(61 255 242 / 0.06);
+  box-shadow:
+    0 0 14px rgb(61 255 242 / 0.25),
+    inset 0 0 10px rgb(61 255 242 / 0.12);
+}
+
+.tagline-accent {
+  text-shadow: 0 0 32px rgb(61 255 242 / 0.5);
+}
+
+.timeline::before {
+  background: linear-gradient(180deg, var(--color-yellow), var(--color-cyan) 30%, var(--color-magenta));
+  box-shadow: 0 0 8px rgb(61 255 242 / 0.5);
+}
+
+.timeline-node {
+  box-shadow: 0 0 10px rgb(61 255 242 / 0.6);
+}
+
+.cta-panel {
+  box-shadow:
+    0 0 64px rgb(255 43 214 / 0.22),
+    inset 0 0 64px rgb(255 43 214 / 0.06);
+}
+
+.horizon {
+  position: relative;
+  height: 9rem;
+  overflow: hidden;
+  border-top: 2px solid var(--color-magenta);
+  background: var(--color-void);
+  box-shadow: 0 -8px 32px rgb(255 43 214 / 0.35);
+  perspective: 20rem;
+}
+
+.horizon::before {
+  content: '';
+  position: absolute;
+  inset: 0 -60% -140%;
+  background-image:
+    linear-gradient(rgb(255 43 214 / 0.7) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(61 255 242 / 0.5) 1px, transparent 1px);
+  background-size: 3rem 3rem;
+  transform: rotateX(64deg);
+  transform-origin: top;
+}
+
+.horizon::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(7 6 13 / 0.9), transparent 70%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .motion-ok .scanlines::after {
+    animation: scan-sweep 7s linear infinite;
+  }
+
+  .motion-ok .hero-accent::before {
+    animation: glitch-a 5s steps(1) infinite;
+  }
+
+  .motion-ok .hero-accent::after {
+    animation: glitch-b 5s steps(1) infinite;
+  }
+
+  .motion-ok .hero-typed span {
+    width: calc(var(--chars) * 1ch + var(--chars) * 0.04em);
+    animation:
+      typed 2.6s steps(var(--chars)) 600ms backwards,
+      caret 1s steps(1) infinite;
+  }
+
+  .motion-ok .card:hover .card-inner::before {
+    opacity: 1;
+    animation: card-sweep 1.4s var(--ease-fluid) infinite;
+  }
+
+  .motion-ok .horizon::before {
+    animation: floor 1.8s linear infinite;
+  }
+}
+
+@keyframes scan-sweep {
+  to {
+    transform: translateY(140vh);
+  }
+}
+
+@keyframes glitch-a {
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  84% {
+    opacity: 0.9;
+    transform: translate(-0.4rem, 0.1rem);
+    clip-path: inset(8% 0 58% 0);
+  }
+
+  87% {
+    opacity: 0.9;
+    transform: translate(0.5rem, -0.1rem);
+    clip-path: inset(62% 0 10% 0);
+  }
+
+  90% {
+    opacity: 0;
+  }
+}
+
+@keyframes glitch-b {
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  85% {
+    opacity: 0.8;
+    transform: translate(0.45rem, 0);
+    clip-path: inset(40% 0 34% 0);
+  }
+
+  88% {
+    opacity: 0.8;
+    transform: translate(-0.35rem, 0.1rem);
+    clip-path: inset(18% 0 66% 0);
+  }
+
+  91% {
+    opacity: 0;
+  }
+}
+
+@keyframes typed {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes caret {
+  50% {
+    border-right-color: transparent;
+  }
+}
+
+@keyframes card-sweep {
+  to {
+    left: 100%;
+  }
+}
+
+@keyframes floor {
+  to {
+    background-position:
+      0 3rem,
+      0 0;
+  }
+}
 }
 
 html:not(.js) .js-only,

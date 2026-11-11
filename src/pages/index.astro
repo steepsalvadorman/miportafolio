@@ -160,7 +160,7 @@ const personSchema = {
           {personalInfo.name} · {personalInfo.title}
         </p>
         <h1 id="hero-titulo" class="hero-title max-w-[680px] text-5xl lg:text-6xl">
-          Desarrollo software e integro sistemas para <span class="hero-accent">entornos críticos.</span>
+          Desarrollo software e integro sistemas para <span class="hero-accent" data-text="entornos críticos.">entornos críticos.</span>
         </h1>
         <p class="max-w-[680px] text-lg text-ink-muted">{summary}</p>
         <div class="flex flex-wrap items-center gap-4">
@@ -173,6 +173,9 @@ const personSchema = {
             Descargar CV
           </a>
         </div>
+        <p class="hero-typed" aria-hidden="true" style="--chars: 49">
+          <span>&gt; sys.status: online // lima.pe // 12.0464S 77.0428W</span>
+        </p>
       </div>
 
       <aside
