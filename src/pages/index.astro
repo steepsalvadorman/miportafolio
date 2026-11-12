@@ -161,8 +161,8 @@ const personSchema = {
 
   <div class="intro" data-intro>
     <div class="intro-layer intro-stars" aria-hidden="true"></div>
-    <div class="intro-layer intro-skyline" aria-hidden="true"></div>
-    <div class="intro-layer intro-office" aria-hidden="true"></div>
+    <div class="intro-layer intro-streaks" aria-hidden="true"></div>
+    <div class="intro-layer intro-grid" aria-hidden="true"></div>
     <div class="intro-stage" aria-hidden="true">
       <p class="intro-title">{personalInfo.name}</p>
       <p class="intro-sub">{personalInfo.title} · Backend · QA · Integración</p>
@@ -171,6 +171,11 @@ const personSchema = {
   </div>
 
   <section aria-labelledby="hero-titulo" class="relative flex flex-col gap-12 pt-6 lg:pt-12">
+    <div class="aero-scene" aria-hidden="true">
+      <span class="aero-flare"></span>
+      <span class="aero-ring"></span>
+      <span class="aero-orb"></span>
+    </div>
     <div class="grid items-center gap-12 lg:grid-cols-12">
       <div class="flex flex-col gap-6 lg:col-span-7" data-reveal>
         <p class="hud-label">
@@ -231,10 +236,6 @@ const personSchema = {
           Rol actual desde {currentSince}
         </p>
       </aside>
-    </div>
-
-    <div class="pixel-strip" aria-hidden="true" data-reveal style="--reveal-delay: 200ms">
-      <div class="pixel-pan"></div>
     </div>
 
     <dl class="stats" data-reveal style="--reveal-delay: 300ms">
