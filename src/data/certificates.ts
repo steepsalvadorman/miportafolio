@@ -7,23 +7,6 @@ export interface Certificate {
   verifyUrl?: string;
 }
 
-export interface CourseInProgress {
-  code: string;
-  title: string;
-}
-
-export const inProgressProgram = 'PIT 2026, 11.ª edición';
-export const inProgressIssuer = 'CTIC';
-
-export const coursesInProgress: CourseInProgress[] = [
-  { code: 'PIT713', title: 'Ansible: automatización de servidores en Linux' },
-  { code: 'PIT729', title: 'Ciberseguridad: Ethical Hacking (C|EH)' },
-  { code: 'PIT736', title: 'Computación cuántica' },
-  { code: 'PIT745', title: 'Fundamentos de C++' },
-  { code: 'PIT748', title: 'Fundamentos de ESP32: IoT' },
-  { code: 'PIT788', title: 'Programación en Python intermedio' },
-];
-
 const udemy = (id: string) => `https://www.udemy.com/certificate/${id}/`;
 
 export const certificates: Certificate[] = [
