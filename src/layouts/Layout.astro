@@ -18,7 +18,7 @@ const {
 } = Astro.props;
 
 const favicon =
-  "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><radialGradient id='g' cx='.35' cy='.3' r='.8'><stop offset='0' stop-color='%23eaffff'/><stop offset='.25' stop-color='%232fe6ff'/><stop offset='.7' stop-color='%23056a8c'/><stop offset='1' stop-color='%23021018'/></radialGradient></defs><rect width='32' height='32' rx='8' fill='%23021018'/><circle cx='16' cy='16' r='11' fill='url(%23g)'/><ellipse cx='16' cy='17' rx='15' ry='4' fill='none' stroke='%23b6ff3c' stroke-width='1.5' transform='rotate(-18 16 16)'/></svg>";
+  "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='5' fill='%230b0f0e'/><path d='M4 9h3M4 16h3M4 23h3M25 9h3M25 16h3M25 23h3' stroke='%23f2b84b' stroke-width='3'/><rect x='8' y='5' width='16' height='22' rx='2' fill='%23111816' stroke='%235eead4' stroke-width='1.5'/><path d='M12 12l4 4-4 4M17 21h4' fill='none' stroke='%235eead4' stroke-width='2'/></svg>";
 ---
 
 <!doctype html>
@@ -29,11 +29,11 @@ const favicon =
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
-    <meta name="theme-color" content="#021018" />
+    <meta name="theme-color" content="#0b0f0e" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Saira+Condensed:wght@600;700&family=Saira:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=JetBrains+Mono:wght@400;500;700;800&display=swap"
       rel="stylesheet"
     />
     <meta property="og:type" content="website" />

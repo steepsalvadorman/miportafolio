@@ -105,6 +105,27 @@ const contributions: { icon: IconName; title: string; description: string; href:
 
 const interestIcons: IconName[] = ['cpu', 'terminal', 'network', 'dna'];
 
+// Formas de onda del analizador lógico: dos periodos seguidos para poder desplazarlas en bucle.
+const scopeWidth = 1200;
+const square = (bits: number[], step: number, low: number, high: number) =>
+  [...bits, ...bits]
+    .map((bit, index) => {
+      const x = index * step;
+      const y = bit ? high : low;
+      return `${index === 0 ? 'M' : 'L'}${x} ${y}H${x + step}`;
+    })
+    .join('');
+const clockBits = Array.from({ length: 40 }, (_, index) => index % 2);
+const dataBits = [1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1];
+const scopeClock = square(clockBits, scopeWidth / clockBits.length, 38, 14);
+const scopeData = square(dataBits, scopeWidth / dataBits.length, 84, 60);
+const scopeSensor = Array.from({ length: (scopeWidth * 2) / 10 + 1 }, (_, index) => {
+  const x = index * 10;
+  const t = (x / scopeWidth) * Math.PI * 2;
+  const y = 122 - 14 * Math.sin(t * 3) - 5 * Math.sin(t * 11);
+  return `${index === 0 ? 'M' : 'L'}${x} ${y.toFixed(1)}`;
+}).join('');
+
 const taglineLines = [
   { text: 'Software conectado con la operación.', accent: false },
   { text: 'Calidad integrada a cada entrega.', accent: true },
@@ -171,11 +192,6 @@ const personSchema = {
   </div>
 
   <section aria-labelledby="hero-titulo" class="relative flex flex-col gap-12 pt-6 lg:pt-12">
-    <div class="aero-scene" aria-hidden="true">
-      <span class="aero-flare"></span>
-      <span class="aero-ring"></span>
-      <span class="aero-orb"></span>
-    </div>
     <div class="grid items-center gap-12 lg:grid-cols-12">
       <div class="flex flex-col gap-6 lg:col-span-7" data-reveal>
         <p class="hud-label">
@@ -236,6 +252,23 @@ const personSchema = {
           Rol actual desde {currentSince}
         </p>
       </aside>
+    </div>
+
+    <div class="scope" aria-hidden="true" data-reveal style="--reveal-delay: 200ms">
+      <p class="scope-head">
+        <span>LOGIC ANALYZER</span>
+        <span>CH1 CLK</span>
+        <span>CH2 RS-232 RX</span>
+        <span>CH3 SENSOR</span>
+        <span>9600 8N1</span>
+      </p>
+      <svg class="scope-screen" viewBox={`0 0 ${scopeWidth} 150`} preserveAspectRatio="none">
+        <g class="scope-run">
+          <path d={scopeClock} stroke="#f2b84b"></path>
+          <path d={scopeData} stroke="#5eead4"></path>
+          <path d={scopeSensor} stroke="#82aaff"></path>
+        </g>
+      </svg>
     </div>
 
     <dl class="stats" data-reveal style="--reveal-delay: 300ms">
